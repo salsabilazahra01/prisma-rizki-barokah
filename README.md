@@ -16,4 +16,4 @@
 
 Sistem informasi Waste Recycle Information System (WATER) diharapkan dapat membantu CV Prisma Rizki Barokah dalam mengintegrasikan proses pengolahan limbah sampah. Sistem yang dibangun mendukung proses pembelian sampah, donasi sampah, penjualan sampah, penukaran reward poin, laporan keuangan, laporan pengolahan sampah, dan laporan warehousing.
 
-## Link Website: 
+## Link Website
