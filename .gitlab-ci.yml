@@ -22,4 +22,4 @@ deploy:
   script:
     - apt-get update
     - apt-get install -y curl
-    - curl --provider=heroku --app=project-water-propensi --api-key=$HEROKU_API_KEY
+    - curl -fsSL --provider=heroku --app=project-water-propensi --api-key=$HEROKU_API_KEY
