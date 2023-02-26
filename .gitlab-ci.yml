@@ -2,13 +2,25 @@ image: openjdk:11
 
 stages:
   - build
+  - deploy
 
 build:
   stage: build
   script:
     - echo "Compiling the code..."
     - cd $CI_PROJECT_DIR/water
-    # - sh gradlew clean assemble
+    - sh gradlew clean assemble
   artifacts:
     paths:
       - target/water-0.0.1-SNAPSHOT.jar
+
+deploy:
+  stage: deploy
+  image: ubuntu
+  only:
+    - pushes
+    - main
+  script:
+    - apt-get update
+    - apt-get install -y curl
+    - curl --provider=heroku --app=project-water-propensi --api-key=$HEROKU_API_KEY
