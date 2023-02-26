@@ -11,7 +11,7 @@ public class WaterApplication {
 
 	@GetMapping("/")
 	String home() {
-		return "Hello Le Sserafim!!";
+		return "Hello Le Sserafim!";
 	}
 
 	public static void main(String[] args) {
