@@ -1,7 +1,6 @@
-package propensi.project.water.model;
+package propensi.project.water.model.Warehouse;
 
 //import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,7 +10,6 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.List;
 
 @Setter
 @Getter
@@ -33,12 +31,12 @@ public class WarehouseModel implements Serializable {
     private String namaItem;
 
     @NotNull
-    @Column(name = "kuantitas_sampah", nullable = false)
-    private int kuantitasSampah;
+    @Column(name = "kuantitas_sampah", nullable = false, columnDefinition = "int default 0")
+    private Integer kuantitasSampah;
 
     @NotNull
-    @Column(name = "kuantitas_olahan", nullable = false)
-    private int kuantitasOlahan;
+    @Column(name = "kuantitas_olahan", nullable = false, columnDefinition = "int default 0" )
+    private Integer kuantitasOlahan;
 
 //    @NotNull
 //    @Column(name = "harga_jual", nullable = false)
@@ -46,12 +44,11 @@ public class WarehouseModel implements Serializable {
 
     @NotNull
     @Column(name = "harga_beli", nullable = false)
-    private int hargaBeli;
+    private Integer hargaBeli;
 
     @NotNull
-    @Size(max = 50)
     @Column(name = "jenis", nullable = false)
-    private String jenisItem; // id item
+    private Integer jenisItem; // id item
 
     // relasi dengan batch
     @OneToOne(mappedBy = "warehouse")

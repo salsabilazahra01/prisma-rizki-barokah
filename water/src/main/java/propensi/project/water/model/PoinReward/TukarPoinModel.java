@@ -1,7 +1,6 @@
-package propensi.project.water.model;
+package propensi.project.water.model.PoinReward;
 
 //import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,14 +8,11 @@ import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-import org.springframework.format.annotation.DateTimeFormat;
+import propensi.project.water.model.User.DonaturModel;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.time.LocalDateTime;
-import java.util.List;
 
 @Setter
 @Getter
@@ -34,15 +30,11 @@ public class TukarPoinModel implements Serializable {
 
     @NotNull
     @Column(name = "bentuk", nullable = false)
-    private int bentukReward;
-
-    @NotNull
-    @Column(name = "jenis", nullable = false, unique = true)
-    private String jenisReward; // id reward
+    private Integer bentukReward;
 
     @NotNull
     @Column(name = "status", nullable = false)
-    private boolean status;
+    private Boolean status;
 
     // relasi dengan donatur
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
@@ -51,6 +43,8 @@ public class TukarPoinModel implements Serializable {
     private DonaturModel donatur;
 
     // relasi dengan reward
-    @OneToOne(mappedBy = "tukarPoin")
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "reward", referencedColumnName = "id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private RewardModel reward;
 }

@@ -1,9 +1,11 @@
-package propensi.project.water.model;
+package propensi.project.water.model.User;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import propensi.project.water.model.PenjualanHasilOlahan.PenawaranOlahanModel;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -14,6 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "customer")
+@PrimaryKeyJoinColumn(name="usernameCustomer")
 public class CustomerModel extends UserModel {
     @NotNull
     @Column(name="nama_pic", nullable=false)

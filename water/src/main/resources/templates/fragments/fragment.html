@@ -39,37 +39,37 @@
             </li>
 
             <!-- internal -->
-<!--            <li class="nav-item dropdown">-->
-<!--                <a th:class="${#strings.equals(activeLink, 'Laporan')}  ? 'nav-link nav-underline active dropdown-toggle' : 'nav-link dropdown-toggle'" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">-->
-<!--                    Laporan<span class="sr-only">(current)</span>-->
-<!--                </a>-->
-<!--                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">-->
-<!--                    <li><a class="dropdown-item" th:href="@{/}">Laporan Warehousing</a></li>-->
-<!--                    <li><a class="dropdown-item" th:href="@{/}">Laporan Transaksi Keuangan</a></li>-->
-<!--                    <li><a class="dropdown-item" th:href="@{/}">Pengolahan Sampah</a></li>-->
-<!--                </ul>-->
-<!--            </li>-->
-<!--            <li class="nav-item dropdown">-->
-<!--                <a th:class="${#strings.equals(activeLink, 'Pembelian dan Penjualan')}  ? 'nav-link nav-underline active dropdown-toggle' : 'nav-link dropdown-toggle'" role="button" data-bs-toggle="dropdown" aria-expanded="false">-->
-<!--                    Pembelian dan Penjualan<span class="sr-only">(current)</span>-->
-<!--                </a>-->
-<!--                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">-->
-<!--                    <li><a class="dropdown-item" th:href="@{/}">Pembelian Sampah</a></li>-->
-<!--                    <li><a class="dropdown-item" th:href="@{/}">Penjualan Hasil Olahan</a></li>-->
-<!--                </ul>-->
-<!--            </li>-->
-<!--            <li class="nav-item dropdown">-->
-<!--                <a th:class="${#strings.equals(activeLink, 'Donasi Sampah')}  ? 'nav-link nav-underline active dropdown-toggle' : 'nav-link dropdown-toggle'" role="button" data-bs-toggle="dropdown" aria-expanded="false">-->
-<!--                    Donasi Sampah<span class="sr-only">(current)</span>-->
-<!--                </a>-->
-<!--                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">-->
-<!--                    <li><a class="dropdown-item" th:href="@{/}">Daftar Donasi Sampah</a></li>-->
-<!--                    <li><a class="dropdown-item" th:href="@{/}">Penukaran Poin</a></li>-->
-<!--                </ul>-->
-<!--            </li>-->
-<!--            <li>-->
-<!--                <a th:class="${#strings.equals(activeLink, 'Manajemen Karyawan')}  ? 'nav-link nav-underline active' : 'nav-link'" th:href="@{/}">Manajemen Karyawan<span class="sr-only">(current)</span></a>-->
-<!--            </li>-->
+            <li class="nav-item dropdown">
+                <a th:class="${#strings.equals(activeLink, 'Laporan')}  ? 'nav-link nav-underline active dropdown-toggle' : 'nav-link dropdown-toggle'" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Laporan<span class="sr-only">(current)</span>
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <li><a class="dropdown-item" th:href="@{/}">Laporan Warehousing</a></li>
+                    <li><a class="dropdown-item" th:href="@{/transaksi/viewall}">Laporan Transaksi Keuangan</a></li>
+                    <li><a class="dropdown-item" th:href="@{/}">Pengolahan Sampah</a></li>
+                </ul>
+            </li>
+            <li class="nav-item dropdown">
+                <a th:class="${#strings.equals(activeLink, 'Pembelian dan Penjualan')}  ? 'nav-link nav-underline active dropdown-toggle' : 'nav-link dropdown-toggle'" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Pembelian dan Penjualan<span class="sr-only">(current)</span>
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <li><a class="dropdown-item" th:href="@{/}">Pembelian Sampah</a></li>
+                    <li><a class="dropdown-item" th:href="@{/}">Penjualan Hasil Olahan</a></li>
+                </ul>
+            </li>
+            <li class="nav-item dropdown">
+                <a th:class="${#strings.equals(activeLink, 'Donasi Sampah')}  ? 'nav-link nav-underline active dropdown-toggle' : 'nav-link dropdown-toggle'" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Donasi Sampah<span class="sr-only">(current)</span>
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <li><a class="dropdown-item" th:href="@{/}">Daftar Donasi Sampah</a></li>
+                    <li><a class="dropdown-item" th:href="@{/}">Penukaran Poin</a></li>
+                </ul>
+            </li>
+            <li>
+                <a th:class="${#strings.equals(activeLink, 'Manajemen Karyawan')}  ? 'nav-link nav-underline active' : 'nav-link'" th:href="@{/}">Manajemen Karyawan<span class="sr-only">(current)</span></a>
+            </li>
 
             <!--donatur-->
 <!--            <li>-->
