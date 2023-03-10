@@ -9,11 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class WaterApplication {
 
-	@GetMapping("/")
-	String home() {
-		return "Hello D08 - Le Sserafim!!";
-	}
-
 	public static void main(String[] args) {
 		SpringApplication.run(WaterApplication.class, args);
 	}
