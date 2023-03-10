@@ -1,7 +1,6 @@
-package propensi.project.water.model;
+package propensi.project.water.model.Warehouse;
 
 //import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,10 +10,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Setter
 @Getter
@@ -22,24 +19,33 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 //@JsonIgnoreProperties(value={""}, allowSetters = true)
-@Table(name = "reward")
-public class RewardModel implements Serializable {
+@Table(name = "batch")
+public class BatchModel implements Serializable {
     @Id
     @GeneratedValue(generator="system-uuid")
     @GenericGenerator(name="system-uuid", strategy="uuid")
     @Column(name = "id", nullable = false)
-    private String idReward;
+    private String idBatch;
 
     @NotNull
-    @Column(name = "jenis", nullable = false, unique = true)
-    private String jenisReward; // id reward
+    @Column(name = "kuantitas_bahan_baku", nullable = false)
+    private Integer kuantitasBahanBaku;
 
     @NotNull
-    @Column(name = "poin", nullable = false)
-    private int poin;
+    @Column(name = "kuantitas_hasil", nullable = false, columnDefinition = "int default 0")
+    private Integer kuantitasHasil;
 
-    // relasi dengan tukar poin
+    @NotNull
+    @Column(name = "tanggal_dibuat", nullable = false)
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+    private LocalDateTime tanggalDibuat;
+
+    @NotNull
+    @Column(name = "status", nullable = false)
+    private Integer status;
+
+    // relasi dengan warehouse
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_tukar_poin", referencedColumnName = "id")
-    private TukarPoinModel tukarPoin;
+    @JoinColumn(name = "id_item", referencedColumnName = "id")
+    private WarehouseModel warehouse;
 }

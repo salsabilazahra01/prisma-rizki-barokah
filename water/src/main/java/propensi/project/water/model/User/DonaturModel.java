@@ -1,9 +1,12 @@
-package propensi.project.water.model;
+package propensi.project.water.model.User;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import propensi.project.water.model.Donasi.DonasiModel;
+import propensi.project.water.model.PoinReward.TukarPoinModel;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -14,10 +17,11 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "donatur")
+@PrimaryKeyJoinColumn(name="usernameDonatur")
 public class DonaturModel extends UserModel {
     @NotNull
     @Column(name="poin", nullable=false, columnDefinition = "int default 0")
-    private int poin;
+    private Integer poin;
 
     @NotNull
     @Column(name="alamat", nullable=false)

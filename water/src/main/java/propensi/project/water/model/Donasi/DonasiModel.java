@@ -1,7 +1,6 @@
-package propensi.project.water.model;
+package propensi.project.water.model.Donasi;
 
 //import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,13 +9,13 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.format.annotation.DateTimeFormat;
+import propensi.project.water.model.User.DonaturModel;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Setter
 @Getter
@@ -24,18 +23,13 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 //@JsonIgnoreProperties(value={""}, allowSetters = true)
-@Table(name = "penawaran_sampah")
-public class PenawaranSampahModel implements Serializable {
+@Table(name = "donasi")
+public class DonasiModel implements Serializable {
     @Id
     @GeneratedValue(generator="system-uuid")
     @GenericGenerator(name="system-uuid", strategy="uuid")
     @Column(name = "id", nullable = false)
-    private String idPenawaranSampah;
-
-    @NotNull
-    @Size(max = 50)
-    @Column(name = "person", nullable = false)
-    private String person; // username partner
+    private String idDonasi;
 
     @NotNull
     @Size(max = 50)
@@ -55,38 +49,32 @@ public class PenawaranSampahModel implements Serializable {
     private Boolean isPickedUp;
 
     @NotNull
-    @Column(name = "berat", nullable = false)
-    private int berat;
-
-    @NotNull
     @Column(name = "tanggal_dibuat", nullable = false)
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private LocalDateTime tanggalDibuat;
 
     @NotNull
     @Column(name = "status", nullable = false)
-    private int status;
+    private Integer status;
 
-    @NotNull
     @Column(name = "keterangan", nullable = false)
     private String keterangan;
 
     @NotNull
-    @Column(name = "harga", nullable = false)
-    private int harga;
+    @Column(name = "berat_sebelum", nullable = false)
+    private Integer beratSebelum;
 
-    // relasi dengan partner
+    @NotNull
+    @Column(name = "berat_setelah", nullable = false, columnDefinition = "int default 0")
+    private Integer beratSetelah;
+
+    @NotNull
+    @Column(name = "poin_earned", nullable = false, columnDefinition = "int default 0")
+    private Integer poinEarned;
+
+    // relasi dengan donatur
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "username_partner", referencedColumnName = "username")
+    @JoinColumn(name = "username_donatur", referencedColumnName = "username")
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private PartnerModel partner;
-
-    // relasi dengan transaksi
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_transaksi", referencedColumnName = "id")
-    private TransaksiModel transaksiSampah;
-
-//    // relasi dengan item penawaran sampah
-//    @OneToMany(mappedBy = "penawaranSampah", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-//    List<ItemPenawaranSampahModel> listItemPenawaranSampah;
+    private DonaturModel donatur;
 }
