@@ -1,12 +1,13 @@
-package propensi.project.water.model;
+package propensi.project.water.model.PembelianSampah;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import propensi.project.water.model.Warehouse.WarehouseModel;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 
 @Setter
 @Getter
@@ -31,5 +32,5 @@ public class ItemPenawaranSampahModel {
 
     @NotNull
     @Column(name = "kuantitas", nullable = false)
-    private int kuantitas;
+    private Integer kuantitas;
 }

@@ -1,7 +1,6 @@
-package propensi.project.water.model;
+package propensi.project.water.model.PembelianSampah;
 
 //import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,13 +9,14 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.format.annotation.DateTimeFormat;
+import propensi.project.water.model.User.PartnerModel;
+import propensi.project.water.model.Transaksi.TransaksiModel;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Setter
 @Getter
@@ -24,18 +24,13 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 //@JsonIgnoreProperties(value={""}, allowSetters = true)
-@Table(name = "penawaran_olahan")
-public class PenawaranOlahanModel implements Serializable {
+@Table(name = "penawaran_sampah")
+public class PenawaranSampahModel implements Serializable {
     @Id
     @GeneratedValue(generator="system-uuid")
     @GenericGenerator(name="system-uuid", strategy="uuid")
     @Column(name = "id", nullable = false)
-    private String idPenawaranOlahan;
-
-    @NotNull
-    @Size(max = 50)
-    @Column(name = "person", nullable = false)
-    private String person; // username customer
+    private String idPenawaranSampah;
 
     @NotNull
     @Size(max = 50)
@@ -47,6 +42,14 @@ public class PenawaranOlahanModel implements Serializable {
     private String kontakPic;
 
     @NotNull
+    @Column(name = "bank", nullable = false)
+    private String bank;
+
+    @NotNull
+    @Column(name = "noRekening", nullable = false)
+    private Integer noRekening;
+
+    @NotNull
     @Column(name = "alamat_pic", nullable = false)
     private String alamatPic;
 
@@ -55,30 +58,38 @@ public class PenawaranOlahanModel implements Serializable {
     private Boolean isPickedUp;
 
     @NotNull
+    @Column(name = "berat", nullable = false)
+    private Integer berat;
+
+    @NotNull
     @Column(name = "tanggal_dibuat", nullable = false)
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private LocalDateTime tanggalDibuat;
 
     @NotNull
     @Column(name = "status", nullable = false)
-    private int status;
+    private Integer status;
 
-    @NotNull
     @Column(name = "keterangan", nullable = false)
     private String keterangan;
 
     @NotNull
     @Column(name = "harga", nullable = false)
-    private int harga;
+    private Integer harga;
 
-    // relasi dengan customer
+
+    // relasi dengan partner
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "username_customer", referencedColumnName = "username")
+    @JoinColumn(name = "username_partner", referencedColumnName = "username")
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private CustomerModel customer;
+    private PartnerModel partner;
 
     // relasi dengan transaksi
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_transaksi", referencedColumnName = "id")
-    private TransaksiModel transaksiOlahan;
+    private TransaksiModel transaksiSampah;
+
+//    // relasi dengan item penawaran sampah
+//    @OneToMany(mappedBy = "penawaranSampah", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+//    List<ItemPenawaranSampahModel> listItemPenawaranSampah;
 }

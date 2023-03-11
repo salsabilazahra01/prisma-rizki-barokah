@@ -1,10 +1,12 @@
-package propensi.project.water.model;
+package propensi.project.water.model.User;
 
 //import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import propensi.project.water.model.PembelianSampah.PenawaranSampahModel;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -14,6 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@PrimaryKeyJoinColumn(name="usernamePartner")
 //@JsonIgnoreProperties(value={""}, allowSetters = true)
 @Table(name = "partner")
 public class PartnerModel extends UserModel {
