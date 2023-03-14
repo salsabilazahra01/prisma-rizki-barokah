@@ -1,13 +1,16 @@
 package propensi.project.water.model.User;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import javax.persistence.*;
 
-@Setter
-@Getter
 @Entity
 @Table(name = "supervisor")
-@PrimaryKeyJoinColumn(name="usernameSupervisor")
+@PrimaryKeyJoinColumn(name="username")
+@Setter
+@Getter
+@NoArgsConstructor
 public class SupervisorModel extends UserModel {
 }

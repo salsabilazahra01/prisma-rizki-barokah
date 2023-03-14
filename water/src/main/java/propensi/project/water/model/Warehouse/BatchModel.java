@@ -6,25 +6,27 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
+@Entity
+@Table(name = "batch")
 @Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-//@JsonIgnoreProperties(value={""}, allowSetters = true)
-@Table(name = "batch")
 public class BatchModel implements Serializable {
     @Id
     @GeneratedValue(generator="system-uuid")
     @GenericGenerator(name="system-uuid", strategy="uuid")
-    @Column(name = "id", nullable = false)
+    @Column(name = "id_batch", nullable = false)
     private String idBatch;
 
     @NotNull
@@ -45,7 +47,8 @@ public class BatchModel implements Serializable {
     private Integer status;
 
     // relasi dengan warehouse
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_item", referencedColumnName = "id")
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "nama_item", referencedColumnName = "nama", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private WarehouseModel warehouse;
 }

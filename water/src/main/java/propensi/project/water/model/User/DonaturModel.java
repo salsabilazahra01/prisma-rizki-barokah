@@ -11,13 +11,13 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
+@Entity
+@Table(name = "donatur")
+@PrimaryKeyJoinColumn(name="username")
 @Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-@Table(name = "donatur")
-@PrimaryKeyJoinColumn(name="usernameDonatur")
 public class DonaturModel extends UserModel {
     @NotNull
     @Column(name="poin", nullable=false, columnDefinition = "int default 0")

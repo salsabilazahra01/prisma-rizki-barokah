@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Destiny</title>
+    <title>Water</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel = "stylesheet" href = "bootstrap/css/bootstrap.css">
     <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -13,17 +13,6 @@
 </head>
 <body>
 <nav th:fragment="navbar(activeLink)" class="navbar navbar-expand-lg navbar-light shadow-sm fixed-top">
-    <button
-            class="navbar-toggler"
-            type="button"
-            data-toggle="collapse"
-            data-target="#navbarNavAltMarkup"
-            aria-controls="navbarNavAltMarkup"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-    >
-        <span class="navbar-toggler-icon"></span>
-    </button>
     <div class="container-fluid" id="navbarsExampleDefault">
         <ul class="navbar-nav mr-auto">
 
@@ -45,7 +34,7 @@
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <li><a class="dropdown-item" th:href="@{/}">Laporan Warehousing</a></li>
-                    <li><a class="dropdown-item" th:href="@{/transaksi/viewall}">Laporan Transaksi Keuangan</a></li>
+                    <li><a class="dropdown-item" th:href="@{/transaksi/viewall/semua}">Laporan Transaksi Keuangan</a></li>
                     <li><a class="dropdown-item" th:href="@{/}">Pengolahan Sampah</a></li>
                 </ul>
             </li>

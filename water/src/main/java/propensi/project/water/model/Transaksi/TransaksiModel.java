@@ -7,42 +7,34 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.format.annotation.DateTimeFormat;
-import propensi.project.water.model.PenjualanHasilOlahan.PenawaranOlahanModel;
-import propensi.project.water.model.PembelianSampah.PenawaranSampahModel;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+@Entity
+@Table(name = "transaksi")
 @Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-//@JsonIgnoreProperties(value={""}, allowSetters = true)
-@Table(name = "transaksi")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class TransaksiModel implements Serializable {
     @Id
     @GeneratedValue(generator="system-uuid")
     @GenericGenerator(name="system-uuid", strategy="uuid")
-    @Column(name = "id", nullable = false)
+    @Column(name = "id_transaksi", nullable = false)
     private String idTransaksi;
 
-    @NotNull
-    @Size(max = 50)
-    @Column(name = "person", nullable = false)
-    private String person; // username customer
-
-    @NotNull
-    @Size(max = 50)
-    @Column(name = "proses", nullable = false)
-    private String proses; // id penawaran -> kl input manual?
+//    @NotNull
+//    @Size(max = 50)
+//    @Column(name = "person", nullable = false)
+//    private String person; // username customer
 
     @NotNull
     @Column(name = "jenis_transaksi", nullable = false)
-    private Boolean jenisTransaksi;
+    private Boolean jenisTransaksi; // pendapatan atau pengeluaran
 
     @NotNull
     @Column(name = "nominal", nullable = false)
@@ -56,11 +48,7 @@ public class TransaksiModel implements Serializable {
     @Column(name = "keterangan", nullable = false)
     private String keterangan;
 
-    // relasi dengan penawaran sampah
-    @OneToOne(mappedBy = "transaksiSampah")
-    private PenawaranSampahModel penawaranSampah;
-
-    // relasi dengan penawaran olahan
-    @OneToOne(mappedBy = "transaksiOlahan")
-    private PenawaranOlahanModel penawaranOlahan;
+    @NotNull
+    @Column(name = "proses", nullable = false)
+    private Integer proses;
 }

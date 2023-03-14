@@ -6,23 +6,27 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+import propensi.project.water.model.User.CustomerModel;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.List;
 
+@Entity
+@Table(name = "warehouse")
 @Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-//@JsonIgnoreProperties(value={""}, allowSetters = true)
-@Table(name = "warehouse")
 public class WarehouseModel implements Serializable {
     @Id
     @GeneratedValue(generator="system-uuid")
     @GenericGenerator(name="system-uuid", strategy="uuid")
-    @Column(name = "id", nullable = false)
+    @Column(name = "id_item", nullable = false)
     private String idItem;
 
     @NotNull
@@ -38,19 +42,17 @@ public class WarehouseModel implements Serializable {
     @Column(name = "kuantitas_olahan", nullable = false, columnDefinition = "int default 0" )
     private Integer kuantitasOlahan;
 
-//    @NotNull
-//    @Column(name = "harga_jual", nullable = false)
-//    private int hargaJual;
-
     @NotNull
     @Column(name = "harga_beli", nullable = false)
     private Integer hargaBeli;
 
-    @NotNull
-    @Column(name = "jenis", nullable = false)
-    private Integer jenisItem; // id item
+    // relasi dengan jenis item
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "nama_jenis_item", referencedColumnName = "nama_jenis_item", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private JenisItemModel jenisItem;
 
     // relasi dengan batch
-    @OneToOne(mappedBy = "warehouse")
-    private BatchModel batch;
+    @OneToMany(mappedBy = "warehouse", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<BatchModel> listBatch;
 }
