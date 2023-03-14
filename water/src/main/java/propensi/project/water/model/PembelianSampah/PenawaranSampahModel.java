@@ -9,6 +9,8 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.format.annotation.DateTimeFormat;
+import propensi.project.water.model.Transaksi.ProsesPenawaranSampahModel;
+import propensi.project.water.model.User.DonaturModel;
 import propensi.project.water.model.User.PartnerModel;
 import propensi.project.water.model.Transaksi.TransaksiModel;
 
@@ -18,18 +20,17 @@ import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+@Entity
+@Table(name = "penawaran_sampah")
 @Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-//@JsonIgnoreProperties(value={""}, allowSetters = true)
-@Table(name = "penawaran_sampah")
 public class PenawaranSampahModel implements Serializable {
     @Id
     @GeneratedValue(generator="system-uuid")
     @GenericGenerator(name="system-uuid", strategy="uuid")
-    @Column(name = "id", nullable = false)
+    @Column(name = "id_penawaran_sampah", nullable = false)
     private String idPenawaranSampah;
 
     @NotNull
@@ -80,14 +81,14 @@ public class PenawaranSampahModel implements Serializable {
 
     // relasi dengan partner
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "username_partner", referencedColumnName = "username")
+    @JoinColumn(name = "username_partner", referencedColumnName = "username", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private PartnerModel partner;
 
     // relasi dengan transaksi
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_transaksi", referencedColumnName = "id")
-    private TransaksiModel transaksiSampah;
+    @JoinColumn(name = "id_transaksi", referencedColumnName = "id_transaksi")
+    private ProsesPenawaranSampahModel transaksiSampah;
 
 //    // relasi dengan item penawaran sampah
 //    @OneToMany(mappedBy = "penawaranSampah", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)

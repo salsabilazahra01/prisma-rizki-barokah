@@ -5,20 +5,21 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import propensi.project.water.model.Donasi.DonasiModel;
 import propensi.project.water.model.PembelianSampah.PenawaranSampahModel;
+//import propensi.project.water.model.PembelianSampah.PenawaranSampahModel;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
+@Entity
+@Table(name = "partner")
+@PrimaryKeyJoinColumn(name="username")
 @Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-@PrimaryKeyJoinColumn(name="usernamePartner")
-//@JsonIgnoreProperties(value={""}, allowSetters = true)
-@Table(name = "partner")
 public class PartnerModel extends UserModel {
     @NotNull
     @Column(name= "nama_pic", nullable=false)

@@ -17,18 +17,18 @@ import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+@Entity
+@Table(name = "donasi")
 @Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-//@JsonIgnoreProperties(value={""}, allowSetters = true)
-@Table(name = "donasi")
 public class DonasiModel implements Serializable {
+
     @Id
     @GeneratedValue(generator="system-uuid")
     @GenericGenerator(name="system-uuid", strategy="uuid")
-    @Column(name = "id", nullable = false)
+    @Column(name = "id_donasi", nullable = false)
     private String idDonasi;
 
     @NotNull
@@ -65,16 +65,20 @@ public class DonasiModel implements Serializable {
     private Integer beratSebelum;
 
     @NotNull
-    @Column(name = "berat_setelah", nullable = false, columnDefinition = "int default 0")
+    @Column(name = "berat_setelah", nullable = false, columnDefinition = "int default -1")
     private Integer beratSetelah;
 
     @NotNull
-    @Column(name = "poin_earned", nullable = false, columnDefinition = "int default 0")
+    @Column(name = "poin_earned", nullable = false, columnDefinition = "int default -1")
     private Integer poinEarned;
 
     // relasi dengan donatur
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "username_donatur", referencedColumnName = "username")
+    @JoinColumn(name = "username_donatur", referencedColumnName = "username", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private DonaturModel donatur;
+
+    // relasi dengan item
+//    @OneToMany(mappedBy = "donasi", cascade = CascadeType.ALL)
+//    List<ItemDonasiModel> itemDonasi = new ArrayList<ItemDonasiModel>();
 }

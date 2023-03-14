@@ -9,8 +9,10 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.format.annotation.DateTimeFormat;
+import propensi.project.water.model.Transaksi.ProsesPenawaranOlahanModel;
 import propensi.project.water.model.Transaksi.TransaksiModel;
 import propensi.project.water.model.User.CustomerModel;
+import propensi.project.water.model.User.PartnerModel;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -18,18 +20,17 @@ import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+@Entity
+@Table(name = "penawaran_olahan")
 @Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-//@JsonIgnoreProperties(value={""}, allowSetters = true)
-@Table(name = "penawaran_olahan")
 public class PenawaranOlahanModel implements Serializable {
     @Id
     @GeneratedValue(generator="system-uuid")
     @GenericGenerator(name="system-uuid", strategy="uuid")
-    @Column(name = "id", nullable = false)
+    @Column(name = "id_penawaran_olahan", nullable = false)
     private String idPenawaranOlahan;
 
     @NotNull
@@ -67,12 +68,12 @@ public class PenawaranOlahanModel implements Serializable {
 
     // relasi dengan customer
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "username_customer", referencedColumnName = "username")
+    @JoinColumn(name = "username_customer", referencedColumnName = "username", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private CustomerModel customer;
 
     // relasi dengan transaksi
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_transaksi", referencedColumnName = "id")
-    private TransaksiModel transaksiOlahan;
+    @JoinColumn(name = "id_transaksi", referencedColumnName = "id_transaksi")
+    private ProsesPenawaranOlahanModel transaksiOlahan;
 }

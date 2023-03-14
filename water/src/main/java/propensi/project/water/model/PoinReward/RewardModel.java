@@ -12,18 +12,17 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.List;
 
+@Entity
+@Table(name = "reward")
 @Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-//@JsonIgnoreProperties(value={""}, allowSetters = true)
-@Table(name = "reward")
 public class RewardModel implements Serializable {
     @Id
     @GeneratedValue(generator="system-uuid")
     @GenericGenerator(name="system-uuid", strategy="uuid")
-    @Column(name = "id", nullable = false)
+    @Column(name = "id_reward", nullable = false)
     private String idReward;
 
     @NotNull

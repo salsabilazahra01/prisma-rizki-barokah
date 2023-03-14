@@ -57,13 +57,32 @@
     font-size: 14px;
 }
 
+/* detail fonts */
+.p2 .title-detail{
+    /*margin-block: 2em;*/
+}
+
+/* body */
+body {
+    padding-top: 60px;
+}
+@media (max-width: 979px) {
+    body {
+        padding-top: 0px;
+    }
+}
+
+/* a href */
+a {
+    text-decoration: none;
+}
+
+/* navbar */
 .navbar{
     background: var(--white) !important;
     font-weight: bold;
     padding: 1em;
 }
-
-/* navbar */
 
 @media (min-width: 992px){
     .navbar li {
@@ -79,24 +98,39 @@
 }
 
 /* button */
-
 .btn{
     font-weight: bold;
-    border: 2px solid #fff;
+    border: 2px solid;
     border-radius: 1.5rem;
     padding-block: 0.5rem;
     padding-inline: 3rem;
 }
+.btn-small{
+    font-weight: bold;
+    border: 1px solid;
+    border-radius: 1.5rem;
+    padding-block: 0.3rem;
+    padding-inline: 1.2rem;
+}
 .btn-primary-green{
     background-color: var(--primary-green);
+    border-color: var(--primary-green);
     color: var(--white);
 }
 .btn-primary-green:hover{
-    color: var(--primary-green);
-    background: var(--white);
-    border-color: var(--primary-green);
+    color: var(--white);
+    border-color: var(--slimy-green);
+    background: var(--slimy-green);
 }
-
+.btn-outline-primary-green{
+    background-color: var(--white);
+    border-color: var(--primary-green);
+    color: var(--primary-green);
+}
+.btn-outline-primary-green:hover{
+    background-color: var(--primary-green);
+    color: var(--white);
+}
 .btn-about-us:hover{
     background-color: var(--white);
     color: var(--primary-green)!important;
@@ -105,9 +139,25 @@
     background-color: var(--yellow-sun);
     color: var(--white);
 }
-
+.btn-outline-raisin-black{
+    background-color: var(--white);
+    border-color: var(--raisin-black);
+    color: var(--raisin-black);
+}
+.btn-outline-raisin-black:hover{
+    background-color: var(--another-grey);
+    border-color: var(--raisin-black);
+    color: var(--raisin-black);
+}
+.btn-danger{
+    background-color: var(--danger);
+    color: var(--white);
+}
+.btn-danger:hover{
+    background-color: var(--danger-hover);
+    color: var(--white);
+}
 /* container */
-
 .container-primary-green{
     background-color: var(--primary-green);
     padding: 2em;

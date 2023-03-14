@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -17,10 +18,16 @@ import java.io.Serializable;
 @Entity
 @Table(name = "user")
 @Inheritance(strategy = InheritanceType.JOINED)
-public class UserModel implements Serializable {
-    @Id
+public class UserModel {
+//    @Id
 //    @GeneratedValue(generator = "system-uuid")
 //    @GenericGenerator(name = "system-uuid", strategy = "uuid")
+//    @Size(max = 50)
+////    @Column(name = "uuid", nullable = false, unique = true)
+//    private String uuid;
+
+    @Id
+    @NotNull
     @Size(max = 50)
     @Column(name = "username", nullable = false, unique = true)
     private String username;
@@ -31,9 +38,9 @@ public class UserModel implements Serializable {
     private String nama;
 
     @NotNull
-    @Size(max = 50)
-    @Column(name = "role", nullable = false)
-    private String role;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role")
+    private Role role;
 
     @NotNull
     @Column(name = "email_hp", nullable = false, unique = true)
