@@ -23,8 +23,8 @@
         <div class="card-body">
             <div class="justify-content-center">
 
-                <!--                <div class="alert alert-success" role="alert" th:text="${success}" th:if="${success}"></div>-->
-                <!--                <br>-->
+                <div class="alert alert-success" role="alert" th:text="${success}" th:if="${success}"></div>
+                <br>
 
                 <!--title-->
                 <div class="row">
@@ -46,7 +46,7 @@
                 <div class="row mt-3">
                     <div class="col text-start">
                         <h6 class="h6">Total</h6>
-                        <h3 class="h4">Rp21.000.000</h3>
+                        <h3 class="h4" th:text="'Rp ' + ${total} + ',00'"></h3>
                     </div>
                     <div class="col text-end">
                         <button type = "button" class = "btn-small btn-outline-primary-green h6 mt-4">
@@ -73,41 +73,18 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td>TRANSAKSI-1</td>
-                            <td>22 Maret 2023, 01:11</td>
-                            <td>10000</td>
-                            <td th:if="${#strings.equals(jenis, 'semua')}">Pendapatan</td>
+                        <tr th:each="transaksi, iterationStatus : ${listTransaksi}">
+                            <td class="text-center" th:text="${transaksi.idTransaksi}"></td>
+                            <td th:text="${#temporals.format(transaksi.tanggalTransaksi, 'dd-MM-yyyy HH:mm')}"></td>
+                            <td th:text="'Rp ' + ${transaksi.nominal} + ',00'"></td>
+                            <td th:if="${#strings.equals(jenis, 'semua')}" th:text="${transaksi.jenisTransaksi} ? 'Pengeluaran':'Pendapatan'"></td>
                             <td>
-                                <a type="button" class="mx-2 btn-small btn-primary-green" th:href="@{/transaksi/view}">Detail</a>
+                                <a type="button" class="mx-2 btn-small btn-primary-green" th:href="@{/transaksi/view/} + ${transaksi.idTransaksi}">Detail</a>
                             </td>
                         </tr>
-                        <tr>
-                            <td>TRANSAKSI-1</td>
-                            <td>22 Maret 2023, 01:11</td>
-                            <td>10000</td>
-                            <td th:if="${#strings.equals(jenis, 'semua')}">Pendapatan</td>
-                            <td>
-                                <a type="button" class="mx-2 btn-small btn-primary-green" th:href="@{/transaksi/view}">Detail</a>
-                            </td>
-                        </tr>
-<!--                        <tr th:each="transaksi, iterationStatus : ${listTransaksi}">-->
-<!--                            <td class="text-center" th:text="${transaksi.idTransaksi}"></td>-->
-<!--                            <td th:text="${#temporals.format(transaksi.tanggalTransaksi, 'dd-MM-yyyy HH:mm')}"></td>-->
-<!--                            <td th:text="${transaksi.nominal}"></td>-->
-<!--                            <td>-->
-<!--                                <a class="mx-2 btn " style="background-color: #ADD8E6"  th:href="@{/transaksi/viewall}">Detail</a>-->
-<!--                            </td>-->
-<!--                        </tr>-->
                         </tbody>
                     </table>
                 </div>
-
-<!--                <br>-->
-<!--                <div class="my-3 d-flex">-->
-<!--                    <a class="mx-2 btn" style="color: white; background-color: #5698B9">Tambah Apoteker Baru</a>-->
-<!--                    <a type="button"  class="mx-2 btn btn-outline-primary" href="/">Kembali</a>-->
-<!--                </div>-->
             </div>
         </div>
     </div>
