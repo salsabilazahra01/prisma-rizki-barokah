@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.servlet.ModelAndView;
 
+import propensi.project.water.model.User.ManajerModel;
 import propensi.project.water.model.User.UserModel;
 import propensi.project.water.model.User.Role;
 import propensi.project.water.setting.Settings;
@@ -54,48 +55,68 @@ public class PageController {
 
     @RequestMapping("/login")
     public String login() {
+        for (UserModel user : userService.getListUser()) {
+            if (!user.getRole().equals(Role.MANAJER)) {
+                ManajerModel manajer = new ManajerModel();
+                manajer.setNama("Manajer Perusahaan");
+                manajer.setRole(Role.MANAJER);
+                manajer.setEmailHp("water@gmail.com");
+                manajer.setUsername("manajerwater");
+                manajer.setPassword("Test1234!");
+
+                userService.addUser(manajer);
+            }
+        }
+
         return "login";
     }
 
-    @GetMapping("/validate-ticket")
-    public ModelAndView adminLogin(@RequestParam(value = "ticket", required = false) String ticket, HttpServletRequest request) {
-        ServiceResponse serviceResponse = this.webClient.get().uri(
-                String.format(Settings.SERVER_VALIDATE_TICKET, ticket, Settings.CLIENT_LOGIN)
-        ).retrieve().bodyToMono(ServiceResponse.class).block();
+//    @GetMapping("/validate-ticket")
+//    public ModelAndView adminLogin(@RequestParam(value = "ticket", required = false) String ticket, HttpServletRequest request) {
+//        ServiceResponse serviceResponse = this.webClient.get().uri(
+//                String.format(Settings.SERVER_VALIDATE_TICKET, ticket, Settings.CLIENT_LOGIN)
+//        ).retrieve().bodyToMono(ServiceResponse.class).block();
+//
+//        Attributes attributes = serviceResponse.getAuthenticationSuccess().getAttributes();
+//        String username = serviceResponse.getAuthenticationSuccess().getUser();
+//
+//        UserModel user = userService.getUserByUsername(username);
+//
+//        if (user == null) {
+//            user = new UserModel();
+//            user.setEmailHp(username + "@ui.ac.id");
+//            user.setNama(attributes.getNama());
+//            user.setPassword("propensi123");
+//            user.setUsername(username);
+//            user.setRole(Role.ADMIN);
+//            userService.addUser(user);
+//        }
+//
+//        Authentication authentication = new UsernamePasswordAuthenticationToken(username, "propensi123");
+//
+//        SecurityContext securityContext = SecurityContextHolder.getContext();
+//        securityContext.setAuthentication(authentication);
+//
+//        HttpSession httpSession = request.getSession(true);
+//        httpSession.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, securityContext);
+//
+//        return new ModelAndView("redirect:/home");
+//    }
+//
+//    @GetMapping(value = "/login-admin")
+//    public ModelAndView loginAdmin() {
+//        return new ModelAndView("redirect:" + Settings.SERVER_LOGIN + Settings.CLIENT_LOGIN);
+//    }
+//
+//    @GetMapping(value = "/logout-admin")
+//    public ModelAndView logoutSSO(Principal principal) {
+//        UserModel user = userService.getUserByUsername(principal.getName());
+//
+//        return new ModelAndView("redirect:" + Settings.SERVER_LOGOUT + Settings.CLIENT_LOGOUT);
+//    }
 
-        Attributes attributes = serviceResponse.getAuthenticationSuccess().getAttributes();
-        String username = serviceResponse.getAuthenticationSuccess().getUser();
-
-        UserModel user = userService.getUserByUsername(username);
-
-        if (user == null) {
-            user = new UserModel();
-            user.setEmailHp(username + "@ui.ac.id");
-            user.setNama(attributes.getNama());
-            user.setPassword("propensi123");
-            user.setUsername(username);
-            user.setRole(Role.ADMIN);
-            userService.addUser(user);
-        }
-
-        Authentication authentication = new UsernamePasswordAuthenticationToken(username, "propensi123");
-
-        SecurityContext securityContext = SecurityContextHolder.getContext();
-        securityContext.setAuthentication(authentication);
-
-        HttpSession httpSession = request.getSession(true);
-        httpSession.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, securityContext);
-
-        return new ModelAndView("redirect:/home");
-    }
-
-    @GetMapping(value = "/login-admin")
-    public ModelAndView loginAdmin() {
-        return new ModelAndView("redirect:" + Settings.SERVER_LOGIN + Settings.CLIENT_LOGIN);
-    }
-
-    @GetMapping(value = "/logout-admin")
-    public ModelAndView logoutSSO(Principal principal) {
+    @GetMapping(value = "/logout")
+    public ModelAndView logout(Principal principal) {
         UserModel user = userService.getUserByUsername(principal.getName());
 
         return new ModelAndView("redirect:" + Settings.SERVER_LOGOUT + Settings.CLIENT_LOGOUT);

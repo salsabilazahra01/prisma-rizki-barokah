@@ -17,48 +17,46 @@
 </head>
 
 <body>
-<nav th:replace="fragments/fragment :: navbar('Home')"></nav>
+<nav th:replace="fragments/fragment :: navbar('Laporan')"></nav>
 
-<div class="container-fluid text-center">
-  <br>
-  <h2>Hello!</h2>
-  <br>
-  <div class="row justify-content-center">
-    <div class="col-md-4">
-      <div class="card">
-        <div class="card-header">
-          Login
+<div class="container">
+  <div class="card m-4 p-4">
+    <div class="card-body">
+      <div class="justify-content-center">
+        <h2>Daftar Admin</h2>
+        <br>
+        <a th:href="@{/customer/add}" class="btn btn-primary">Tambah Admin</a>
+        <a class="btn btn-primary" href="/">Beranda</a>
+        <br><br>
+        <div th:if="*{listAdmin.size() != 0}">
+          <table class="table">
+            <thead>
+            <tr>
+              <th style='text-align:center; vertical-align:middle'>No</th>
+              <th style='text-align:center; vertical-align:middle'>Nama</th>
+              <th style='text-align:center; vertical-align:middle'>Username</th>
+              <th style='text-align:center; vertical-align:middle'>Email atau No. HP</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="admin, iterationStatus : ${listAdmin}"
+                th:style="${iterationStatus.even} ? 'font-weight:bold;'">
+              <td th:text="${iterationStatus.count}" style='text-align:center; vertical-align:middle'></td>
+              <td th:text="${admin.nama}" style='text-align:center; vertical-align:middle'></td>
+              <td th:text="${admin.username}" style='text-align:center; vertical-align:middle'></td>
+              <td th:text="${admin.email_hp}" style='text-align:center; vertical-align:middle'></td>
+            </tr>
+            </tbody>
+          </table>
         </div>
-        <div class="card-body">
-          <div th:if="${param.error}">
-            <span style="color: red">Invalid username and password.</span>
-          </div>
-          <br>
-          <form th:action="@{/login}" method="POST">
-            <div class="row form-group">
-              <label class="col-sm-4">Username:</label>
-              <input type="text" class="col-sm-8 form-control input-sm" name="username">
-            </div>
-            <div class="row form-group">
-              <label class="col-sm-4">Password:</label>
-              <input type="password" class="col-sm-8 form-control input-sm" name="password">
-            </div>
-            <div class="row form-group justify-content-center">
-              <button th:href="@{/home}" type="submit" class="btn btn-primary">Sign In</button>
-            </div>
-            <div>
-              <label> Belum memiliki akun?</label>
-              <a th:href="@{/register}">Sign Up</a>
-<!--              <br>-->
-<!--              <a th:href="@{/login-admin}">Masuk sebagai Admin</a>-->
-            </div>
-          </form>
+        <div th:unless="*{listAdmin.size() != 0}">
+          <h2 th:text="'Belum terdapat Admin yang terdaftar!'"></h2>
         </div>
       </div>
     </div>
   </div>
 </div>
-<br><br><br><br><br><br><br><br><br>
+
 <footer class = "py-4 container-primary-green">
   <div class = "container">
     <div class="text-white text-center">

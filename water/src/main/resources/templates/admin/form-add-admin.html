@@ -17,48 +17,39 @@
 </head>
 
 <body>
-<nav th:replace="fragments/fragment :: navbar('Home')"></nav>
+<nav th:replace="fragments/fragment :: navbar('Laporan')"></nav>
 
-<div class="container-fluid text-center">
-  <br>
-  <h2>Hello!</h2>
-  <br>
-  <div class="row justify-content-center">
-    <div class="col-md-4">
-      <div class="card">
-        <div class="card-header">
-          Login
-        </div>
-        <div class="card-body">
-          <div th:if="${param.error}">
-            <span style="color: red">Invalid username and password.</span>
-          </div>
+<div class="container">
+  <div class="card m-4 p-4">
+    <div class="card-body">
+      <div class="justify-content-center">
+        <h2>Tambah Admin Baru</h2>
+        <br>
+        <form th:action="@{/admin/add}" th:object="${admin}" method="POST">
+
+          <label>Username</label>
+          <input type="text" class="form-control" required="required" name="username" th:field="*{username}"/>
+
+          <label>Nama</label>
+          <input type="text" name="nama" class="form-control" required="required" th:field="*{nama}"/>
+
+          <label>E-mail atau No. HP</label>
+          <input type="text" class="form-control" required="required" name="email_hp" th:field="*{emailHp}"/>
+
+          <label>Password</label>
+          <input required type="password" name="password" class="form-control" pattern="^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$" title="Password harus mengandung minimal 8 karakter & angka, huruf besar, huruf kecil, dan simbol." th:field="*{password}"/>
+
+          <label>Konfirmasi Password</label>
+          <input type="password"  id="passwordConfirmer" name="passwordConfirmer" class="form-control"/>
+
           <br>
-          <form th:action="@{/login}" method="POST">
-            <div class="row form-group">
-              <label class="col-sm-4">Username:</label>
-              <input type="text" class="col-sm-8 form-control input-sm" name="username">
-            </div>
-            <div class="row form-group">
-              <label class="col-sm-4">Password:</label>
-              <input type="password" class="col-sm-8 form-control input-sm" name="password">
-            </div>
-            <div class="row form-group justify-content-center">
-              <button th:href="@{/home}" type="submit" class="btn btn-primary">Sign In</button>
-            </div>
-            <div>
-              <label> Belum memiliki akun?</label>
-              <a th:href="@{/register}">Sign Up</a>
-<!--              <br>-->
-<!--              <a th:href="@{/login-admin}">Masuk sebagai Admin</a>-->
-            </div>
-          </form>
-        </div>
+          <button type="submit" class="btn btn-primary">Submit</button>
+          <a class="btn btn-link" href="/home">Home</a>
+        </form>
       </div>
     </div>
   </div>
-</div>
-<br><br><br><br><br><br><br><br><br>
+
 <footer class = "py-4 container-primary-green">
   <div class = "container">
     <div class="text-white text-center">

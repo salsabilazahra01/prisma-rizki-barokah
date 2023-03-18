@@ -17,48 +17,10 @@
 </head>
 
 <body>
-<nav th:replace="fragments/fragment :: navbar('Home')"></nav>
+<H2>Selamat akun Anda telah dibuat!</H2>
+<label> Silahkan kembali ke </label>
+<a th:href="@{/home}">Home</a>
 
-<div class="container-fluid text-center">
-  <br>
-  <h2>Hello!</h2>
-  <br>
-  <div class="row justify-content-center">
-    <div class="col-md-4">
-      <div class="card">
-        <div class="card-header">
-          Login
-        </div>
-        <div class="card-body">
-          <div th:if="${param.error}">
-            <span style="color: red">Invalid username and password.</span>
-          </div>
-          <br>
-          <form th:action="@{/login}" method="POST">
-            <div class="row form-group">
-              <label class="col-sm-4">Username:</label>
-              <input type="text" class="col-sm-8 form-control input-sm" name="username">
-            </div>
-            <div class="row form-group">
-              <label class="col-sm-4">Password:</label>
-              <input type="password" class="col-sm-8 form-control input-sm" name="password">
-            </div>
-            <div class="row form-group justify-content-center">
-              <button th:href="@{/home}" type="submit" class="btn btn-primary">Sign In</button>
-            </div>
-            <div>
-              <label> Belum memiliki akun?</label>
-              <a th:href="@{/register}">Sign Up</a>
-<!--              <br>-->
-<!--              <a th:href="@{/login-admin}">Masuk sebagai Admin</a>-->
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-<br><br><br><br><br><br><br><br><br>
 <footer class = "py-4 container-primary-green">
   <div class = "container">
     <div class="text-white text-center">

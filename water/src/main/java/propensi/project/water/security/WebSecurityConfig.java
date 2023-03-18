@@ -29,13 +29,18 @@ public class WebSecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
+                .antMatchers("/").permitAll()
                 .antMatchers("/css/**").permitAll()
                 .antMatchers("/js/**").permitAll()
-                .antMatchers("/login-admin", "/validate-ticket").permitAll()
+                .antMatchers("/images/**").permitAll()
+                .antMatchers("/script.js", "style.css").permitAll()
+                .antMatchers("/fragment.html", "fragment-transaksi.html").permitAll()
+                .antMatchers("/resources/**").permitAll()
+                .antMatchers("/login", "/validate-ticket").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
-                .loginPage("/login").permitAll()
+                .loginPage("/login").permitAll().successForwardUrl("/")
                 .and()
                 .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .logoutSuccessUrl("/login").permitAll();
