@@ -18,7 +18,7 @@ import java.io.Serializable;
 @Entity
 @Table(name = "user")
 @Inheritance(strategy = InheritanceType.JOINED)
-public class UserModel {
+public class UserModel implements Serializable {
 //    @Id
 //    @GeneratedValue(generator = "system-uuid")
 //    @GenericGenerator(name = "system-uuid", strategy = "uuid")
