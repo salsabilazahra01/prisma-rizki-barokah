@@ -24,14 +24,14 @@ public class JenisItemModel {
     @GeneratedValue(generator="system-uuid")
     @GenericGenerator(name="system-uuid", strategy="uuid")
     @Column(name = "id_jenis_item", nullable = false)
-    private Long idJenis;
+    private String idJenisItem;
 
     @NotNull
     @Size(max=50)
     @Column(name = "nama_jenis_item", nullable = false)
-    private String namaJenis;
+    private String namaJenisItem;
 
     // relasi dengan warehouse
     @OneToMany(mappedBy = "jenisItem", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<WarehouseModel> listNamaItem;
+    private List<WarehouseModel> listWarehouse;
 }

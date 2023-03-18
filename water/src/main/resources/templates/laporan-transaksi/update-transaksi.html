@@ -134,9 +134,9 @@
                             <!--Nominal-->
                             <div class="mt-5 mb-3">
                                 <label class="h5" for="nominal">Nominal Transaksi (Rupiah)<span th:if="${transaksi.proses}==2" class="text-danger"> *</span></label>
-                                <input th:if="${transaksi.proses == 2}" type="text" name="nominal" class="form-control" id="nominal" required="required" th:field="*{nominal}"/>
+                                <input th:if="${transaksi.proses == 2}" type="text" pattern="^[0-9]*$" name="nominal" class="form-control" id="nominal" required="required" th:field="*{nominal}"/>
                                 <div class="invalid-feedback">
-                                    Masukkan nominal transaksi
+                                    Masukkan nominal dalam bentuk angka
                                 </div>
                                 <input th:unless="${transaksi.proses == 2}" type="text" name="nominal" class="form-control text-dark" th:field="*{nominal}" readonly/>
                             </div>
@@ -222,6 +222,7 @@
         Array.prototype.slice.call(forms)
             .forEach(function (form) {
                 form.addEventListener('submit', function (event) {
+
                     if (!form.checkValidity()) {
                         event.preventDefault()
                         event.stopPropagation()
