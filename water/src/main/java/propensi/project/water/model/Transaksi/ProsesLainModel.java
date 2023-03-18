@@ -17,6 +17,11 @@ import javax.validation.constraints.NotNull;
 @Getter
 @NoArgsConstructor
 public class ProsesLainModel extends TransaksiModel{
+
+    @NotNull
+    @Column(name= "person", nullable=false)
+    private String person;
+
     @NotNull
     @Column(name= "nama_proses", nullable=false)
     private String namaProses;
