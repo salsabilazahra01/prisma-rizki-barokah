@@ -35,7 +35,6 @@ public class WebSecurityConfig {
                 .antMatchers("/images/**").permitAll()
                 .antMatchers("/script.js", "style.css").permitAll()
                 .antMatchers("/fragment.html", "fragment-transaksi.html").permitAll()
-                .antMatchers("/resources/**").permitAll()
                 .antMatchers("/login", "/validate-ticket").permitAll()
                 .anyRequest().authenticated()
                 .and()
