@@ -52,49 +52,51 @@
 <!--</div>-->
 <nav th:replace="fragments/fragment :: navbar('Home')"></nav>
 
-<div class = "container justify-content-center">
-    <div class = "row my-5">
-        <div class = "col">
-            <h1 class = "h2 text-center">Registrasi Sebagai</h1>
+<<<<<<< HEAD
+    <div class = "container justify-content-center">
+        <div class = "row my-5">
+            <div class = "col">
+                <h1 class = "h2 text-center">Registrasi Sebagai</h1>
+            </div>
+        </div>
+
+        <div class = "row gx-md-5">
+            <div class = "col-md-4">
+                <div class = "card-registrasi text-center">
+                    <img class = "card-img-top" src = "images/blog-1-img.jpg">
+                    <div class = "card-body p-4">
+                        <h3 class = "card-title h4">Donatur</h3>
+                        <p class = "card-text p3 p-2">This role allows you to donate your plastic waste and get points in return that can be exchanged for money or goods</p>
+                        <a type = "button" class = "btn-small btn-primary-green h5" th:href="@{/donatur/add}">Register as Donatur</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class = "col-md-4">
+                <div class = "card-registrasi text-center">
+                    <img class = "card-img-top" src = "images/blog-2-img.jpg">
+                    <div class = "card-body p-4">
+                        <h3 class = "card-title h4">Customer</h3>
+                        <p class = "card-text p3 p-2">This role allows you to buy our high quality plastic pellets</p>
+                        <a type = "button" class = "btn-small btn-primary-green h5" th:href="@{/customer/add}">Register as Customer</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class = "col-md-4">
+                <div class = "card-registrasi text-center">
+                    <img class = "card-img-top" src = "images/blog-1-img.jpg">
+                    <div class = "card-body p-4">
+                        <h3 class = "card-title h4">Partner</h3>
+                        <p class = "card-text p3 p-2">This role allows you to be our partner and sell your plastic waste to us with a great price</p>
+                        <a type = "button" class = "btn-small btn-primary-green h5" th:href="@{/partner/add}">Register as Partner</a>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 
-    <div class = "row gx-md-5">
-        <div class = "col-md-4">
-            <div class = "card-registrasi text-center">
-                <img class = "card-img-top" src = "images/blog-1-img.jpg">
-                <div class = "card-body p-4">
-                    <h3 class = "card-title h4">Donatur</h3>
-                    <p class = "card-text p3 p-2">This role allows you to donate your plastic waste and get points in return that can be exchanged for money or goods</p>
-                    <a type = "button" class = "btn-small btn-primary-green h5" th:href="@{/donatur/add}">Register as Donatur</a>
-                </div>
-            </div>
-        </div>
-
-        <div class = "col-md-4">
-            <div class = "card-registrasi text-center">
-                <img class = "card-img-top" src = "images/blog-2-img.jpg">
-                <div class = "card-body p-4">
-                    <h3 class = "card-title h4">Customer</h3>
-                    <p class = "card-text p3 p-2">This role allows you to buy our high quality plastic pellets</p>
-                    <a type = "button" class = "btn-small btn-primary-green h5" th:href="@{/customer/add}">Register as Customer</a>
-                </div>
-            </div>
-        </div>
-
-        <div class = "col-md-4">
-            <div class = "card-registrasi text-center">
-                <img class = "card-img-top" src = "images/blog-1-img.jpg">
-                <div class = "card-body p-4">
-                    <h3 class = "card-title h4">Partner</h3>
-                    <p class = "card-text p3 p-2">This role allows you to be our partner and sell your plastic waste to us with a great price</p>
-                    <a type = "button" class = "btn-small btn-primary-green h5" th:href="@{/partner/add}">Register as Partner</a>
-                </div>
-            </div>
-        </div>
-
-    </div>
-</div>
 
 <footer class = "py-4 container-primary-green mt-5">
     <div class = "container">

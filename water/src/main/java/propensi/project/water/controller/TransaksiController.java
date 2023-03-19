@@ -29,7 +29,7 @@ public class TransaksiController {
     }
 
     @PostMapping(value = "/add")
-    public String addTransaksiSubmit(@ModelAttribute ProsesLainModel transaksiManual, Model model){
+    public String addTransaksiSubmit(@ModelAttribute ProsesLainModel transaksiManual){
         transaksiService.addTransaksiManual(transaksiManual);
         return "redirect:/transaksi/viewall/semua";
     }
@@ -124,11 +124,7 @@ public class TransaksiController {
             Model model
     ) {
 
-        log.info(transaksi.getIdTransaksi());
-
         var updatedTransaksi = transaksiService.updateTransaksiSampahOlahan(transaksi);
-
-        log.info(updatedTransaksi.getIdTransaksi());
         model.addAttribute("transaksi", updatedTransaksi);
         redirectAttributes.addFlashAttribute("success","Transaksi berhasil diubah");
 

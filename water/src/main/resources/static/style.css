@@ -176,6 +176,104 @@ a {
     color: var(--grey-white) !important;
 }
 
+.viewall-wr{
+    padding-right: 6rem !important;
+    padding-left: 6rem !important;
+    padding-bottom: 3rem !important;
+}
+
+.card-wr{
+    background: var(--slimy-green);
+}
+
+.btn-red-danger{
+    background-color: var(--danger);
+    color: var(--white);
+}
+.btn-red-danger:hover{
+    color: var(--danger);
+    background: var(--white);
+    border-color: var(--danger);
+}
+.btn-red-danger:disabled, .btn-red-danger.disabled {
+    color: #fff;
+    background-color: #252525;
+    border-color: #252525;
+}
+
+.btn-small {
+    font-weight: bold;
+    border: 2px solid #fff;
+    border-radius: 1.5rem;
+    padding-block: 0.5rem;
+    padding-inline: 3rem;
+    font-size: 0.75rem;
+}
+
+.modal-wr{
+    border-radius: 25px;
+}
+
+.text-left{
+    text-align: left !important;
+}
+
+.p-5-title{
+    padding-top: 3rem !important;
+    padding-left: 3rem !important;
+    padding-right: 3rem !important;
+    padding-bottom: 1rem !important;
+}
+
+.nav-tabs>button.active,
+.nav-tabs>button.active:hover,
+.nav-tabs>button.active:focus {
+    color: #217D00;
+    cursor: default;
+    background-color: #fff;
+    font-weight: bold;
+    border: none;
+    border-bottom: 3px solid  #217D00;
+}
+
+.nav-tabs>button {
+    transition: none;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.nav-tabs>button:hover {
+    border: none;
+    border-bottom: 1px solid #dee2e6;
+    margin-bottom: 0px;
+    /* font-size: initial; */
+}
+
+
+.nav-link {
+    display: block;
+    padding: 0.5rem 1rem;
+    color:  #217D00;
+    text-decoration: none;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+}
+@media (prefers-reduced-motion: reduce) {
+    .nav-link {
+        transition: none;
+    }
+}
+.nav-link:hover, .nav-link:focus {
+    color:  #217D00;
+}
+
+.btn-outline-cancel {
+    color: #252525;
+    border-color: #252525;
+}
+.btn-outline-cancel:hover {
+    color: #fff;
+    background-color: #252525;
+    border-color: #252525;
+}
 /* modal */
 .modal-title{
     text-align: center;
@@ -190,6 +288,7 @@ input[type="radio"]:checked{
     background-color: var(--grey-white);
     border-color: var(--grey-white);
     /*color: var(--grey-white);*/
+>>>>>>> caf56b3374dbed3586f187f2b082937cb79bbb5b
 }
 .viewall-wr{
     padding-right: 6rem !important;

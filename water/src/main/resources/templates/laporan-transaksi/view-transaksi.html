@@ -99,9 +99,7 @@
                                         <h6 class="modal-title h6" id="exampleModalLabel">Hapus Transaksi</h6>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
-                                    <div class="modal-body p3">
-                                        Apakah Anda yakin ingin menghapus transaksi dengan ID SELLXXXX?
-                                    </div>
+                                    <div class="modal-body p3" th:text="'Apakah Anda yakin ingin menghapus transaksi dengan ID ' + ${transaksi.idTransaksi} + '?'"></div>
                                     <div class="modal-footer justify-content-center">
                                         <button type="button" class="btn-small btn-outline-raisin-black" data-bs-dismiss="modal">Cancel</button>
                                         <a type="button" class="btn-small btn-danger" th:href="@{/transaksi/delete/} + ${transaksi.idTransaksi}">Ya, hapus</a>
@@ -109,6 +107,8 @@
                                 </div>
                             </div>
                         </div>
+                        <!--end modal-->
+
                     </div>
                 </div>
             </div>
@@ -117,27 +117,8 @@
     </div>
 
 </div>
-<footer class = "py-4 container-primary-green">
-    <div class = "container">
-        <div class="text-white text-center">
-            <div>
-                <h2 class="h3 p-2">CV Prisma Rizki Barokah</h2>
-            </div>
-            <div>
-                <p class="p3">Kantor : Komp. Griya Serdang Indah Blok C9/7, Kramatwatu – Serang</p>
-            </div>
-            <div>
-                <p class="p3">Pabrik : Kavling Cipete Permai Kav N28-29, Desa Sukalaksana – Curug, Kota Serang</p>
-            </div>
-            <div>
-                <p><span class="bi-envelope px-2"></span>e-mail<span class="bi-telephone px-2"></span>telepon-number</p>
-            </div>
-            <div>
-                <p><span class="bi-c-circle"></span>CV Prisma Rizki Barokah</p>
-            </div>
-        </div>
-    </div>
-</footer>
+
+<footer th:replace="fragments/fragment :: footer"></footer>
 
 <footer th:replace="fragments/fragment :: footer"></footer>
 
