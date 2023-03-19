@@ -9,5 +9,6 @@ import java.util.Optional;
 @Repository
 public interface WarehouseDb extends JpaRepository<WarehouseModel, String> {
     Optional<WarehouseModel> findByIdItem(String idItem);
+    Optional<WarehouseModel> findByNamaItem(String namaItem);
 
 }

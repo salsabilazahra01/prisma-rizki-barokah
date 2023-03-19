@@ -28,8 +28,14 @@ public class WarehouseServiceImpl implements WarehouseService {
 
     @Override
     public WarehouseModel updateItem(WarehouseModel item){
-        warehouseDb.save(item);
-        return item;
+        WarehouseModel itemLama = getItemById(item.getIdItem());
+        itemLama.setJenisItem(item.getJenisItem());
+        itemLama.setNamaItem(item.getNamaItem());
+        itemLama.setHargaBeli(item.getHargaBeli());
+        itemLama.setKuantitasOlahan(item.getKuantitasOlahan());
+        itemLama.setKuantitasSampah(item.getKuantitasSampah());
+
+        return warehouseDb.save(itemLama);
     }
     @Override
     public void addItem(WarehouseModel item){
@@ -45,6 +51,12 @@ public class WarehouseServiceImpl implements WarehouseService {
     @Override
     public WarehouseModel getItemById(String idItem) {
         Optional<WarehouseModel> item = warehouseDb.findByIdItem(idItem);
+        return item.orElse(null);
+    }
+
+    @Override
+    public WarehouseModel getItemByNamaItem(String namaItem) {
+        Optional<WarehouseModel> item = warehouseDb.findByNamaItem(namaItem);
         return item.orElse(null);
     }
 
