@@ -34,7 +34,7 @@
                     Laporan<span class="sr-only">(current)</span>
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <li sec:authorize="hasAuthority('MANAJER') || hasAuthority('PEKERJA') || hasAuthority('SUPERVISOR') || hasAuthority('TEKNISI') || hasAuthority('ADMIN')"><a class="dropdown-item" th:href="@{/}">Laporan Warehousing</a></li>
+                    <li sec:authorize="hasAuthority('MANAJER') || hasAuthority('PEKERJA') || hasAuthority('SUPERVISOR') || hasAuthority('TEKNISI') || hasAuthority('ADMIN')"><a class="dropdown-item" th:href="@{/warehouse/laporan}">Laporan Warehousing</a></li>
                     <li sec:authorize="hasAuthority('MANAJER') || hasAuthority('SUPERVISOR') || hasAuthority('ADMIN')"><a class="dropdown-item" th:href="@{/transaksi/viewall/semua}">Laporan Transaksi Keuangan</a></li>
                     <li sec:authorize="hasAuthority('MANAJER') || hasAuthority('SUPERVISOR') || hasAuthority('ADMIN') || hasAuthority('PEKERJA') || hasAuthority('TEKNISI')"><a class="dropdown-item" th:href="@{/}">Pengolahan Sampah</a></li>
                 </ul>
@@ -58,7 +58,7 @@
                 </ul>
             </li>
             <li sec:authorize="hasAuthority('MANAJER') || hasAuthority('ADMIN')">
-                <a th:class="${#strings.equals(activeLink, 'Manajemen Karyawan')}  ? 'nav-link nav-underline active' : 'nav-link'" th:href="@{/}">Manajemen Karyawan<span class="sr-only">(current)</span></a>
+                <a th:class="${#strings.equals(activeLink, 'Manajemen User')}  ? 'nav-link nav-underline active' : 'nav-link'" th:href="@{/manajemen-user/viewall}">Manajemen User<span class="sr-only">(current)</span></a>
             </li>
 
             <li sec:authorize="hasAuthority('DONATUR')">
@@ -90,6 +90,29 @@
         </ul>
     </div>
 </nav>
+
+<div th:fragment="footer" align="center" class = "py-4 container-primary-green">
+    <div class = "container">
+        <div class="text-white text-center">
+            <div>
+                <h2 class="h3 p-2">CV Prisma Rizki Barokah</h2>
+            </div>
+            <div>
+                <p class="p3">Kantor : Komp. Griya Serdang Indah Blok C9/7, Kramatwatu – Serang</p>
+            </div>
+            <div>
+                <p class="p3">Pabrik : Kavling Cipete Permai Kav N28-29, Desa Sukalaksana – Curug, Kota Serang</p>
+            </div>
+            <div>
+                <p><span class="bi-envelope px-2"></span>e-mail<span class="bi-telephone px-2"></span>telepon-number</p>
+            </div>
+            <div>
+                <p><span class="bi-c-circle"></span>CV Prisma Rizki Barokah</p>
+            </div>
+        </div>
+    </div>
+</div>
+
     <script src = "bootstrap/js/bootstrap.js"></script>
     <script src="script.js"></script></body>
 </html>

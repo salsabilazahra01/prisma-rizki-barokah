@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Water</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Bootstrap css -->
+  <link rel = "stylesheet" href = "/bootstrap/css/bootstrap.css">
+  <link rel="stylesheet" href="/style.css">
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <!-- Bootstrap icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+</head>
+
+<body>
+<nav th:replace="fragments/fragment :: navbar('Manajemen User')"></nav>
+
+<div class="d-flex justify-content-center">
+
+  <div class="container my-5">
+
+    <!-- button & id -->
+    <div class="row my-3">
+      <p class="c3">
+        <a type="button" class="btn-small btn-outline-raisin-black h6 me-4" th:href="@{/manajemen-user/viewall/}"><i class="bi-chevron-left"></i>
+          Back
+        </a>
+        <text th:text="${user.username}" class="c2"></text>
+      </p>
+    </div>
+
+    <!-- alert -->
+    <div class="alert alert-success" role="alert" th:text="${success}" th:if="${success}"></div>
+
+    <!-- title -->
+    <div class="row mt-3 mb-4">
+      <h2 class="h2">Detail User</h2>
+    </div>
+
+    <!-- detail -->
+    <div class="card rounded-3 shadow-sm m-2 p-2">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-4 px-5">
+            <div class="mb-5 mt-3">
+              <p2 class="p2">Username</p2>
+              <h3 class="h4" th:text="'@'+${user.username}"></h3>
+            </div>
+            <div class="my-5">
+              <p2 class="p2">Nama</p2>
+              <h3 class="h4" th:text="${user.nama}"></h3>
+            </div>
+            <div th:if="${#strings.equals(user.role.toString(), 'PARTNER')}" >
+              <div class="my-5">
+                <p2 class="p2">Nama PIC</p2>
+                <h3 class="h4" th:text="${user.namaPic}"></h3>
+              </div>
+            </div>
+            <div th:if="${#strings.equals(user.role.toString(), 'CUSTOMER')}" >
+              <div class="my-5">
+                <p2 class="p2">Nama PIC</p2>
+                <h3 class="h4" th:text="${user.namaPic}"></h3>
+              </div>
+            </div>
+            <div th:if="${#strings.equals(user.role.toString(), 'DONATUR')}" >
+              <div class="my-5">
+                <p2 class="p2">Poin</p2>
+                <h3 class="h4" th:text="${user.poin.toString()}"></h3>
+              </div>
+            </div>
+          </div>
+          <div class="col-4 px-5">
+            <div class="mb-5 mt-3">
+              <p2 class="p2">Posisi</p2>
+              <h3 class="h4" th:text="${user.role}"></h3>
+            </div>
+            <div class="my-5">
+              <p2 class="p2">Kontak (Email/Nomor Telepon)</p2>
+              <h3 class="h4" th:text="${user.emailHp}"></h3>
+            </div>
+            <div th:if="${#strings.equals(user.role.toString(), 'PARTNER')}" >
+              <div class="my-5">
+                <p2 class="p2">Alamat</p2>
+                <h3 class="h4" th:text="${user.alamat}"></h3>
+              </div>
+            </div>
+            <div th:if="${#strings.equals(user.role.toString(), 'CUSTOMER')}" >
+              <div class="my-5">
+                <p2 class="p2">Alamat</p2>
+                <h3 class="h4" th:text="${user.alamat}"></h3>
+              </div>
+            </div>
+            <div th:if="${#strings.equals(user.role.toString(), 'DONATUR')}" >
+              <div class="my-5">
+                <p2 class="p2">Alamat</p2>
+                <h3 class="h4" th:text="${user.alamat}"></h3>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div th:if="${#strings.equals(user.role.toString(), 'MANAJER') or #strings.equals(user.role.toString(), 'SUPERVISOR') or #strings.equals(user.role.toString(), 'PEKERJA') or #strings.equals(user.role.toString(), 'TEKNISI')}">
+          <div class="row flex-row-reverse text-end">
+            <div class="col-4">
+              <a type="button" class="mx-2 btn-small btn-primary-green" th:href="@{/manajemen-user/update(username=${user.username})}">Update</a>
+
+              <button type="button" class="mx-2 btn-small btn-danger"  data-bs-toggle="modal" data-bs-target="#deleteKaryawan">
+                Delete
+              </button>
+
+              <!-- Modal -->
+              <div class="modal fade" id="deleteKaryawan" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered text-center justify-content-center">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h6 class="modal-title h6" id="exampleModalLabel">Hapus Karyawan</h6>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body p3" th:text="'Apakah Anda yakin ingin menghapus karyawan dengan Username ' + ${user.username} + ' ?'"></div>
+                    <div class="modal-footer justify-content-center">
+                      <button type="button" class="btn-small btn-outline-raisin-black" data-bs-dismiss="modal">Cancel</button>
+                      <a type="button" class="btn-small btn-danger" th:href="@{/manajemen-user/delete/} + ${user.username}">Ya, hapus</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!--end modal-->
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<script src = "/bootstrap/js/bootstrap.js"></script>
+<script src="/script.js"></script>
+
+</body>
+</html>
