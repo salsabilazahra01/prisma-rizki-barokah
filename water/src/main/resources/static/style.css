@@ -290,6 +290,22 @@ input[type="radio"]:checked{
     border-color: #252525;
 }
 
+/* modal */
+.modal-title{
+    text-align: center;
+}
+
+/* radio button */
+input[type="radio"]:checked{
+    background-color: var(--yellow-sun);
+    border-color: var(--yellow-sun);
+}
+.disabled input[type="radio"]:checked{
+    background-color: var(--grey-white);
+    border-color: var(--grey-white);
+    /*color: var(--grey-white);*/
+}
+
 /*!* misc stylings *!*/
 /*ul li{*/
 /*    list-style-type: none;*/

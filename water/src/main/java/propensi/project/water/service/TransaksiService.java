@@ -9,6 +9,12 @@ import java.util.List;
 
 public interface TransaksiService {
 
+    // add transaksi automatically (integrated with other features)
+    void addTransaksi(TransaksiModel transaksi);
+
+    // add transaksi manually
+    void addTransaksiManual(ProsesLainModel transaksiManual);
+
     // retrieve data
     List<TransaksiModel> retrieveAllTransaksi();
     List<TransaksiModel> retrieveAllTransaksi(Boolean jenis);

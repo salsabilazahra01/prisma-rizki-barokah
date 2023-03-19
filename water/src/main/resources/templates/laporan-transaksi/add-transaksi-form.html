@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Water</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap css -->
+    <link rel = "stylesheet" href = "/../bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="/../style.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Bootstrap icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+
+</head>
+<body>
+<nav th:replace="fragments/fragment :: navbar('Laporan')"></nav>
+
+<section id = "sec-artikel" class = "py-5 mt-2" >
+    <div class = "container my-2">
+        <div class = "row">
+            <div class="col">
+                <a type="button" class = "btn-small btn-outline-raisin-black h6 me-4" th:href="@{/transaksi/viewall/semua}">
+                    <i class="bi bi-chevron-left me-1"></i>
+                    Back
+                </a>
+            </div>
+        </div>
+        <div class = "row">
+            <div class="col m-3">
+                <h1 class = "h1 text-raisin-black">Tambah Transaksi Manual</h1>
+            </div>
+        </div>
+    </div>
+
+    <form th:action="@{/transaksi/add}" th:object="${transaksi}" method="POST">
+        <input type="hidden" th:field="*{proses}"/>
+        <div class="container my-2">
+        <div class = "card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col">
+                        <div class="row gy-4 my-2">
+                            <div class="form-group">
+                                <label class="h5">Pihak Terkait<span class="text-danger"> *</span></label>
+                                <input required type="text" class="form-control p2" th:field="*{person}">
+                                <small id="pihakTerkaitHelp" class="form-text text-muted">Isi dengan nama pihak yang terkait dengan transaksi ini
+                                    (bisa berupa perusahaan atau perseorangan)</small>
+                                <div class="invalid-feedback">
+                                Masukkan sumber transaksi
+                            </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="h5">Tanggal Transaksi<span class="text-danger"> *</span></label>
+                                <input required type="datetime-local" class="form-control p2" th:field="*{tanggalTransaksi}"><div class="invalid-feedback">
+                                Masukkan tanggal transaksi
+                            </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="h5">Sumber<span class="text-danger"> *</span></label>
+                                <input required type="text" class="form-control p2" th:field="*{namaProses}">
+                                <div class="invalid-feedback">
+                                    Masukkan sumber transaksi
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="row gy-4 my-2">
+                            <div class="row mb-0 gy-1">
+                                <label class="h5">Jenis Transaksi <span class="text-danger"> *</span></label>
+                                <div class="form-group">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="jenis" id="pendapatan" value="0" th:field="*{jenisTransaksi}">
+                                        <label class="form-check-label" for="pendapatan"> Pendapatan </label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="jenis" id="pengeluaran" value="1" th:field="*{jenisTransaksi}">
+                                        <label class="form-check-label" for="pengeluaran"> Pengeluaran </label>
+                                    </div>
+                                    <div class="invalid-feedback">
+                                        Pilih jenis transaksi
+                                    </div>
+                            </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="h5">Nominal Transaksi (Rupiah)<span class="text-danger"> *</span></label>
+                                <input required type="number" class="form-control p2" th:field="*{nominal}" placeholder="ex: 1000000">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="h5">Keterangan</label>
+                                <textarea class="form-control" th:field="*{keterangan}" rows="3"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container text-center py-2 mb-2">
+                <button class="btn btn-primary-green" type="submit" name="save">Submit</button>
+            </div>
+        </div>
+    </div>
+    </form>
+
+</section>
+
+<footer th:replace="fragments/fragment :: footer"></footer>
+
+<script src = "/bootstrap/js/bootstrap.js"></script>
+<script src="/script.js"></script>
+
+</body>
+</html>

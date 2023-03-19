@@ -6,27 +6,40 @@ import propensi.project.water.model.Transaksi.ProsesLainModel;
 import propensi.project.water.model.Transaksi.ProsesPenawaranOlahanModel;
 import propensi.project.water.model.Transaksi.ProsesPenawaranSampahModel;
 import propensi.project.water.model.Transaksi.TransaksiModel;
-import propensi.project.water.repository.TransaksiDb.ProsesLainDb;
 import propensi.project.water.repository.TransaksiDb.ProsesPenawaranOlahanDb;
 import propensi.project.water.repository.TransaksiDb.ProsesPenawaranSampahDb;
 import propensi.project.water.repository.TransaksiDb.TransaksiDb;
+import propensi.project.water.repository.TransaksiDb.ProsesLainDb;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 @Transactional
-public class TransaksiServiceImpl implements TransaksiService {
+public class TransaksiServiceImpl implements TransaksiService{
     @Autowired
     private TransaksiDb transaksiDb;
-    @Autowired
-    private ProsesPenawaranSampahDb prosesPenawaranSampahDb;
-    @Autowired
-    private ProsesPenawaranOlahanDb prosesPenawaranOlahanDb;
 
     @Autowired
     private ProsesLainDb prosesLainDb;
+
+    @Autowired
+    private ProsesPenawaranSampahDb prosesPenawaranSampahDb;
+
+    @Autowired
+    private ProsesPenawaranOlahanDb prosesPenawaranOlahanDb;
+
+    @Override
+    public void addTransaksi(TransaksiModel transaksi) {
+        transaksiDb.save(transaksi);
+    }
+
+    @Override
+    public void addTransaksiManual (ProsesLainModel transaksiManual) {
+        prosesLainDb.save(transaksiManual);
+    }
 
     @Override
     public List<TransaksiModel> retrieveAllTransaksi(){

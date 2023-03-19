@@ -20,6 +20,20 @@ public class TransaksiController {
     @Autowired
     private TransaksiService transaksiService;
 
+    @GetMapping("/add")
+    public String addTransaksiForm(Model model){
+        ProsesLainModel transaksiManual = new ProsesLainModel();
+        transaksiManual.setProses(2);
+        model.addAttribute("transaksi", transaksiManual);
+        return "laporan-transaksi/add-transaksi-form";
+    }
+
+    @PostMapping(value = "/add")
+    public String addTransaksiSubmit(@ModelAttribute ProsesLainModel transaksiManual, Model model){
+        transaksiService.addTransaksiManual(transaksiManual);
+        return "redirect:/transaksi/viewall/semua";
+    }
+
     @GetMapping(value="/viewall/{jenis}")
     private String viewAllTransaksi(Model model,
                                     @PathVariable(name="jenis") String jenis) {
@@ -72,7 +86,7 @@ public class TransaksiController {
 
     @GetMapping(value = "/delete/{idTransaksi}")
     private String deleteTransaksiProsesLain(@PathVariable String idTransaksi,
-                                   RedirectAttributes redirectAttrs){
+                                             RedirectAttributes redirectAttrs){
 
         TransaksiModel transaksi = transaksiService.retrieveTransaksiById(idTransaksi);
         transaksiService.delete(transaksi);
