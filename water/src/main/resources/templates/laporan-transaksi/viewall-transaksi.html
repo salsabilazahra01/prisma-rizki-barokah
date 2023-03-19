@@ -49,12 +49,12 @@
                         <h3 class="h4" th:text="'Rp ' + ${total} + ',00'"></h3>
                     </div>
                     <div class="col text-end">
-                        <button type = "button" class = "btn-small btn-outline-primary-green h6 mt-4">
+                        <a type = "button" class = "btn-small btn-outline-primary-green h6 mt-4" th:href="@{/transaksi/add}">
                             <span class="bi-plus"></span> Tambah Transaksi Baru
-                        </button>
-                        <button type = "button" class = "btn-small btn-primary-green h6 mt-4">
-                            Filter <span class="bi-filter-right"></span>
-                        </button>
+                        </a>
+<!--                        <button type = "button" class = "btn-small btn-primary-green h6 mt-4">-->
+<!--                            Filter <span class="bi-filter-right"></span>-->
+<!--                        </button>-->
                     </div>
                 </div>
                 <br>
