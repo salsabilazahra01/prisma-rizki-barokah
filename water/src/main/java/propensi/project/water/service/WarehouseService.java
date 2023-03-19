@@ -10,4 +10,5 @@ public interface WarehouseService {
     void addItem(WarehouseModel item);
     void deleteItem(WarehouseModel item);
     WarehouseModel getItemById(String idItem);
+    WarehouseModel getItemByNamaItem(String namaItem);
 }

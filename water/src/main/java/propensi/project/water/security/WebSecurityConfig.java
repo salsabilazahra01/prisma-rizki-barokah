@@ -40,6 +40,7 @@ public class WebSecurityConfig {
                 .antMatchers("/customer/add").permitAll()
                 .antMatchers("/donatur/add").permitAll()
                 .antMatchers("/partner/add").permitAll()
+                .antMatchers("/warehouse/laporan").hasAnyAuthority("ADMIN", "MANAJER","SUPERVISOR","TEKNISI","PEKERJA")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()

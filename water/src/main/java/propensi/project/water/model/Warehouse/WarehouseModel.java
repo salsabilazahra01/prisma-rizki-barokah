@@ -48,7 +48,7 @@ public class WarehouseModel implements Serializable {
 
     // relasi dengan jenis item
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "nama_jenis_item", referencedColumnName = "nama_jenis_item", nullable = false)
+    @JoinColumn(name = "id_jenis", referencedColumnName = "id_jenis_item", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private JenisItemModel jenisItem;
 

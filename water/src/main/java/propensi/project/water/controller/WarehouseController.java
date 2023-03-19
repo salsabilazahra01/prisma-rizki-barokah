@@ -33,10 +33,25 @@ public class WarehouseController {
 
     @PostMapping("/warehouse/update")
     public String updateItem(@ModelAttribute WarehouseModel item, Model model, RedirectAttributes redirectAttrs){
-        warehouseService.updateItem(item);
+        WarehouseModel itemLama = warehouseService.getItemById(item.getIdItem());
+        String namaItemLama = itemLama.getNamaItem();
         String namaItem = item.getNamaItem();
-        redirectAttrs.addFlashAttribute("successUpdate",
-                String.format("Item %s sudah berhasil diperbarui", namaItem ));
+        WarehouseModel cariModel = warehouseService.getItemByNamaItem(namaItem);
+        if(namaItemLama.equals(namaItem)){
+            warehouseService.updateItem(item);
+            redirectAttrs.addFlashAttribute("successUpdate",
+                    String.format("Item %s sudah berhasil diperbarui", namaItem ));
+        }else{
+            if(cariModel == null){
+                warehouseService.updateItem(item);
+                redirectAttrs.addFlashAttribute("successUpdate",
+                        String.format("Item %s sudah berhasil diperbarui", namaItem ));
+            }else{
+                redirectAttrs.addFlashAttribute("failedUpdate",
+                        String.format("Item %s tidak dapat diperbarui. Item sudah terdaftar dalam warehouse", namaItem ));
+            }
+        }
+
         return "redirect:/warehouse/laporan";
     }
 
@@ -49,10 +64,16 @@ public class WarehouseController {
 
     @PostMapping("/warehouse/add")
     public String addItem(@ModelAttribute WarehouseModel item, Model model, RedirectAttributes redirectAttrs){
-        warehouseService.addItem(item);
         String namaItem = item.getNamaItem();
-        redirectAttrs.addFlashAttribute("successAdd",
-                String.format("Item %s sudah berhasil dibuat", namaItem ));
+        WarehouseModel cariModel = warehouseService.getItemByNamaItem(namaItem);
+        if(cariModel == null){
+            warehouseService.addItem(item);
+            redirectAttrs.addFlashAttribute("successAdd",
+                    String.format("Item %s sudah berhasil dibuat", namaItem ));
+        }else{
+            redirectAttrs.addFlashAttribute("failedAdd",
+                    String.format("Item %s tidak dapat dibuat. Item sudah terdaftar dalam warehouse", namaItem ));
+        }
         return "redirect:/warehouse/laporan";
     }
 
