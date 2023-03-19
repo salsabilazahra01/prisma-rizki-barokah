@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://thymeleaf.org">
+<html lang="en" xmlns:th="http://thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 <nav th:fragment="navbar(activeLink)" class="navbar navbar-expand-lg navbar-light shadow-sm fixed-top">
     <div class="container-fluid" id="navbarsExampleDefault">
@@ -20,76 +21,72 @@
             <li>
                 <a th:class="${#strings.equals(activeLink, 'Home')}  ? 'nav-link nav-underline active' : 'nav-link'" th:href="@{/}">Home<span class="sr-only">(current)</span></a>
             </li>
-            <li>
+            <li sec:authorize="!hasAuthority('PEKERJA') || !hasAuthority('TEKNISI')">
                 <a th:class="${#strings.equals(activeLink, 'Artikel')}  ? 'nav-link nav-underline active' : 'nav-link'" th:href="@{/}">Artikel<span class="sr-only">(current)</span></a>
             </li>
-            <li>
+            <li sec:authorize="!hasAuthority('PEKERJA') || !hasAuthority('TEKNISI')">
                 <a th:class="${#strings.equals(activeLink, 'About Us')}  ? 'nav-link nav-underline active' : 'nav-link'" th:href="@{/}">About Us<span class="sr-only">(current)</span></a>
             </li>
 
             <!-- internal -->
-            <li class="nav-item dropdown">
+            <li class="nav-item dropdown" sec:authorize="hasAuthority('MANAJER') || hasAuthority('PEKERJA') || hasAuthority('SUPERVISOR') || hasAuthority('TEKNISI') || hasAuthority('ADMIN')">
                 <a th:class="${#strings.equals(activeLink, 'Laporan')}  ? 'nav-link nav-underline active dropdown-toggle' : 'nav-link dropdown-toggle'" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     Laporan<span class="sr-only">(current)</span>
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <li><a class="dropdown-item" th:href="@{/}">Laporan Warehousing</a></li>
-                    <li><a class="dropdown-item" th:href="@{/transaksi/viewall/semua}">Laporan Transaksi Keuangan</a></li>
-                    <li><a class="dropdown-item" th:href="@{/}">Pengolahan Sampah</a></li>
+                    <li sec:authorize="hasAuthority('MANAJER') || hasAuthority('PEKERJA') || hasAuthority('SUPERVISOR') || hasAuthority('TEKNISI') || hasAuthority('ADMIN')"><a class="dropdown-item" th:href="@{/}">Laporan Warehousing</a></li>
+                    <li sec:authorize="hasAuthority('MANAJER') || hasAuthority('SUPERVISOR') || hasAuthority('ADMIN')"><a class="dropdown-item" th:href="@{/transaksi/viewall/semua}">Laporan Transaksi Keuangan</a></li>
+                    <li sec:authorize="hasAuthority('MANAJER') || hasAuthority('SUPERVISOR') || hasAuthority('ADMIN') || hasAuthority('PEKERJA') || hasAuthority('TEKNISI')"><a class="dropdown-item" th:href="@{/}">Pengolahan Sampah</a></li>
                 </ul>
             </li>
-            <li class="nav-item dropdown">
+            <li class="nav-item dropdown" sec:authorize="hasAuthority('MANAJER') || hasAuthority('SUPERVISOR') || hasAuthority('ADMIN')">
                 <a th:class="${#strings.equals(activeLink, 'Pembelian dan Penjualan')}  ? 'nav-link nav-underline active dropdown-toggle' : 'nav-link dropdown-toggle'" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     Pembelian dan Penjualan<span class="sr-only">(current)</span>
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <li><a class="dropdown-item" th:href="@{/}">Pembelian Sampah</a></li>
-                    <li><a class="dropdown-item" th:href="@{/}">Penjualan Hasil Olahan</a></li>
+                    <li sec:authorize="hasAuthority('MANAJER') || hasAuthority('SUPERVISOR') || hasAuthority('ADMIN')"><a class="dropdown-item" th:href="@{/}">Pembelian Sampah</a></li>
+                    <li sec:authorize="hasAuthority('MANAJER') || hasAuthority('SUPERVISOR') || hasAuthority('ADMIN')"><a class="dropdown-item" th:href="@{/}">Penjualan Hasil Olahan</a></li>
                 </ul>
             </li>
-            <li class="nav-item dropdown">
+            <li class="nav-item dropdown" sec:authorize="hasAuthority('MANAJER') || hasAuthority('SUPERVISOR') || hasAuthority('ADMIN')">
                 <a th:class="${#strings.equals(activeLink, 'Donasi Sampah')}  ? 'nav-link nav-underline active dropdown-toggle' : 'nav-link dropdown-toggle'" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     Donasi Sampah<span class="sr-only">(current)</span>
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <li><a class="dropdown-item" th:href="@{/}">Daftar Donasi Sampah</a></li>
-                    <li><a class="dropdown-item" th:href="@{/}">Penukaran Poin</a></li>
+                    <li sec:authorize="hasAuthority('MANAJER') || hasAuthority('SUPERVISOR') || hasAuthority('ADMIN')"><a class="dropdown-item" th:href="@{/}">Daftar Donasi Sampah</a></li>
+                    <li sec:authorize="hasAuthority('MANAJER') || hasAuthority('SUPERVISOR') || hasAuthority('ADMIN')"><a class="dropdown-item" th:href="@{/}">Penukaran Poin</a></li>
                 </ul>
             </li>
-            <li>
+            <li sec:authorize="hasAuthority('MANAJER') || hasAuthority('ADMIN')">
                 <a th:class="${#strings.equals(activeLink, 'Manajemen Karyawan')}  ? 'nav-link nav-underline active' : 'nav-link'" th:href="@{/}">Manajemen Karyawan<span class="sr-only">(current)</span></a>
             </li>
 
-            <!--donatur-->
-<!--            <li>-->
-<!--                <a th:class="${#strings.equals(activeLink, 'Buat Donasi')}  ? 'nav-link nav-underline active' : 'nav-link'" th:href="@{/}">Buat Donasi<span class="sr-only">(current)</span></a>-->
-<!--            </li>-->
-<!--            <li>-->
-<!--                <a th:class="${#strings.equals(activeLink, 'Riwayat Donasi')}  ? 'nav-link nav-underline active' : 'nav-link'" th:href="@{/}">Riwayat Donasi<span class="sr-only">(current)</span></a>-->
-<!--            </li>-->
+            <li sec:authorize="hasAuthority('DONATUR')">
+                <a th:class="${#strings.equals(activeLink, 'Buat Donasi')}  ? 'nav-link nav-underline active' : 'nav-link'" th:href="@{/}">Buat Donasi<span class="sr-only">(current)</span></a>
+            </li>
+            <li sec:authorize="hasAuthority('DONATUR')">
+                <a th:class="${#strings.equals(activeLink, 'Riwayat Donasi')}  ? 'nav-link nav-underline active' : 'nav-link'" th:href="@{/}">Riwayat Donasi<span class="sr-only">(current)</span></a>
+            </li>
 
-            <!--partner-->
-<!--            <li>-->
-<!--                <a th:class="${#strings.equals(activeLink, 'Jual Sampah')}  ? 'nav-link nav-underline active' : 'nav-link'" th:href="@{/}">Jual Sampah<span class="sr-only">(current)</span></a>-->
-<!--            </li>-->
-<!--            <li>-->
-<!--                <a th:class="${#strings.equals(activeLink, 'Riwayat Penjualan')}  ? 'nav-link nav-underline active' : 'nav-link'" th:href="@{/}">Riwayat Penjualan<span class="sr-only">(current)</span></a>-->
-<!--            </li>-->
+            <li sec:authorize="hasAuthority('PARTNER')">
+                <a th:class="${#strings.equals(activeLink, 'Jual Sampah')}  ? 'nav-link nav-underline active' : 'nav-link'" th:href="@{/}">Jual Sampah<span class="sr-only">(current)</span></a>
+            </li>
+            <li sec:authorize="hasAuthority('PARTNER')">
+                <a th:class="${#strings.equals(activeLink, 'Riwayat Penjualan')}  ? 'nav-link nav-underline active' : 'nav-link'" th:href="@{/}">Riwayat Penjualan<span class="sr-only">(current)</span></a>
+            </li>
 
-            <!--customer-->
-<!--            <li>-->
-<!--                <a th:class="${#strings.equals(activeLink, 'Beli Hasil Olahan')}  ? 'nav-link nav-underline active' : 'nav-link'" th:href="@{/}">Beli Hasil Olahan<span class="sr-only">(current)</span></a>-->
-<!--            </li>-->
-<!--            <li>-->
-<!--                <a th:class="${#strings.equals(activeLink, 'Riwayat Hasil Olahan')}  ? 'nav-link nav-underline active' : 'nav-link'" th:href="@{/}">Riwayat Pembelian<span class="sr-only">(current)</span></a>-->
-<!--            </li>-->
+            <li sec:authorize="hasAuthority('CUSTOMER')">
+                <a th:class="${#strings.equals(activeLink, 'Beli Hasil Olahan')}  ? 'nav-link nav-underline active' : 'nav-link'" th:href="@{/}">Beli Hasil Olahan<span class="sr-only">(current)</span></a>
+            </li>
+            <li sec:authorize="hasAuthority('CUSTOMER')">
+                <a th:class="${#strings.equals(activeLink, 'Riwayat Hasil Olahan')}  ? 'nav-link nav-underline active' : 'nav-link'" th:href="@{/}">Riwayat Pembelian<span class="sr-only">(current)</span></a>
+            </li>
         </ul>
 
         <ul class="navbar-nav pull-right mr-sm-2">
-            <!--donatur-->
-<!--            <a th:href="@{/}" class="btn btn-yellow-sun text-dark mx-2"><span class="px-2">10.000 Points</span></a>-->
-            <a th:href="@{/login}" class="btn btn-primary-green mx-2">Login</a>
-            <a th:href="@{/logout}" class="btn btn-primary-green mx-2">Logout</a>
+            <a th:href="@{/}" class="btn btn-yellow-sun text-dark mx-2" sec:authorize="hasAuthority('DONATUR')"><span class="px-2">10.000 Points</span></a>
+            <a th:href="@{/login}" class="btn btn-primary-green mx-2" sec:authorize="isAnonymous()">Login</a>
+            <a th:href="@{/logout}" class="btn btn-danger mx-2" sec:authorize="isAuthenticated()">Logout</a>
         </ul>
     </div>
 </nav>

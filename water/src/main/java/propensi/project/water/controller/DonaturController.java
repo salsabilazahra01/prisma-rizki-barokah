@@ -35,7 +35,7 @@ public class DonaturController {
     public String addDonaturForm(Model model) {
         model.addAttribute("donatur", new DonaturModel());
 
-        return "form-add-donatur";
+        return "donatur/form-add-donatur";
     }
 
     @PostMapping(value = "/add")

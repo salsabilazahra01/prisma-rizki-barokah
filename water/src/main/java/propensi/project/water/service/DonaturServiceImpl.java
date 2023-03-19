@@ -23,6 +23,7 @@ public class DonaturServiceImpl implements DonaturService {
     @Override
     public void addDonatur(DonaturModel donatur) {
         donatur.setPassword(encrypt(donatur.getPassword()));
+        donatur.setPoin(0);
         donaturDb.save(donatur);
     }
 
