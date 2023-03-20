@@ -9,8 +9,6 @@ public interface MengelolaKaryawanService {
 
     void addKaryawan(UserModel user);
 
-    public String encrypt(String password);
-
     public boolean uniqueValueConstraint(UserModel user);
 
     public boolean uniqueValueConstraintUpdate(UserModel user);
@@ -22,5 +20,9 @@ public interface MengelolaKaryawanService {
     void updateUser(UserModel user);
 
     void deleteUser(UserModel user);
+
+    UserModel getUserByKontak(String kontak);
+
+
 
 }

@@ -4,7 +4,7 @@ package propensi.project.water.service;
 
 import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import propensi.project.water.model.User.UserModel;
 import propensi.project.water.repository.User.UserDb;
@@ -21,19 +21,15 @@ public class MengelolaKaryawanServiceImpl implements MengelolaKaryawanService{
     @Autowired
     private UserDb userDb;
 
-    @Override
-    public void addKaryawan(UserModel user) {
-        String pass = encrypt(user.getPassword());
-        user.setPassword(pass);
-        userDb.save(user);
-    }
+    @Qualifier("userServiceImpl")
+    @Autowired
+    private UserService userService;
 
     @Override
-    public String encrypt(String password) {
-//        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-//        String hashedPassword = passwordEncoder.encode(password);
-//        return hashedPassword;
-        return password;
+    public void addKaryawan(UserModel user) {
+        String pass = userService.encrypt(user.getPassword());
+        user.setPassword(pass);
+        userDb.save(user);
     }
 
     @Override
@@ -41,19 +37,6 @@ public class MengelolaKaryawanServiceImpl implements MengelolaKaryawanService{
         Optional<UserModel> uniqueUsername =  userDb.findByUsername(user.getUsername());
         Optional<UserModel> uniqueEmail = userDb.findByEmailHp(user.getEmailHp());
         if (uniqueUsername.isPresent() || uniqueEmail.isPresent()) {
-            return true;
-        } return false;
-    }
-
-    @Override
-    public boolean uniqueValueConstraintUpdate(UserModel user) {
-        String currentEmail = userDb.findByUsername(user.getUsername())
-                                    .orElseThrow(() -> new UsernameNotFoundException("User not found"))
-                                    .getEmailHp();
-        Optional<UserModel> uniqueEmail = userDb.findByEmailHp(user.getEmailHp());
-
-
-        if (uniqueEmail.isPresent() && (!uniqueEmail.equals(currentEmail))){
             return true;
         } return false;
     }
@@ -97,20 +80,57 @@ public class MengelolaKaryawanServiceImpl implements MengelolaKaryawanService{
 
     @Override
     public UserModel retrieveUserDetail(String username) {
-        return userDb.findByUsername(username)
-                        .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        return userDb.findByUsername(username).orElse(null);
     }
 
     @Override
     public void updateUser(UserModel user) {
-        UserModel updatedUser = retrieveUserDetail(user.getUsername());
-        updatedUser.setNama(user.getNama());
-        updatedUser.setEmailHp(user.getEmailHp());
-        updatedUser.setRole(user.getRole());
+        UserModel userLama = userDb.findByUsername(user.getUsername()).orElse(null);
+        userLama.setNama(user.getNama());
+        userLama.setRole(user.getRole());
+        userLama.setEmailHp(user.getEmailHp());
+        userDb.save(userLama);
+    }
+
+    private UserModel getByEmailHp(UserModel user) {
+        return userDb.findByEmailHp(user.getEmailHp()).orElse(null);
+    }
+
+    @Override
+    public boolean uniqueValueConstraintUpdate(UserModel user) {
+        UserModel karyawanLama = retrieveUserDetail(user.getUsername());
+        String kontakKaryawanLama = karyawanLama.getEmailHp();
+        String kontakKaryawanUpdated = user.getEmailHp();
+        UserModel cariKaryawan = getByEmailHp(user);
+
+        // case kontak unchanged
+        if(kontakKaryawanLama.equals(kontakKaryawanUpdated)){
+            updateUser(user);
+            return true;
+        }
+        // case kontak changed
+        else{
+            // new kontak is unique
+            if(cariKaryawan == null){
+                updateUser(user);
+                return true;
+            }
+            // new kontak is not unique
+            else{
+                System.out.println("masuk di false service");
+                return false;
+            }
+        }
     }
 
     @Override
     public void deleteUser(UserModel user) {
         userDb.delete(user);
+    }
+
+    @Override
+    public UserModel getUserByKontak(String kontak) {
+        Optional<UserModel> user =  userDb.findByEmailHp(kontak);
+        return user.orElse(null);
     }
 }
