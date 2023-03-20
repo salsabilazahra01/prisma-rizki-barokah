@@ -5,8 +5,12 @@
 <nav th:replace="fragments/fragment :: navbar('Laporan')"></nav>
 
 <div class="container mt-5">
+  <div class="alert alert-danger" role="alert" th:text="${errorKuantitas}" th:if="${errorKuantitas}"></div>
+  <div class="alert alert-danger" role="alert" th:text="${errorMessage}" th:if="${errorMessage}"></div>
+  <div class="alert alert-success" role="alert" th:text="${successMessage}" th:if="${successMessage}"></div>
 
   <h2 class="h2">Buat laporan sampah terolah</h2>
+
   <div class="card px-4 py-2" style="border-radius: 25px;">
     <div class="card-body">
       <form th:action="@{/pengolahan-sampah/save}" method="post" class="d-flex flex-row justify-content-between align-items-center">
@@ -15,14 +19,20 @@
           <label for="warehouse-select" class="mr-2">Jenis Sampah<span class="text-danger">*</span></label>
           <select class="form-control" id="warehouse-select" name="warehouseId" required>
             <option value="">Pilih jenis sampah</option>
-            <option th:each="warehouse : ${warehouses}"
-                    th:value="${warehouse.idItem}"
-                    th:text="${warehouse.namaItem}"></option>
+            <div>
+              <option th:each="warehouse : ${warehouses}"
+                      th:value="${warehouse.idItem}"
+                      th:text="${warehouse.namaItem}">
+                <div th:with="kuantitasMax=${warehouse.idItem.kuantitasSampah}"></div>
+              </option>
+            </div>
+
+
           </select>
         </div>
         <div class="form-group w-full mr-2">
           <label for="kuantitas-sampah" class="mr-2">Kuantitas Sampah (dalam kg)<span class="text-danger">*</span></span></label>
-          <input type="number" name="kuantitasBahanBaku" class="form-control" id="kuantitas-sampah" required>
+          <input type="number" name="kuantitasBahanBaku" class="form-control" id="kuantitas-sampah" min=0 max="kuantitasMax" required>
         </div>
         <div class="d-block flex-shrink-1">
           <button type="submit" class="mx-2 btn-small btn-primary-green h6"><i class="bi bi-plus"></i></button>

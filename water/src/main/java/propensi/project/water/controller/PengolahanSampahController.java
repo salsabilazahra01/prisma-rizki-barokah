@@ -61,10 +61,17 @@ public class PengolahanSampahController {
     }
 
     @PostMapping("/{batchModel}")
-    public String appendBatchDetail(@PathVariable("batchModel") BatchModel batchModel, Model model,
-    RedirectAttributes redirectAttributes) {
+    public String appendBatchDetail(@PathVariable("batchModel") BatchModel batchModel,
+                                    Model model,
+                                    @ModelAttribute BatchModel batch,
+                                    RedirectAttributes redirectAttributes) {
         batchModel.setStatus(batchModel.getStatus()+1);
         batchService.update(batchModel);
+        if (batchModel.getStatus()==4) {
+            Integer kuantitasOlahanBaru = batchModel.getWarehouse().getKuantitasOlahan() + batch.getKuantitasHasil();
+            batchModel.getWarehouse().setKuantitasOlahan(kuantitasOlahanBaru);
+            warehouseService.updateItem(batchModel.getWarehouse());
+        }
         redirectAttributes.addFlashAttribute("message", "Batch detail updated successfully.");
         return "redirect:/pengolahan-sampah/" + batchModel.getIdBatch();
     }
@@ -74,15 +81,23 @@ public class PengolahanSampahController {
                             @RequestParam("kuantitasBahanBaku") Integer kuantitasBahanBaku,
                             RedirectAttributes redirectAttributes) {
         try {
-            BatchModel batchModel = new BatchModel();
-            batchModel.setWarehouse(warehouse);
-            batchModel.setKuantitasBahanBaku(kuantitasBahanBaku);
-            batchModel.setStatus(1);
-            batchModel.setTanggalDibuat(LocalDateTime.now());
-            batchModel.setKuantitasHasil(0);
-            // save batch
-            batchService.add(batchModel);
-            redirectAttributes.addFlashAttribute("successMessage", "Batch berhasil dibuat");
+            if (kuantitasBahanBaku>warehouse.getKuantitasSampah()) {
+                redirectAttributes.addFlashAttribute("errorKuantitas", "Kuantitas sampah yang dimasukkan melebihi kuantitas sampah pada warehouse");
+            } else {
+                BatchModel batchModel = new BatchModel();
+                batchModel.setWarehouse(warehouse);
+                batchModel.setKuantitasBahanBaku(kuantitasBahanBaku);
+                batchModel.setStatus(1);
+                batchModel.setTanggalDibuat(LocalDateTime.now());
+                batchModel.setKuantitasHasil(0);
+                // save batch
+                batchService.add(batchModel);
+                WarehouseModel bahanBaku = warehouseService.getItemById(warehouse.getIdItem());
+                Integer kuantitasSampahBaru = bahanBaku.getKuantitasSampah()-batchModel.getKuantitasBahanBaku();
+                bahanBaku.setKuantitasSampah(kuantitasSampahBaru);
+                warehouseService.updateItem(bahanBaku);
+                redirectAttributes.addFlashAttribute("successMessage", "Batch berhasil dibuat");
+            }
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", "Terjadi kesalahan saat membuat batch");
         }
