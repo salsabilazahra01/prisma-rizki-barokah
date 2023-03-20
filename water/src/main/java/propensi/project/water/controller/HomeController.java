@@ -31,7 +31,7 @@ import propensi.project.water.service.UserService;
 
 @Slf4j
 @Controller
-public class PageController {
+public class HomeController {
     @Autowired
     private ServerProperties serverProperties;
 

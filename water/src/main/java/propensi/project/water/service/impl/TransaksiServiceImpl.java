@@ -1,4 +1,4 @@
-package propensi.project.water.service;
+package propensi.project.water.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,6 +9,7 @@ import propensi.project.water.model.Transaksi.TransaksiModel;
 import propensi.project.water.repository.TransaksiDb.ProsesPenawaranOlahanDb;
 import propensi.project.water.repository.TransaksiDb.ProsesPenawaranSampahDb;
 import propensi.project.water.repository.TransaksiDb.TransaksiDb;
+import propensi.project.water.service.TransaksiService;
 import propensi.project.water.repository.TransaksiDb.ProsesLainDb;
 
 import javax.transaction.Transactional;
@@ -18,7 +19,7 @@ import java.util.Optional;
 
 @Service
 @Transactional
-public class TransaksiServiceImpl implements TransaksiService{
+public class TransaksiServiceImpl implements TransaksiService {
     @Autowired
     private TransaksiDb transaksiDb;
 

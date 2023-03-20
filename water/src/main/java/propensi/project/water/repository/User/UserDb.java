@@ -10,7 +10,7 @@ import propensi.project.water.model.User.UserModel;
 
 @Repository
 public interface UserDb extends JpaRepository<UserModel, String> {
-    UserModel findByUsername(String username);
+    Optional<UserModel> findByUsername(String username);
     List<UserModel> findAll();
     void delete(UserModel user);
 

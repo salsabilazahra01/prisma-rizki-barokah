@@ -42,7 +42,7 @@
                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <li sec:authorize="hasAuthority('MANAJER') || hasAuthority('PEKERJA') || hasAuthority('SUPERVISOR') || hasAuthority('TEKNISI') || hasAuthority('ADMIN')"><a class="dropdown-item" th:href="@{/warehouse/laporan}">Laporan Warehousing</a></li>
                     <li sec:authorize="hasAuthority('MANAJER') || hasAuthority('SUPERVISOR') || hasAuthority('ADMIN')"><a class="dropdown-item" th:href="@{/transaksi/viewall/semua}">Laporan Transaksi Keuangan</a></li>
-                    <li sec:authorize="hasAuthority('MANAJER') || hasAuthority('SUPERVISOR') || hasAuthority('ADMIN') || hasAuthority('PEKERJA') || hasAuthority('TEKNISI')"><a class="dropdown-item" th:href="@{/}">Pengolahan Sampah</a></li>
+                    <li sec:authorize="hasAuthority('MANAJER') || hasAuthority('SUPERVISOR') || hasAuthority('ADMIN') || hasAuthority('PEKERJA') || hasAuthority('TEKNISI')"><a class="dropdown-item" th:href="@{/pengolahan-sampah}">Pengolahan Sampah</a></li>
                 </ul>
             </li>
             <li class="nav-item dropdown" sec:authorize="hasAuthority('MANAJER') || hasAuthority('SUPERVISOR') || hasAuthority('ADMIN')">

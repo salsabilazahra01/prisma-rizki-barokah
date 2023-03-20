@@ -10,6 +10,7 @@ import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowire;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -41,7 +42,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserModel getUserByUsername(String username) {
-        UserModel user = userDb.findByUsername(username);
+        UserModel user = userDb.findByUsername(username)
+                            .orElse(null);
 
         return user;
     }
