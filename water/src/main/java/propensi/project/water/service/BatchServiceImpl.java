@@ -1,4 +1,4 @@
-package propensi.project.water.service.impl;
+package propensi.project.water.service;
 
 import java.util.List;
 import java.util.Optional;
@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import propensi.project.water.model.Warehouse.BatchModel;
 import propensi.project.water.repository.Warehouse.BatchDb;
-import propensi.project.water.service.BatchService;
 
 @Service
 public class BatchServiceImpl implements BatchService {

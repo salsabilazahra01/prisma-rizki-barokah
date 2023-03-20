@@ -22,11 +22,66 @@
                   <span th:if="${batch.status == 3}">Packing</span>
                   <span th:if="${batch.status == 4}">Selesai</span>
                   <!-- Button to trigger modal -->
-                  <form style="display: inline-block" th:if="${batch.status < 4}" id="updateBatchForm" method="POST" th:action="@{/pengolahan-sampah/{batchModel}(batchModel=${batch.idBatch})}">
+                  <form style="display: inline-block" th:if="${batch.status<3}" id="updateBatchForm" method="POST" th:action="@{/pengolahan-sampah/{batchModel}(batchModel=${batch.idBatch})}">
                     <input type="hidden" name="_method" value="PUT" />
                     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-                    <button th:attr="data-status=${batch.status}"  type="button" class="mx-2 btn-small btn-primary-green h6" th:onclick="confirmUpdate(this.dataset.status)">Update Batch</button>
+                    <button th:attr="data-status=${batch.status}"
+                            type="button"
+                            class="mx-2 btn-small btn-primary-green h6"
+                            th:onclick="confirmUpdate(this.dataset.status)"
+                    >Update Batch</button>
                   </form>
+                    <a type="button" class="mx-2 btn-small btn-primary-green h6" th:if="${batch.status ==3}"
+                       data-bs-toggle="modal" data-bs-target="#savechanges"> Update Batch
+                    </a>
+
+
+
+                    <!--MODALLLL-->
+                    <div class="modal fade" id="savechanges" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered text-center justify-content-center">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h6 class="modal-title h6 text-center" id="exampleModalLabel">Update Kuantitas Hasil Olahan</h6>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body p3">
+                                    <form class="m-1 p-2" style="display: inline-block" th:if="${batch.status ==3}" id="updateBatchFormModal" method="POST" th:action="@{/pengolahan-sampah/{batchModel}(batchModel=${batch.idBatch})}">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <label for="inputKuantitasHasilOlahan" class="h5">Kuantitas Hasil Olahan</label>
+                                            <div class="input-group">
+                                                <input type="number" min="0" class="form-control"
+                                                       id="inputKuantitasHasilOlahan"
+                                                       th:field="${batch.kuantitasHasil}"
+                                                       th:name="|kuantitasHasil|">
+                                                <div class="input-group-prepend">
+                                                                            <span class="input-group-text"
+                                                                                  id="inputKuantitas">Kg</span>
+                                                </div>
+                                            </div>
+                                            <div id="inputKuantitasKeterangan" class="form-text">
+                                                Masukan kuantitas dengan satuan dalam Kg.
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br>
+
+
+                                    <input type="hidden" name="_method" value="PUT"/>
+                                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                                    <button th:attr="data-status=${batch.status}"
+                                            type="submit"
+                                            class="mx-2 btn-small btn-primary-green h6"
+                                            th:onclick="confirmUpdate(this.dataset.status)"
+                                    >Update Batch</button>
+
+                                </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </dd>
               </dl>
               <dl>
