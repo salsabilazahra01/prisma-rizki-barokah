@@ -92,10 +92,17 @@ public class MengelolaKaryawanController {
             @ModelAttribute UserModel user,
             RedirectAttributes redirectAttributes
             ){
+        boolean uniqueValueConstraintIsTrue = mengelolaKaryawanService.uniqueValueConstraintUpdate(user);
 
-        mengelolaKaryawanService.updateUser(user);
-        redirectAttributes.addFlashAttribute(
-                "success","Data karyawan berhasil diubah");
+        // new kontak is not unique
+        if (!uniqueValueConstraintIsTrue) {
+            System.out.println("masuk di false controller");
+            redirectAttributes.addFlashAttribute("failedUpdate",
+                    String.format("Email dan Nomor Telepon harus unik"));
+        } else {
+            redirectAttributes.addFlashAttribute(
+                    "success", "Data karyawan berhasil diubah");
+        }
 
         return "redirect:view/" + user.getUsername();
     }

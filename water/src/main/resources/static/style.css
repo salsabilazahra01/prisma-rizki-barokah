@@ -105,6 +105,7 @@ a {
     padding-block: 0.5rem;
     padding-inline: 3rem;
 }
+
 .btn-small{
     font-weight: bold;
     border: 1px solid;
@@ -112,6 +113,35 @@ a {
     padding-block: 0.3rem;
     padding-inline: 1.2rem;
 }
+
+/*.btn-small {*/
+/*    font-weight: bold;*/
+/*    border: 2px solid #fff;*/
+/*    border-radius: 1.5rem;*/
+/*    padding-block: 0.5rem;*/
+/*    padding-inline: 3rem;*/
+/*    font-size: 0.75rem;*/
+/*}*/
+
+/*.btn-small {*/
+/*    font-weight: bold;*/
+/*    border: 2px solid #fff;*/
+/*    border-radius: 1.5rem;*/
+/*    padding-block: 0.5rem;*/
+/*    padding-inline: 3rem;*/
+/*    font-size: 0.75rem;*/
+/*}*/
+
+/*.btn-small {*/
+/*    font-weight: bold;*/
+/*    border: 2px solid #fff;*/
+/*    border-radius: 1.5rem;*/
+/*    padding-block: 0.5rem;*/
+/*    padding-inline: 3rem;*/
+/*    font-size: 0.75rem;*/
+/*}*/
+
+
 .btn-primary-green{
     background-color: var(--primary-green);
     border-color: var(--primary-green);
@@ -201,14 +231,7 @@ a {
     border-color: #252525;
 }
 
-.btn-small {
-    font-weight: bold;
-    border: 2px solid #fff;
-    border-radius: 1.5rem;
-    padding-block: 0.5rem;
-    padding-inline: 3rem;
-    font-size: 0.75rem;
-}
+
 
 .modal-wr{
     border-radius: 25px;
@@ -288,7 +311,6 @@ input[type="radio"]:checked{
     background-color: var(--grey-white);
     border-color: var(--grey-white);
     /*color: var(--grey-white);*/
->>>>>>> caf56b3374dbed3586f187f2b082937cb79bbb5b
 }
 .viewall-wr{
     padding-right: 6rem !important;
@@ -315,14 +337,6 @@ input[type="radio"]:checked{
     border-color: #252525;
 }
 
-.btn-small {
-    font-weight: bold;
-    /*border: 2px solid #fff;*/
-    /*border-radius: 1.5rem;*/
-    padding-block: 0.5rem;
-    padding-inline: 3rem;
-    font-size: 0.75rem;
-}
 
 .modal-wr{
     border-radius: 25px;
@@ -416,8 +430,8 @@ input[type="radio"]:checked{
 
 .btn-small {
     font-weight: bold;
-    border: 2px solid #fff;
-    border-radius: 1.5rem;
+    /*border: 2px solid #fff;*/
+    /*border-radius: 1.5rem;*/
     padding-block: 0.5rem;
     padding-inline: 3rem;
     font-size: 0.75rem;
