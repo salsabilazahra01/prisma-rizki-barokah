@@ -10,6 +10,8 @@ import propensi.project.water.model.PenjualanHasilOlahan.PenawaranOlahanModel;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
@@ -18,7 +20,7 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class JenisItemModel {
+public class JenisItemModel implements Serializable {
 
     @Id
     @GeneratedValue(generator="system-uuid")

@@ -10,20 +10,40 @@ sourceCompatibility = '11'
 
 repositories {
 	mavenCentral()
+	maven { url "https://repo.spring.io/milestone" }
+	maven { url "https://repo.spring.io/snapshot" }
 }
 
 dependencies {
+	// Springboot basics
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+
+	// Development dependencies
+
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+	// Database dependencies
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.projectlombok:lombok:1.18.24'
+
+	// Database connectivity dependencies
 	implementation 'mysql:mysql-connector-java:5.1.6'
-	compileOnly("org.projectlombok:lombok:1.18.24")
-	annotationProcessor('org.projectlombok:lombok:1.18.24')
+	runtimeOnly 'com.h2database:h2'
+
+	// Replace comment
 	implementation 'org.springframework.boot:spring-boot-starter-validation:2.7.3'
 	implementation 'com.fasterxml.jackson.core:jackson-databind'
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+
+	// Replace comment
+	// implementation 'org.springframework.boot:spring-boot-starter-security'
+    // implementation 'org.springframework.security:spring-security-config'
+    // implementation 'org.springframework.security:spring-security-web'
+    // implementation 'org.springframework.security:spring-security-core'
+    // implementation 'org.springframework.security:spring-security-crypto'
+
 	implementation 'org.springframework.boot:spring-boot-starter-security:'
 	implementation 'com.auth0:java-jwt:4.2.1'
 	implementation 'io.jsonwebtoken:jjwt-api:0.11.2'

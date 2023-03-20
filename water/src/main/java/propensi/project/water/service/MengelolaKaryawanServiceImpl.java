@@ -4,6 +4,7 @@ package propensi.project.water.service;
 
 import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import propensi.project.water.model.User.UserModel;
 import propensi.project.water.repository.User.UserDb;
@@ -37,7 +38,7 @@ public class MengelolaKaryawanServiceImpl implements MengelolaKaryawanService{
 
     @Override
     public boolean uniqueValueConstraint(UserModel user) {
-        Optional<UserModel> uniqueUsername =  Optional.ofNullable(userDb.findByUsername(user.getUsername()));
+        Optional<UserModel> uniqueUsername =  userDb.findByUsername(user.getUsername());
         Optional<UserModel> uniqueEmail = userDb.findByEmailHp(user.getEmailHp());
         if (uniqueUsername.isPresent() || uniqueEmail.isPresent()) {
             return true;
@@ -46,7 +47,9 @@ public class MengelolaKaryawanServiceImpl implements MengelolaKaryawanService{
 
     @Override
     public boolean uniqueValueConstraintUpdate(UserModel user) {
-        String currentEmail = userDb.findByUsername(user.getUsername()).getEmailHp();
+        String currentEmail = userDb.findByUsername(user.getUsername())
+                                    .orElseThrow(() -> new UsernameNotFoundException("User not found"))
+                                    .getEmailHp();
         Optional<UserModel> uniqueEmail = userDb.findByEmailHp(user.getEmailHp());
 
 
@@ -94,7 +97,8 @@ public class MengelolaKaryawanServiceImpl implements MengelolaKaryawanService{
 
     @Override
     public UserModel retrieveUserDetail(String username) {
-        return userDb.findByUsername(username);
+        return userDb.findByUsername(username)
+                        .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 
     @Override
