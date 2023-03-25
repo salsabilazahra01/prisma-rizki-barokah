@@ -16,43 +16,25 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
 </head>
 
+<body>
+
+<nav th:replace="fragments/fragment :: navbar('')"></nav>
+
 <div class="d-flex justify-content-center">
   <div class="m-4">
     <br>
     <div class="d-flex justify-content-center">
-      <h2 style="color: #468799; font-weight: bold; font-size: 30px">FAILED TO CONFIRM!</h2>
+      <h2 style="font-weight: bold; font-size: 30px">Failed To Confirm!</h2>
     </div>
     <div class="d-flex justify-content-center">
       <p> Maaf, Anda gagal dalam melakukan konfirmasi. Coba lagi!</p>
     </div>
     <div class="my-3 d-flex justify-content-center">
-      <a class="mx-2 btn " style="color: white; background-color: #5698B9" href="/">Kembali ke Home</a>
+      <a class="mx-2 btn"  th:href="@{/home}">Kembali ke Home</a>
     </div>
   </div>
 </div>
 </div>
-
-  <footer class = "py-4 container-primary-green">
-    <div class = "container">
-      <div class="text-white text-center">
-        <div>
-          <h2 class="h3 p-2">CV Prisma Rizki Barokah</h2>
-        </div>
-        <div>
-          <p class="p3">Kantor : Komp. Griya Serdang Indah Blok C9/7, Kramatwatu – Serang</p>
-        </div>
-        <div>
-          <p class="p3">Pabrik : Kavling Cipete Permai Kav N28-29, Desa Sukalaksana – Curug, Kota Serang</p>
-        </div>
-        <div>
-          <p><span class="bi-envelope px-2"></span>e-mail<span class="bi-telephone px-2"></span>telepon-number</p>
-        </div>
-        <div>
-          <p><span class="bi-c-circle"></span>CV Prisma Rizki Barokah</p>
-        </div>
-      </div>
-    </div>
-  </footer>
 
   <script src = "/bootstrap/js/bootstrap.js"></script>
   <script src="/script.js"></script>

@@ -67,6 +67,7 @@
                 <a th:class="${#strings.equals(activeLink, 'Manajemen User')}  ? 'nav-link nav-underline active' : 'nav-link'" th:href="@{/manajemen-user/viewall}">Manajemen User<span class="sr-only">(current)</span></a>
             </li>
 
+            <!--eksternal-->
             <li sec:authorize="hasAuthority('DONATUR')">
                 <a th:class="${#strings.equals(activeLink, 'Buat Donasi')}  ? 'nav-link nav-underline active' : 'nav-link'" th:href="@{/}">Buat Donasi<span class="sr-only">(current)</span></a>
             </li>
@@ -90,9 +91,9 @@
         </ul>
 
         <ul class="navbar-nav pull-right mr-sm-2">
-            <a th:href="@{/}" class="btn btn-yellow-sun text-dark mx-2" sec:authorize="hasAuthority('DONATUR')"><span class="px-2">10.000 Points</span></a>
+            <a th:href="@{/}" class="btn btn-yellow-sun text-dark mx-2" sec:authorize="hasAuthority('DONATUR')"><span class="px-2">0 Points</span></a>
             <a th:href="@{/login}" class="btn btn-primary-green mx-2" sec:authorize="isAnonymous()">Login</a>
-            <a th:href="@{/logout}" class="btn btn-danger mx-2" sec:authorize="isAuthenticated()">Logout</a>
+            <a th:href="@{/logout}" class="btn btn-outline-danger mx-2" sec:authorize="isAuthenticated()">Logout</a>
         </ul>
     </div>
 </nav>

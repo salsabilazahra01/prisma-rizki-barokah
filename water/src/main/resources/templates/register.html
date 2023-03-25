@@ -6,6 +6,9 @@
     <link rel="stylesheet" th:href="@{/css/main.css}">
 </head>
 <body>
+
+<nav th:replace="fragments/fragment :: navbar('Home')"></nav>
+
     <div class="wrapper fadeInDown">
         <div id="formContent">
             <!-- Register Form -->
@@ -23,5 +26,7 @@
             </div>
         </div>
     </div>
+    <footer th:replace="fragments/fragment :: footer"></footer>
+
 </body>
 </html>

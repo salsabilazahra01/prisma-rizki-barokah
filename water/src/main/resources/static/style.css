@@ -166,6 +166,7 @@ a {
     color: var(--primary-green)!important;
 }
 .btn-yellow-sun{
+    border-color: var(--yellow-sun);
     background-color: var(--yellow-sun);
     color: var(--white);
 }
@@ -500,6 +501,20 @@ input[type="radio"]:checked{
     color: #fff;
     background-color: #252525;
     border-color: #252525;
+}
+
+.bg-image-vertical {
+    position: relative;
+    overflow: hidden;
+    background-repeat: no-repeat;
+    background-position: right center;
+    background-size: auto 100%;
+}
+
+@media (min-width: 1025px) {
+    .h-custom-2 {
+        height: 100%;
+    }
 }
 
 /*!* misc stylings *!*/

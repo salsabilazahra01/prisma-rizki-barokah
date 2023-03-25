@@ -45,11 +45,37 @@ public class HomeController {
 
     @RequestMapping("/")
     public String homeAfterLogin() {
+        for (UserModel user : userService.getListUser()) {
+            if (!user.getRole().equals(Role.MANAJER)) {
+                ManajerModel manajer = new ManajerModel();
+                manajer.setNama("Manajer Perusahaan");
+                manajer.setRole(Role.MANAJER);
+                manajer.setEmailHp("water@gmail.com");
+                manajer.setUsername("manajerwater");
+                manajer.setPassword("Test1234!");
+
+                userService.addUser(manajer);
+            }
+        }
+
         return "home";
     }
 
     @RequestMapping("/home")
     public String home() {
+        for (UserModel user : userService.getListUser()) {
+            if (!user.getRole().equals(Role.MANAJER)) {
+                ManajerModel manajer = new ManajerModel();
+                manajer.setNama("Manajer Perusahaan");
+                manajer.setRole(Role.MANAJER);
+                manajer.setEmailHp("water@gmail.com");
+                manajer.setUsername("manajerwater");
+                manajer.setPassword("Test1234!");
+
+                userService.addUser(manajer);
+            }
+        }
+
         return "home";
     }
 
