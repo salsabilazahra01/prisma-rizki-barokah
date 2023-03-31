@@ -1,25 +1,28 @@
-//package propensi.project.water.model.Donasi;
-//
-//import lombok.AllArgsConstructor;
-//import lombok.NoArgsConstructor;
-//import javax.persistence.Column;
-//import javax.persistence.Embeddable;
-//import javax.persistence.OneToOne;
-//import javax.validation.constraints.NotNull;
-//import javax.validation.constraints.Size;
-//import java.io.Serializable;
-//
-//@AllArgsConstructor
-//@NoArgsConstructor
-//@Embeddable
-//public class ItemDonasiIdModel implements Serializable {
-//    private static final long serialVersionUID = -3182763128764187L;
-//
-//    @NotNull
-//    @Column(name = "item", nullable = false)
-//    private String idItem; // sampah
-//
-//    @NotNull
-//    @Column(name = "donasi", nullable = false)
-//    private String idDonasi;
-//}
+package propensi.project.water.model.Donasi;
+
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+import propensi.project.water.model.Warehouse.WarehouseModel;
+
+import javax.persistence.*;
+import java.io.Serializable;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Embeddable
+public class ItemDonasiIdModel implements Serializable {
+
+    // relasi dengan item
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "item", referencedColumnName = "id_item", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private WarehouseModel idItem;
+
+    // relasi dengan donasi
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "donasi", referencedColumnName = "id_donasi", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private DonasiModel idDonasi;
+}

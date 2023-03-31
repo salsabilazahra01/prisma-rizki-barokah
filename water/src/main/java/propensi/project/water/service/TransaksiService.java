@@ -1,11 +1,11 @@
 package propensi.project.water.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import propensi.project.water.model.Transaksi.ProsesLainModel;
 import propensi.project.water.model.Transaksi.ProsesPenawaranOlahanModel;
 import propensi.project.water.model.Transaksi.ProsesPenawaranSampahModel;
 import propensi.project.water.model.Transaksi.TransaksiModel;
-
-import java.util.List;
 
 public interface TransaksiService {
 
@@ -14,10 +14,8 @@ public interface TransaksiService {
 
     // add transaksi manually
     void addTransaksiManual(ProsesLainModel transaksiManual);
-
-    // retrieve data
-    List<TransaksiModel> retrieveAllTransaksi();
-    List<TransaksiModel> retrieveAllTransaksi(Boolean jenis);
+    Page<TransaksiModel> retrieveAllTransaksi(Pageable paging, Boolean jenis);
+    Page<TransaksiModel> retrieveAllTransaksiIdContaining(String keyword, Pageable paging, Boolean jenis);
     TransaksiModel retrieveTransaksiById(String id);
     ProsesPenawaranSampahModel getTransaksiPenawaranSampah(String idTransaksi);
     ProsesPenawaranOlahanModel getTransaksiPenawaranOlahan(String idTransaksi);
@@ -29,4 +27,5 @@ public interface TransaksiService {
     //update
     TransaksiModel updateTransaksiSampahOlahan(TransaksiModel transaksi);
     ProsesLainModel updateTransaksiProsesLain(ProsesLainModel transaksi);
+
 }

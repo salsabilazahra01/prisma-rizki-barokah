@@ -1,24 +1,24 @@
 package propensi.project.water.model.PembelianSampah;
 
-//import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.format.annotation.DateTimeFormat;
+import propensi.project.water.model.StringPrefixedSequenceIdGenerator;
 import propensi.project.water.model.Transaksi.ProsesPenawaranSampahModel;
-import propensi.project.water.model.User.DonaturModel;
 import propensi.project.water.model.User.PartnerModel;
-import propensi.project.water.model.Transaksi.TransaksiModel;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "penawaran_sampah")
@@ -27,9 +27,16 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PenawaranSampahModel implements Serializable {
+
     @Id
-    @GeneratedValue(generator="system-uuid")
-    @GenericGenerator(name="system-uuid", strategy="uuid")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "penawaran_sampah_seq")
+    @GenericGenerator(name = "penawaran_sampah_seq",
+            strategy = "propensi.project.water.model.StringPrefixedSequenceIdGenerator",
+            parameters = {
+                    @Parameter(name = StringPrefixedSequenceIdGenerator.INCREMENT_PARAM, value = "1"),
+                    @Parameter(name = StringPrefixedSequenceIdGenerator.VALUE_PREFIX_PARAMETER, value = "PWS-")
+            }
+    )
     @Column(name = "id_penawaran_sampah", nullable = false)
     private String idPenawaranSampah;
 
@@ -90,7 +97,7 @@ public class PenawaranSampahModel implements Serializable {
     @JoinColumn(name = "id_transaksi", referencedColumnName = "id_transaksi")
     private ProsesPenawaranSampahModel transaksiSampah;
 
-//    // relasi dengan item penawaran sampah
-//    @OneToMany(mappedBy = "penawaranSampah", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-//    List<ItemPenawaranSampahModel> listItemPenawaranSampah;
+    // relasi dengan item penawaran sampah
+    @OneToMany(mappedBy = "idPenawaranSampah", fetch = FetchType.LAZY,  cascade = CascadeType.ALL)
+    private List<ItemPenawaranSampahModel> listItemPenawaranSampah;
 }

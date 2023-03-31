@@ -5,8 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.format.annotation.DateTimeFormat;
+import propensi.project.water.model.StringPrefixedSequenceIdGenerator;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -21,16 +23,18 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Inheritance(strategy = InheritanceType.JOINED)
 public class TransaksiModel implements Serializable {
+
     @Id
-    @GeneratedValue(generator="system-uuid")
-    @GenericGenerator(name="system-uuid", strategy="uuid")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "transaksi_seq")
+    @GenericGenerator(name = "transaksi_seq",
+            strategy = "propensi.project.water.model.StringPrefixedSequenceIdGenerator",
+            parameters = {
+                    @Parameter(name = StringPrefixedSequenceIdGenerator.INCREMENT_PARAM, value = "1"),
+                    @Parameter(name = StringPrefixedSequenceIdGenerator.VALUE_PREFIX_PARAMETER, value = "TRN-")
+            }
+    )
     @Column(name = "id_transaksi", nullable = false)
     private String idTransaksi;
-
-//    @NotNull
-//    @Size(max = 50)
-//    @Column(name = "person", nullable = false)
-//    private String person; // username customer
 
     @NotNull
     @Column(name = "jenis_transaksi", nullable = false)

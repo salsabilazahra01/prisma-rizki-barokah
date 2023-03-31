@@ -2,6 +2,9 @@ package propensi.project.water.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -36,33 +39,60 @@ public class TransaksiController {
 
     @GetMapping(value="/viewall/{jenis}")
     private String viewAllTransaksi(Model model,
-                                    @PathVariable(name="jenis") String jenis) {
+                                    @PathVariable(name="jenis") String jenis,
+                                    @RequestParam(required = false) String keyword,
+                                    @RequestParam(defaultValue = "1") int page,
+                                    @RequestParam(defaultValue = "5") int size) {
 
-        List<TransaksiModel> listTransaksi;
-        if (jenis.equals("semua")){
-            listTransaksi = transaksiService.retrieveAllTransaksi();
-        } else if(jenis.equals("pendapatan")){
-            listTransaksi = transaksiService.retrieveAllTransaksi(Boolean.FALSE);
-        } else {
-            listTransaksi = transaksiService.retrieveAllTransaksi(Boolean.TRUE);
-        }
+        try{
+            List<TransaksiModel> listTransaksi;
+            Pageable paging = PageRequest.of(page - 1, size);
 
-        int total = 0;
-        for(TransaksiModel transaksi : listTransaksi){
-            if(jenis.equals("semua")){
-                if(transaksi.getJenisTransaksi()){
-                    total -= transaksi.getNominal();
+            Page<TransaksiModel> pageTransaksi;
+            if (keyword == null) {
+                if (jenis.equals("semua")){
+                    pageTransaksi = transaksiService.retrieveAllTransaksi(paging, null);
+                } else if(jenis.equals("pendapatan")){
+                    pageTransaksi = transaksiService.retrieveAllTransaksi(paging,Boolean.FALSE);
+                } else {
+                    pageTransaksi = transaksiService.retrieveAllTransaksi(paging,Boolean.TRUE);
+                }
+            } else {
+                if (jenis.equals("semua")){
+                    pageTransaksi = transaksiService.retrieveAllTransaksiIdContaining(keyword, paging, null);
+                } else if(jenis.equals("pendapatan")){
+                    pageTransaksi = transaksiService.retrieveAllTransaksiIdContaining(keyword, paging, Boolean.FALSE);
+                } else {
+                    pageTransaksi = transaksiService.retrieveAllTransaksiIdContaining(keyword, paging, Boolean.TRUE);
+                }
+                model.addAttribute("keyword", keyword);
+            }
+
+            listTransaksi = pageTransaksi.getContent();
+
+            int total = 0;
+            for(TransaksiModel transaksi : listTransaksi){
+                if(jenis.equals("semua")){
+                    if(transaksi.getJenisTransaksi()){
+                        total -= transaksi.getNominal();
+                    } else {
+                        total += transaksi.getNominal();
+                    }
                 } else {
                     total += transaksi.getNominal();
                 }
-            } else {
-                total += transaksi.getNominal();
             }
-        }
 
-        model.addAttribute("listTransaksi", listTransaksi);
-        model.addAttribute("jenis", jenis);
-        model.addAttribute("total", total);
+            model.addAttribute("currentPage", pageTransaksi.getNumber() + 1);
+            model.addAttribute("totalItems", pageTransaksi.getTotalElements());
+            model.addAttribute("totalPages", pageTransaksi.getTotalPages());
+            model.addAttribute("pageSize", size);
+            model.addAttribute("listTransaksi", listTransaksi);
+            model.addAttribute("jenis", jenis);
+            model.addAttribute("total", total);
+        } catch (Exception e) {
+            model.addAttribute("message", e.getMessage());
+        }
         return "laporan-transaksi/viewall-transaksi";
     }
 

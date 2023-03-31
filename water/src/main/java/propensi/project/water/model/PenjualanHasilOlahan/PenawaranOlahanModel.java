@@ -1,24 +1,24 @@
 package propensi.project.water.model.PenjualanHasilOlahan;
 
-//import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.format.annotation.DateTimeFormat;
+import propensi.project.water.model.StringPrefixedSequenceIdGenerator;
 import propensi.project.water.model.Transaksi.ProsesPenawaranOlahanModel;
-import propensi.project.water.model.Transaksi.TransaksiModel;
 import propensi.project.water.model.User.CustomerModel;
-import propensi.project.water.model.User.PartnerModel;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "penawaran_olahan")
@@ -28,8 +28,14 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class PenawaranOlahanModel implements Serializable {
     @Id
-    @GeneratedValue(generator="system-uuid")
-    @GenericGenerator(name="system-uuid", strategy="uuid")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "penawaran_olahan_seq")
+    @GenericGenerator(name = "penawaran_olahan_seq",
+            strategy = "propensi.project.water.model.StringPrefixedSequenceIdGenerator",
+            parameters = {
+                    @Parameter(name = StringPrefixedSequenceIdGenerator.INCREMENT_PARAM, value = "1"),
+                    @Parameter(name = StringPrefixedSequenceIdGenerator.VALUE_PREFIX_PARAMETER, value = "PWO-")
+            }
+    )
     @Column(name = "id_penawaran_olahan", nullable = false)
     private String idPenawaranOlahan;
 
@@ -41,6 +47,14 @@ public class PenawaranOlahanModel implements Serializable {
     @NotNull
     @Column(name = "kontak_pic", nullable = false)
     private String kontakPic;
+
+    @NotNull
+    @Column(name = "bank", nullable = false)
+    private String bank;
+
+    @NotNull
+    @Column(name = "noRekening", nullable = false)
+    private Integer noRekening;
 
     @NotNull
     @Column(name = "alamat_pic", nullable = false)
@@ -76,4 +90,8 @@ public class PenawaranOlahanModel implements Serializable {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_transaksi", referencedColumnName = "id_transaksi")
     private ProsesPenawaranOlahanModel transaksiOlahan;
+
+    //relasi dengan item penawaran olahan
+    @OneToMany(mappedBy = "idPenawaranOlahan", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<ItemPenawaranOlahanModel> listItemPenawaranOlahan;
 }

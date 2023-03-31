@@ -1,10 +1,13 @@
 package propensi.project.water.repository.TransaksiDb;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import propensi.project.water.model.Transaksi.TransaksiModel;
-
-import java.util.List;
-
 public interface TransaksiDb extends JpaRepository<TransaksiModel, String> {
-    List<TransaksiModel> findAllByJenisTransaksi(Boolean jenis);
+    Page<TransaksiModel> findAll(Pageable pageable);
+    Page<TransaksiModel> findAllByJenisTransaksi(Boolean jenis, Pageable pageable);
+    Page<TransaksiModel> findByIdTransaksiContainingIgnoreCase(String keyword, Pageable pageable);
+    Page<TransaksiModel> findByIdTransaksiContainingIgnoreCaseAndJenisTransaksi(Boolean jenis, String keyword, Pageable pageable);
+
 }

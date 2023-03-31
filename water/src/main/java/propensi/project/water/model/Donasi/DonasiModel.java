@@ -5,10 +5,12 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.format.annotation.DateTimeFormat;
+import propensi.project.water.model.StringPrefixedSequenceIdGenerator;
 import propensi.project.water.model.User.DonaturModel;
 
 import javax.persistence.*;
@@ -16,6 +18,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "donasi")
@@ -26,8 +29,14 @@ import java.time.LocalDateTime;
 public class DonasiModel implements Serializable {
 
     @Id
-    @GeneratedValue(generator="system-uuid")
-    @GenericGenerator(name="system-uuid", strategy="uuid")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "donasi_seq")
+    @GenericGenerator(name = "donasi_seq",
+            strategy = "propensi.project.water.model.StringPrefixedSequenceIdGenerator",
+            parameters = {
+                    @Parameter(name = StringPrefixedSequenceIdGenerator.INCREMENT_PARAM, value = "1"),
+                    @Parameter(name = StringPrefixedSequenceIdGenerator.VALUE_PREFIX_PARAMETER, value = "DNS-")
+            }
+    )
     @Column(name = "id_donasi", nullable = false)
     private String idDonasi;
 
@@ -54,7 +63,7 @@ public class DonasiModel implements Serializable {
     private LocalDateTime tanggalDibuat;
 
     @NotNull
-    @Column(name = "status", nullable = false)
+    @Column(name = "status", nullable = false, columnDefinition = "int default 0")
     private Integer status;
 
     @Column(name = "keterangan", nullable = false)
@@ -78,7 +87,7 @@ public class DonasiModel implements Serializable {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private DonaturModel donatur;
 
-    // relasi dengan item
-//    @OneToMany(mappedBy = "donasi", cascade = CascadeType.ALL)
-//    List<ItemDonasiModel> itemDonasi = new ArrayList<ItemDonasiModel>();
+    //relasi dengan item donasi
+    @OneToMany(mappedBy = "idDonasi", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<ItemDonasiModel> listItemDonasi;
 }

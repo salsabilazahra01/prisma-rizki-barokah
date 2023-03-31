@@ -5,7 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.GenericGenerator;
+import propensi.project.water.model.StringPrefixedSequenceIdGenerator;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -19,9 +21,16 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RewardModel implements Serializable {
+
     @Id
-    @GeneratedValue(generator="system-uuid")
-    @GenericGenerator(name="system-uuid", strategy="uuid")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "reward_seq")
+    @GenericGenerator(name = "reward_seq",
+            strategy = "propensi.project.water.model.StringPrefixedSequenceIdGenerator",
+            parameters = {
+                    @Parameter(name = StringPrefixedSequenceIdGenerator.INCREMENT_PARAM, value = "1"),
+                    @Parameter(name = StringPrefixedSequenceIdGenerator.VALUE_PREFIX_PARAMETER, value = "RWD-")
+            }
+    )
     @Column(name = "id_reward", nullable = false)
     private String idReward;
 

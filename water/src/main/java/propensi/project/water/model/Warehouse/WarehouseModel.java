@@ -5,10 +5,14 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-import propensi.project.water.model.User.CustomerModel;
+import propensi.project.water.model.Donasi.ItemDonasiModel;
+import propensi.project.water.model.PembelianSampah.ItemPenawaranSampahModel;
+import propensi.project.water.model.PenjualanHasilOlahan.ItemPenawaranOlahanModel;
+import propensi.project.water.model.StringPrefixedSequenceIdGenerator;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -23,9 +27,16 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class WarehouseModel implements Serializable {
+
     @Id
-    @GeneratedValue(generator="system-uuid")
-    @GenericGenerator(name="system-uuid", strategy="uuid")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "item_seq")
+    @GenericGenerator(name = "item_seq",
+            strategy = "propensi.project.water.model.StringPrefixedSequenceIdGenerator",
+            parameters = {
+                    @Parameter(name = StringPrefixedSequenceIdGenerator.INCREMENT_PARAM, value = "1"),
+                    @Parameter(name = StringPrefixedSequenceIdGenerator.VALUE_PREFIX_PARAMETER, value = "ITM-")
+            }
+    )
     @Column(name = "id_item", nullable = false)
     private String idItem;
 
@@ -55,4 +66,16 @@ public class WarehouseModel implements Serializable {
     // relasi dengan batch
     @OneToMany(mappedBy = "warehouse", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<BatchModel> listBatch;
+
+    //relasi dengan item donasi
+    @OneToMany(mappedBy = "idDonasi", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<ItemDonasiModel> listItemDonasi;
+
+    //relasi dengan item penawaran sampah
+    @OneToMany(mappedBy = "idPenawaranSampah", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<ItemPenawaranSampahModel> listItemPenawaranSampah;
+
+    //relasi dengan item penawaran olahan
+    @OneToMany(mappedBy = "idPenawaranOlahan", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<ItemPenawaranOlahanModel> listItemPenawaranOlahan;
 }

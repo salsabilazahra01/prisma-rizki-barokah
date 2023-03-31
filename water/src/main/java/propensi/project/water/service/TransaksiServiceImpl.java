@@ -1,7 +1,9 @@
 package propensi.project.water.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Pageable;
 import propensi.project.water.model.Transaksi.ProsesLainModel;
 import propensi.project.water.model.Transaksi.ProsesPenawaranOlahanModel;
 import propensi.project.water.model.Transaksi.ProsesPenawaranSampahModel;
@@ -9,12 +11,9 @@ import propensi.project.water.model.Transaksi.TransaksiModel;
 import propensi.project.water.repository.TransaksiDb.ProsesPenawaranOlahanDb;
 import propensi.project.water.repository.TransaksiDb.ProsesPenawaranSampahDb;
 import propensi.project.water.repository.TransaksiDb.TransaksiDb;
-import propensi.project.water.service.TransaksiService;
 import propensi.project.water.repository.TransaksiDb.ProsesLainDb;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -43,14 +42,23 @@ public class TransaksiServiceImpl implements TransaksiService {
     }
 
     @Override
-    public List<TransaksiModel> retrieveAllTransaksi(){
-        return transaksiDb.findAll();
+    public Page<TransaksiModel> retrieveAllTransaksi(Pageable paging, Boolean jenis){
+        if (jenis == null){
+            return transaksiDb.findAll(paging);
+        }
+        return transaksiDb.findAllByJenisTransaksi(jenis, paging);
     }
 
     @Override
-    public List<TransaksiModel> retrieveAllTransaksi(Boolean jenis){
-        return transaksiDb.findAllByJenisTransaksi(jenis);
+    public Page<TransaksiModel> retrieveAllTransaksiIdContaining(String keyword,
+                                                                 Pageable paging,
+                                                                 Boolean jenis){
+        if (jenis == null){
+            return transaksiDb.findByIdTransaksiContainingIgnoreCase(keyword,paging);
+        }
+        return transaksiDb.findByIdTransaksiContainingIgnoreCaseAndJenisTransaksi(jenis,keyword,paging);
     }
+
 
     @Override
     public TransaksiModel retrieveTransaksiById(String id){
