@@ -105,43 +105,6 @@ a {
     padding-block: 0.5rem;
     padding-inline: 3rem;
 }
-
-.btn-small{
-    font-weight: bold;
-    border: 1px solid;
-    border-radius: 1.5rem;
-    padding-block: 0.3rem;
-    padding-inline: 1.2rem;
-}
-
-/*.btn-small {*/
-/*    font-weight: bold;*/
-/*    border: 2px solid #fff;*/
-/*    border-radius: 1.5rem;*/
-/*    padding-block: 0.5rem;*/
-/*    padding-inline: 3rem;*/
-/*    font-size: 0.75rem;*/
-/*}*/
-
-/*.btn-small {*/
-/*    font-weight: bold;*/
-/*    border: 2px solid #fff;*/
-/*    border-radius: 1.5rem;*/
-/*    padding-block: 0.5rem;*/
-/*    padding-inline: 3rem;*/
-/*    font-size: 0.75rem;*/
-/*}*/
-
-/*.btn-small {*/
-/*    font-weight: bold;*/
-/*    border: 2px solid #fff;*/
-/*    border-radius: 1.5rem;*/
-/*    padding-block: 0.5rem;*/
-/*    padding-inline: 3rem;*/
-/*    font-size: 0.75rem;*/
-/*}*/
-
-
 .btn-primary-green{
     background-color: var(--primary-green);
     border-color: var(--primary-green);
@@ -180,11 +143,11 @@ a {
     border-color: var(--raisin-black);
     color: var(--raisin-black);
 }
-.btn-danger{
+.btn-red-danger{
     background-color: var(--danger);
     color: var(--white);
 }
-.btn-danger:hover{
+.btn-red-danger:hover{
     background-color: var(--danger-hover);
     color: var(--white);
 }
@@ -193,6 +156,35 @@ a {
     border-color: var(--another-grey);
     color: var(--white);
 }
+.btn-outline-cancel {
+    color: var(--raisin-black);
+    background-color: var(--white);
+    border-color: var(--raisin-black);
+}
+.btn-outline-cancel:hover {
+    color: #fff;
+    background-color: var(--another-grey);
+    border-color: var(--raisin-black);
+}
+.btn-outline-red-danger{
+    color: var(--danger);
+    background-color: var(--white);
+    border-color: var(--danger);
+}
+.btn-outline-red-danger:hover {
+    color: var(--white);
+    background-color: var(--danger-hover);
+    border-color: var(--danger-hover)
+}
+.btn-small {
+    font-weight: bold;
+    border: 2px solid;
+    border-radius: 1.5rem;
+    padding-block: 0.5rem;
+    padding-inline: 3rem;
+    font-size: 0.75rem;
+}
+
 /* container */
 .container-primary-green{
     background-color: var(--primary-green);
@@ -206,34 +198,25 @@ a {
 .text-grey-white {
     color: var(--grey-white) !important;
 }
-
-.viewall-wr{
-    padding-right: 6rem !important;
-    padding-left: 6rem !important;
-    padding-bottom: 3rem !important;
+.text-raisin-black {
+    color: var(--raisin-black) !important;
 }
 
 .card-wr{
     background: var(--slimy-green);
 }
 
-.btn-red-danger{
-    background-color: var(--danger);
-    color: var(--white);
+.rounded-25 {
+    border-radius: 25px !important;
 }
-.btn-red-danger:hover{
-    color: var(--danger);
-    background: var(--white);
-    border-color: var(--danger);
+.rounded-top-25 {
+    border-top-left-radius: 25px !important;
+    border-top-right-radius: 25px !important;
 }
-.btn-red-danger:disabled, .btn-red-danger.disabled {
-    color: #fff;
-    background-color: #252525;
-    border-color: #252525;
+.rounded-left-25 {
+    border-top-left-radius: 25px !important;
+    border-bottom-left-radius: 25px !important;
 }
-
-
-
 .modal-wr{
     border-radius: 25px;
 }
@@ -243,10 +226,10 @@ a {
 }
 
 .p-5-title{
-    padding-top: 3rem !important;
+    /*padding-top: 3rem !important;*/
     padding-left: 3rem !important;
     padding-right: 3rem !important;
-    padding-bottom: 1rem !important;
+    /*padding-bottom: 1rem !important;*/
 }
 
 .nav-tabs>button.active,
@@ -272,7 +255,6 @@ a {
     /* font-size: initial; */
 }
 
-
 .nav-link {
     display: block;
     padding: 0.5rem 1rem;
@@ -285,19 +267,11 @@ a {
         transition: none;
     }
 }
+
 .nav-link:hover, .nav-link:focus {
     color:  #217D00;
 }
 
-.btn-outline-cancel {
-    color: #252525;
-    border-color: #252525;
-}
-.btn-outline-cancel:hover {
-    color: #fff;
-    background-color: #252525;
-    border-color: #252525;
-}
 /* modal */
 .modal-title{
     text-align: center;
@@ -319,190 +293,6 @@ input[type="radio"]:checked{
     padding-bottom: 3rem !important;
 }
 
-.card-wr{
-    background: var(--slimy-green);
-}
-
-.btn-red-danger{
-    background-color: var(--danger);
-    color: var(--white);
-}
-.btn-red-danger:hover{
-    color: var(--danger);
-    background: var(--white);
-    border-color: var(--danger);
-}
-.btn-red-danger:disabled, .btn-red-danger.disabled {
-    color: #fff;
-    background-color: #252525;
-    border-color: #252525;
-}
-
-
-.modal-wr{
-    border-radius: 25px;
-}
-
-.text-left{
-    text-align: left !important;
-}
-
-.p-5-title{
-    padding-top: 3rem !important;
-    padding-left: 3rem !important;
-    padding-right: 3rem !important;
-    padding-bottom: 1rem !important;
-}
-
-.nav-tabs>button.active,
-.nav-tabs>button.active:hover,
-.nav-tabs>button.active:focus {
-    color: #217D00;
-    cursor: default;
-    background-color: #fff;
-    font-weight: bold;
-    border: none;
-    border-bottom: 3px solid  #217D00;
-}
-
-.nav-tabs>button {
-    transition: none;
-    border-bottom: 1px solid #dee2e6;
-}
-
-.nav-tabs>button:hover {
-    border: none;
-    border-bottom: 1px solid #dee2e6;
-    margin-bottom: 0px;
-    /* font-size: initial; */
-}
-
-
-.nav-link {
-    display: block;
-    padding: 0.5rem 1rem;
-    color:  #217D00;
-    text-decoration: none;
-    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
-}
-@media (prefers-reduced-motion: reduce) {
-    .nav-link {
-        transition: none;
-    }
-}
-.nav-link:hover, .nav-link:focus {
-    color:  #217D00;
-}
-
-.btn-outline-cancel {
-    color: #252525;
-    border-color: #252525;
-}
-.btn-outline-cancel:hover {
-    color: #fff;
-    background-color: #252525;
-    border-color: #252525;
-}
-
-.viewall-wr{
-    padding-right: 6rem !important;
-    padding-left: 6rem !important;
-    padding-bottom: 3rem !important;
-}
-
-.card-wr{
-    background: var(--slimy-green);
-}
-
-.btn-red-danger{
-    background-color: var(--danger);
-    color: var(--white);
-}
-.btn-red-danger:hover{
-    color: var(--danger);
-    background: var(--white);
-    border-color: var(--danger);
-}
-.btn-red-danger:disabled, .btn-red-danger.disabled {
-    color: #fff;
-    background-color: #252525;
-    border-color: #252525;
-}
-
-.btn-small {
-    font-weight: bold;
-    /*border: 2px solid #fff;*/
-    /*border-radius: 1.5rem;*/
-    padding-block: 0.5rem;
-    padding-inline: 3rem;
-    font-size: 0.75rem;
-}
-
-.modal-wr{
-    border-radius: 25px;
-}
-
-.text-left{
-    text-align: left !important;
-}
-
-.p-5-title{
-    padding-top: 3rem !important;
-    padding-left: 3rem !important;
-    padding-right: 3rem !important;
-    padding-bottom: 1rem !important;
-}
-
-.nav-tabs>button.active,
-.nav-tabs>button.active:hover,
-.nav-tabs>button.active:focus {
-    color: #217D00;
-    cursor: default;
-    background-color: #fff;
-    font-weight: bold;
-    border: none;
-    border-bottom: 3px solid  #217D00;
-}
-
-.nav-tabs>button {
-    transition: none;
-    border-bottom: 1px solid #dee2e6;
-}
-
-.nav-tabs>button:hover {
-    border: none;
-    border-bottom: 1px solid #dee2e6;
-    margin-bottom: 0px;
-    /* font-size: initial; */
-}
-
-
-.nav-link {
-    display: block;
-    padding: 0.5rem 1rem;
-    color:  #217D00;
-    text-decoration: none;
-    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
-}
-@media (prefers-reduced-motion: reduce) {
-    .nav-link {
-        transition: none;
-    }
-}
-.nav-link:hover, .nav-link:focus {
-    color:  #217D00;
-}
-
-.btn-outline-cancel {
-    color: #252525;
-    border-color: #252525;
-}
-.btn-outline-cancel:hover {
-    color: #fff;
-    background-color: #252525;
-    border-color: #252525;
-}
-
 .bg-image-vertical {
     position: relative;
     overflow: hidden;
@@ -515,4 +305,36 @@ input[type="radio"]:checked{
     .h-custom-2 {
         height: 100%;
     }
+}
+
+/* pagination */
+.pagination > li > a
+{
+    background-color: white;
+    color: var(--raisin-black);
+}
+
+.pagination > li > a:focus,
+.pagination > li > a:hover,
+.pagination > li > span:focus,
+.pagination > li > span:hover
+{
+    color: #5a5a5a;
+    background-color: #eee;
+    border-color: #ddd;
+}
+
+.pagination > .active > a
+{
+    color: var(--white);
+    font-weight: bold;
+    background-color: var(--yellow-sun) !Important;
+    border: solid 1px var(--yellow-sun) !Important;
+}
+
+.pagination > .active > a:hover
+{
+    color: var(--white);
+    background-color: var(--yellow-sun-hover) !Important;
+    border: solid 1px var(--yellow-sun-hover);
 }

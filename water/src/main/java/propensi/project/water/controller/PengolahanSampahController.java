@@ -1,11 +1,8 @@
 package propensi.project.water.controller;
 
-import lombok.extern.slf4j.Slf4j;
 import propensi.project.water.model.Warehouse.BatchModel;
-import propensi.project.water.model.Warehouse.JenisItemModel;
 import propensi.project.water.model.Warehouse.WarehouseModel;
 import propensi.project.water.service.BatchService;
-import propensi.project.water.service.JenisItemService;
 import propensi.project.water.service.WarehouseService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +12,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -23,8 +19,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @RequestMapping("/pengolahan-sampah")
@@ -48,7 +42,7 @@ public class PengolahanSampahController {
         // get list of batches
         List<BatchModel> batches = batchService.getAll();
         model.addAttribute("batches", batches);
-        return "laporan-sampah/index";
+        return "laporan-sampah/viewall-batch";
     }
 
 
@@ -57,7 +51,7 @@ public class PengolahanSampahController {
         // Add BatchModel to model for use in Thymeleaf template
         model.addAttribute("batch", batchModel);
 
-        return "laporan-sampah/detail";
+        return "laporan-sampah/view-batch";
     }
 
     @PostMapping("/{batchModel}")

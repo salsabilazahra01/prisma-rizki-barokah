@@ -15,18 +15,17 @@
     <!-- Bootstrap icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
 </head>
+
 <body>
 <nav th:replace="fragments/fragment :: navbar('Laporan')"></nav>
 
 <div class="container mt-lg-5">
-    <div class="card m-4 p-4">
+    <div class="alert alert-success" role="alert" th:text="${success}" th:if="${success}"></div>
+    <div class="card m-4 p-4 rounded-25">
         <div class="card-body">
             <div class="justify-content-center">
 
                 <form th:action="@{/transaksi/viewall/} + ${jenis}" id="searchForm">
-
-                <div class="alert alert-success" role="alert" th:text="${success}" th:if="${success}"></div>
-                <br>
 
                 <!--title-->
                 <div class="row">
@@ -44,30 +43,19 @@
                     <nav th:replace="fragments/fragment-transaksi :: navbar('Pengeluaran')"></nav>
                 </div>
 
-                <!--total, tambah transaksi, search-->
+
+                <!--total, tambah transaksi-->
                 <div class="row mt-3">
                     <div class="col text-start">
                         <h6 class="h6">Total</h6>
-                        <h3 class="h4" th:text="'Rp ' + ${total} + ',00'"></h3>
+                        <h3 class="h4" th:text="${total == 0} ? 'Rp 0,00' : 'Rp ' + ${#numbers.formatDecimal(total, 0, 'POINT', 2, 'COMMA')}"></h3>
                     </div>
 
                     <div class="col text-end">
-                        <!-- search start -->
-<!--                        <div class="input-group input-icons d-inline">-->
-<!--                            <input class="input-field form-control" type="search" id="keyword" name="keyword"-->
-<!--                                   th:value="${keyword}" placeholder="ID Transaksi" style="border-radius: 1.5rem; width: 15rem">-->
-<!--                            <button type="submit" class="btn btn-secondary">-->
-<!--                                <i class="bi bi-search"></i>-->
-<!--                            </button>-->
-<!--                        </div>-->
-                        <!-- search end -->
-                        <div>
-                            <a type = "button" class = "btn-small btn-outline-primary-green h6 mt-4" th:href="@{/transaksi/add}">
-                                <span class="bi-plus"></span> Tambah Transaksi Baru
-                            </a>
-                        </div>
+                        <a type = "button" class = "btn-small btn-outline-primary-green h6 mt-4" th:href="@{/transaksi/add}">
+                            <span class="bi-plus"></span> Tambah Transaksi Baru
+                        </a>
                     </div>
-
                 </div>
                 <br>
 
@@ -77,6 +65,7 @@
                     <table class="table table-striped text-center align-middle">
                         <thead>
                         <tr>
+                            <th>No.</th>
                             <th>ID Transaksi</th>
                             <th>Tanggal, Waktu</th>
                             <th>Nominal Transaksi</th>
@@ -86,9 +75,10 @@
                         </thead>
                         <tbody>
                         <tr th:each="transaksi, iterationStatus : ${listTransaksi}">
+                            <td th:text="${firstItem} + ${iterationStatus.count} - 1"></td>
                             <td class="text-center" th:text="${transaksi.idTransaksi}"></td>
                             <td th:text="${#temporals.format(transaksi.tanggalTransaksi, 'dd-MM-yyyy HH:mm')}"></td>
-                            <td th:text="'Rp ' + ${transaksi.nominal} + ',00'"></td>
+                            <td th:text="'Rp ' + ${#numbers.formatDecimal(transaksi.nominal, 0, 'POINT', 2, 'COMMA')}"></td>
                             <td th:if="${#strings.equals(jenis, 'semua')}" th:text="${transaksi.jenisTransaksi} ? 'Pengeluaran':'Pendapatan'"></td>
                             <td>
                                 <a type="button" class="mx-2 btn-small btn-primary-green" th:href="@{/transaksi/view/} + ${transaksi.idTransaksi}">Detail</a>
@@ -100,18 +90,20 @@
                 </form>
 
                 <!-- pagination & page size -->
-                <div class="row flex-row-reverse text-end mt-4">
-                    <div>
-                        <div class="form-group">
-                            <label  class="d-inline-block" for="pageSize">Show: </label>
-                            <select form="searchForm" name="size" th:value="${pageSize}" onchange="changePageSize()" class="form-select d-inline-block" style="width:auto;"
-                                    id="pageSize">
-                                <option th:each="s : ${ {5, 10, 15, 20} }" th:value="${s}" th:text="${s}" th:selected="${s == pageSize}"></option>
-                            </select>
-                            <nav class="d-inline-block" aria-label="Pagination" th:if="${totalPages > 0}">
+                <div class="row mt-4 p3">
+                    <div class="col text-start">
+                        <label class="d-inline-block p3" for="pageSize">Show: </label>
+                        <select form="searchForm" name="size" th:value="${pageSize}" onchange="changePageSize()" class="form-select form-select-sm d-inline-block" style="width:auto;"
+                                id="pageSize">
+                            <option th:each="s : ${ {5, 10, 15, 20} }" th:value="${s}" th:text="${s}" th:selected="${s == pageSize}"></option>
+                        </select>
+                        <p class="d-inline-block p3" th:text="'Result: ' + ${firstItem} + '-' + ${lastItem} + ' of ' + ${totalItems}"></p>
+                    </div>
+                    <div class="col text-end">
+                        <nav class="d-inline-block" aria-label="Pagination" th:if="${totalPages > 0}">
                                 <ul class="pagination">
-                                    <li class="page-item font-weight-bold" th:classappend="${currentPage == 1} ? 'disabled'">
-                                        <a th:replace="fragments/fragment-transaksi :: paging(${jenis},${currentPage - 1}, 'Previous', 'Previous Page')"></a>
+                                    <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
+                                        <a class="fw-bold" th:replace="fragments/fragment-transaksi :: paging(${jenis},${currentPage - 1}, 'Previous', 'Previous Page')"></a>
                                     </li>
                                     <li class="page-item" th:classappend="${1 == currentPage} ? 'active'">
                                         <a th:replace="fragments/fragment-transaksi :: paging(${jenis},1, '1', 'First Page')"></a>
@@ -129,15 +121,15 @@
                                     <li class="page-item" th:classappend="${totalPages == currentPage} ? 'active'">
                                         <a th:replace="${totalPages != 1} ? ~{fragments/fragment-transaksi :: paging(${jenis}, ${totalPages}, ${totalPages}, 'Last Page')} : _"></a>
                                     </li>
-                                    <li class="page-item font-weight-bold" th:classappend="${currentPage == totalPages} ? 'disabled'">
-                                        <a th:replace="fragments/fragment-transaksi :: paging(${jenis}, ${currentPage + 1},'Next', 'Next Page')"></a>
+                                    <li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled'">
+                                        <a class="fw-bold" th:replace="fragments/fragment-transaksi :: paging(${jenis}, ${currentPage + 1},'Next', 'Next Page')"></a>
                                     </li>
                                 </ul>
                             </nav>
-                        </div>
                     </div>
                 </div>
                 <!-- end pagination & page size -->
+
 
             </div>
         </div>
@@ -150,7 +142,6 @@
 <script src="/script.js"></script>
 
 <!-- Table and Pagination Bar -->
-
 <script type="text/javascript">
     function changePageSize() {
         document.getElementById('searchForm').submit()

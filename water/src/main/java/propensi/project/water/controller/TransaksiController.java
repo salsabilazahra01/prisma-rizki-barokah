@@ -13,6 +13,7 @@ import propensi.project.water.model.Transaksi.ProsesLainModel;
 import propensi.project.water.model.Transaksi.TransaksiModel;
 import propensi.project.water.service.TransaksiService;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Slf4j
@@ -27,13 +28,17 @@ public class TransaksiController {
     public String addTransaksiForm(Model model){
         ProsesLainModel transaksiManual = new ProsesLainModel();
         transaksiManual.setProses(2);
+        transaksiManual.setTanggalDibuat(LocalDateTime.now());
         model.addAttribute("transaksi", transaksiManual);
         return "laporan-transaksi/add-transaksi-form";
     }
 
     @PostMapping(value = "/add")
-    public String addTransaksiSubmit(@ModelAttribute ProsesLainModel transaksiManual){
+    public String addTransaksiSubmit(@ModelAttribute ProsesLainModel transaksiManual,
+                                     RedirectAttributes redirectAttrs
+    ){
         transaksiService.addTransaksiManual(transaksiManual);
+        redirectAttrs.addFlashAttribute("success","Transaksi baru berhasil ditambahkan");
         return "redirect:/transaksi/viewall/semua";
     }
 
@@ -45,49 +50,60 @@ public class TransaksiController {
                                     @RequestParam(defaultValue = "5") int size) {
 
         try{
-            List<TransaksiModel> listTransaksi;
             Pageable paging = PageRequest.of(page - 1, size);
 
             Page<TransaksiModel> pageTransaksi;
             if (keyword == null) {
                 if (jenis.equals("semua")){
-                    pageTransaksi = transaksiService.retrieveAllTransaksi(paging, null);
+                    pageTransaksi = transaksiService.retrievePage(paging, null);
                 } else if(jenis.equals("pendapatan")){
-                    pageTransaksi = transaksiService.retrieveAllTransaksi(paging,Boolean.FALSE);
+                    pageTransaksi = transaksiService.retrievePage(paging,Boolean.FALSE);
                 } else {
-                    pageTransaksi = transaksiService.retrieveAllTransaksi(paging,Boolean.TRUE);
+                    pageTransaksi = transaksiService.retrievePage(paging,Boolean.TRUE);
                 }
             } else {
                 if (jenis.equals("semua")){
-                    pageTransaksi = transaksiService.retrieveAllTransaksiIdContaining(keyword, paging, null);
+                    pageTransaksi = transaksiService.retrievePageIdContaining(keyword, paging, null);
                 } else if(jenis.equals("pendapatan")){
-                    pageTransaksi = transaksiService.retrieveAllTransaksiIdContaining(keyword, paging, Boolean.FALSE);
+                    pageTransaksi = transaksiService.retrievePageIdContaining(keyword, paging, Boolean.FALSE);
                 } else {
-                    pageTransaksi = transaksiService.retrieveAllTransaksiIdContaining(keyword, paging, Boolean.TRUE);
+                    pageTransaksi = transaksiService.retrievePageIdContaining(keyword, paging, Boolean.TRUE);
                 }
                 model.addAttribute("keyword", keyword);
             }
 
-            listTransaksi = pageTransaksi.getContent();
+            List<TransaksiModel> listPageTransaksi = pageTransaksi.getContent();
+            List<TransaksiModel> listAllTransaksi = transaksiService.retrieveListAllTransaksi();
 
             int total = 0;
-            for(TransaksiModel transaksi : listTransaksi){
+            for(TransaksiModel transaksi : listAllTransaksi){
                 if(jenis.equals("semua")){
                     if(transaksi.getJenisTransaksi()){
                         total -= transaksi.getNominal();
                     } else {
                         total += transaksi.getNominal();
                     }
+                } else if(jenis.equals("pendapatan")){
+                    if(!transaksi.getJenisTransaksi()){
+                        total += transaksi.getNominal();
+                    }
                 } else {
-                    total += transaksi.getNominal();
+                    if(transaksi.getJenisTransaksi()){
+                        total += transaksi.getNominal();
+                    }
                 }
             }
 
+            Integer firstItem = (pageTransaksi.getNumber() + 1)*size-size+1;
+            Integer lastItem = firstItem + listPageTransaksi.size() -1;
+
             model.addAttribute("currentPage", pageTransaksi.getNumber() + 1);
+            model.addAttribute("firstItem", firstItem);
+            model.addAttribute("lastItem", lastItem);
             model.addAttribute("totalItems", pageTransaksi.getTotalElements());
             model.addAttribute("totalPages", pageTransaksi.getTotalPages());
             model.addAttribute("pageSize", size);
-            model.addAttribute("listTransaksi", listTransaksi);
+            model.addAttribute("listTransaksi", listPageTransaksi);
             model.addAttribute("jenis", jenis);
             model.addAttribute("total", total);
         } catch (Exception e) {

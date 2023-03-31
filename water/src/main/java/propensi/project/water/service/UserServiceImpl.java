@@ -26,17 +26,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserModel addUser(UserModel user) {
-        String pass = encrypt(user.getPassword());
-        user.setPassword(pass);
-
-        return userDb.save(user);
+        user.setPassword(encrypt(user.getPassword()));
+        userDb.save(user);
+        return user;
     }
 
     @Override
     public String encrypt(String password) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String hashedPassword = passwordEncoder.encode(password);
-
         return hashedPassword;
     }
 
@@ -62,10 +60,12 @@ public class UserServiceImpl implements UserService {
 
         return null;
     }
+
     @Override
     public void deleteUser(UserModel user) {
         userDb.delete(user);
     }
+
     @Override
     public Boolean checkPassword(UserModel user, String password) {
         return new BCryptPasswordEncoder().matches(password, user.getPassword());

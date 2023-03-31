@@ -7,6 +7,8 @@ import propensi.project.water.model.Transaksi.ProsesPenawaranOlahanModel;
 import propensi.project.water.model.Transaksi.ProsesPenawaranSampahModel;
 import propensi.project.water.model.Transaksi.TransaksiModel;
 
+import java.util.List;
+
 public interface TransaksiService {
 
     // add transaksi automatically (integrated with other features)
@@ -14,8 +16,9 @@ public interface TransaksiService {
 
     // add transaksi manually
     void addTransaksiManual(ProsesLainModel transaksiManual);
-    Page<TransaksiModel> retrieveAllTransaksi(Pageable paging, Boolean jenis);
-    Page<TransaksiModel> retrieveAllTransaksiIdContaining(String keyword, Pageable paging, Boolean jenis);
+    List<TransaksiModel> retrieveListAllTransaksi();
+    Page<TransaksiModel> retrievePage(Pageable paging, Boolean jenis);
+    Page<TransaksiModel> retrievePageIdContaining(String keyword, Pageable paging, Boolean jenis);
     TransaksiModel retrieveTransaksiById(String id);
     ProsesPenawaranSampahModel getTransaksiPenawaranSampah(String idTransaksi);
     ProsesPenawaranOlahanModel getTransaksiPenawaranOlahan(String idTransaksi);

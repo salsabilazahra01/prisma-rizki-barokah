@@ -14,6 +14,7 @@ import propensi.project.water.repository.TransaksiDb.TransaksiDb;
 import propensi.project.water.repository.TransaksiDb.ProsesLainDb;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -42,21 +43,26 @@ public class TransaksiServiceImpl implements TransaksiService {
     }
 
     @Override
-    public Page<TransaksiModel> retrieveAllTransaksi(Pageable paging, Boolean jenis){
-        if (jenis == null){
-            return transaksiDb.findAll(paging);
-        }
-        return transaksiDb.findAllByJenisTransaksi(jenis, paging);
+    public List<TransaksiModel> retrieveListAllTransaksi(){
+        return transaksiDb.findAll();
     }
 
     @Override
-    public Page<TransaksiModel> retrieveAllTransaksiIdContaining(String keyword,
+    public Page<TransaksiModel> retrievePage(Pageable paging, Boolean jenis){
+        if (jenis == null){
+            return transaksiDb.findAllByIdTransaksiIsNotNullOrderByTanggalDibuat(paging);
+        }
+        return transaksiDb.findAllByJenisTransaksiOrderByTanggalDibuat(jenis, paging);
+    }
+
+    @Override
+    public Page<TransaksiModel> retrievePageIdContaining(String keyword,
                                                                  Pageable paging,
                                                                  Boolean jenis){
         if (jenis == null){
-            return transaksiDb.findByIdTransaksiContainingIgnoreCase(keyword,paging);
+            return transaksiDb.findByIdTransaksiContainingIgnoreCaseOrderByTanggalDibuat(keyword,paging);
         }
-        return transaksiDb.findByIdTransaksiContainingIgnoreCaseAndJenisTransaksi(jenis,keyword,paging);
+        return transaksiDb.findByIdTransaksiContainingIgnoreCaseAndJenisTransaksiOrderByTanggalDibuat(jenis,keyword,paging);
     }
 
 

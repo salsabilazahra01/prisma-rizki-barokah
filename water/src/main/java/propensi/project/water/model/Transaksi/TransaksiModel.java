@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -22,7 +23,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Inheritance(strategy = InheritanceType.JOINED)
-public class TransaksiModel implements Serializable {
+public class TransaksiModel implements Serializable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "transaksi_seq")
@@ -55,4 +56,9 @@ public class TransaksiModel implements Serializable {
     @NotNull
     @Column(name = "proses", nullable = false)
     private Integer proses;
+
+    @NotNull
+    @Column(name= "tanggal_dibuat", nullable = false, updatable = false)
+    @CreationTimestamp
+    private LocalDateTime tanggalDibuat;
 }
