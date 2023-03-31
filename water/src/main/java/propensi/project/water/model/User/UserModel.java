@@ -42,9 +42,11 @@ public class UserModel implements Serializable {
     @Column(name = "role")
     private Role role;
 
-    @NotNull
-    @Column(name = "email_hp", nullable = false, unique = true)
-    private String emailHp;
+    @Column(name = "email", nullable = true, unique = true)
+    private String email;
+
+    @Column(name = "hp", nullable = true, unique = true)
+    private String hp;
 
     @NotNull
     @Lob
