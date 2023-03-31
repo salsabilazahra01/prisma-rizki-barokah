@@ -20,58 +20,58 @@
 
 <nav th:replace="fragments/fragment :: navbar('')"></nav>
 
-    <div class = "container justify-content-center">
-        <div class = "row my-5">
-            <div class = "col">
-                <h1 class = "h2 text-center">Registrasi Sebagai</h1>
-            </div>
+<div class = "container justify-content-center my-5 py-3">
+    <div class = "row">
+        <div class = "col">
+            <h1 class = "h2 text-center">Registrasi Sebagai</h1>
         </div>
+    </div>
 
-        <div class="row row-cols-1 row-cols-md-3 g-4">
-            <div class="col">
-                <div class="card h-100">
-                    <img src="images/blog-1-img.jpg" class="card-img-top"/>
-                    <div class="card-body">
-                        <h5 class="card-title">Donatur</h5>
-                        <p class="card-text">
-                            This is a wider card with supporting text below as a natural lead-in to
-                            additional content. This content is a little bit longer.
-                        </p>
-                    </div>
-                    <div class="card-footer">
-                        <a type = "button" class="link-primary" th:href="@{/donatur/add}">Register as Donatur</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card h-100">
-                    <img src="images/blog-2-img.jpg" class="card-img-top"/>
-                    <div class="card-body">
-                        <h5 class="card-title">Customer</h5>
-                        <p class="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
-                    </div>
-                    <div class="card-footer">
-                        <a type = "button" class="link-primary" th:href="@{/customer/add}">Register as Customer</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card h-100">
-                    <img src="images/blog-1-img.jpg" class="card-img-top"/>
-                    <div class="card-body">
-                        <h5 class="card-title">Partner</h5>
-                        <p class="card-text">
-                            This is a wider card with supporting text below as a natural lead-in to
-                            additional content. This card has even longer content than the first to show
-                            that equal height action.
-                        </p>
-                    </div>
-                    <div class="card-footer">
-                        <a type = "button" class = "link-primary " th:href="@{/partner/add}">Register as Partner</a>
-                    </div>
+    <div class="row gx-md-5 my-3 py-3">
+        <div class="col-lg-4 d-flex align-items-stretch">
+            <div class="card rounded-25 text-center">
+                <img src="images/img-donasi.jpg" class="card-img-top rounded-top-25"/>
+                <div class="card-body d-flex flex-column py-4">
+                    <h4 class="h4">Donatur</h4>
+                    <p class="p3">
+                        Sebagai donatur, Anda dapat mendonasikan sampah plastik
+                        yang ada di rumah Anda dan mendapatkan poin sebagai imbalan
+                        yang nantinya dapat ditukarkan menjadi uang ataupun barang.
+                    </p>
+                    <a type="button" class="mt-auto mx-2 btn btn-primary-green" th:href="@{/donatur/add}">Register as Donatur</a>
                 </div>
             </div>
         </div>
+        <div class="col-lg-4 d-flex align-items-stretch">
+            <div class="card rounded-25 text-center">
+                <img src="images/img-handshake.jpg" class="card-img-top rounded-top-25"/>
+                <div class="card-body d-flex flex-column py-4">
+                    <h4 class="h4">Partner</h4>
+                    <p class="p3">
+                        Sebagai partner, Anda dapat menjalin kerjasama dengan kami
+                        dan menjualkan sampah plastik Anda dengan harga yang
+                        bersaing. Jadilah partner apabila Anda memiliki usaha
+                        seperti pelapak sampah, bank sampah, dan lain-lain.
+                    </p>
+                    <a type="button" class="mt-auto mx-2 btn btn-primary-green" th:href="@{/partner/add}">Register as Partner</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 d-flex align-items-stretch">
+            <div class="card rounded-25 text-center">
+                <img src="images/img-penjualan-hasil-olahan.jpg" class="card-img-top rounded-top-25"/>
+                <div class="card-body d-flex flex-column py-4">
+                    <h4 class="h4">Customer</h4>
+                    <p class="p3">
+                        Sebagai customer, Anda dapat membeli bulir hasil olahan
+                        sampah plastik kami yang berkualitas tinggi dengan harga
+                        bersaing.
+                    </p>
+                    <a type="button" class="mt-auto mx-2 btn btn-primary-green" th:href="@{/customer/add}">Register as Customer</a>
+                </div>
+            </div>
+        </div>
+    </div>
 
 <!--        <div class = "row gx-md-5">-->
 <!--            <div class = "col-md-4">-->
@@ -107,11 +107,10 @@
 <!--                </div>-->
 <!--            </div>-->
 
-        </div>
     </div>
+</div>
 
-
-<!--<footer th:replace="fragments/fragment :: footer"></footer>-->
+<footer th:replace="fragments/fragment :: footer"></footer>
 
 <script src = "/bootstrap/js/bootstrap.js"></script>
 <script src="/script.js"></script>
