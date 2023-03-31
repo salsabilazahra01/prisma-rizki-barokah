@@ -30,11 +30,11 @@
 
         <!-- button & id -->
         <div class="row my-3">
-            <p>
-                <a type = "button" class = "btn-small btn-outline-raisin-black h6 me-3" th:href="@{/transaksi/view/} + ${transaksi.idTransaksi}">
+            <p class="c3">
+                <a type = "button" class = "btn-small btn-outline-raisin-black h6 me-4" th:href="@{/transaksi/view/} + ${transaksi.idTransaksi}">
                     <i class="bi-chevron-left"></i> Back
                 </a>
-                <i class="c3" th:text="${transaksi.idTransaksi}"></i>
+                <text class="c3" th:text="${transaksi.idTransaksi}"></text>
             </p>
         </div>
 
@@ -48,7 +48,7 @@
               th:object="${transaksi}" class="needs-validation" novalidate method="POST">
 
             <!-- card form -->
-            <div class="card rounded-3 shadow-sm m-2 p-2">
+            <div class="card rounded-25 shadow-sm m-2 p-2">
                 <div class="card-body">
                     <div class="row">
 
@@ -133,8 +133,8 @@
 
                             <!--Nominal-->
                             <div class="mt-5 mb-3">
-                                <label class="h5" for="nominal">Nominal Transaksi (Rupiah)<span th:if="${transaksi.proses}==2" class="text-danger"> *</span></label>
-                                <input th:if="${transaksi.proses == 2}" type="text" pattern="^[0-9]*$" name="nominal" class="form-control" id="nominal" required="required" th:field="*{nominal}"/>
+                                <label class="h5 " for="nominal">Nominal Transaksi (Rupiah)<span th:if="${transaksi.proses}==2" class="text-danger"> *</span></label>
+                                <input th:if="${transaksi.proses == 2}" type="text" pattern="^[0-9]*$" max="2147483647" name="nominal" class="form-control" id="nominal" required="required" th:field="*{nominal}"/>
                                 <div class="invalid-feedback">
                                     Masukkan nominal dalam bentuk angka
                                 </div>

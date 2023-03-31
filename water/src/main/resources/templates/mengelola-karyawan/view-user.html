@@ -23,20 +23,20 @@
 
   <div class="container my-5">
 
-    <!-- button & id -->
-    <div class="row my-3">
-      <p class="c3">
-        <a type="button" class="btn-small btn-outline-raisin-black h6 me-4" th:href="@{/manajemen-user/viewall/}"><i class="bi-chevron-left"></i>
-          Back
-        </a>
-        <text th:text="${user.username}" class="c2"></text>
-      </p>
-    </div>
-
     <!-- alert -->
     <div class="alert alert-success" role="alert" th:text="${success}" th:if="${success}"></div>
     <div class="alert alert-danger" role="alert" th:text="${failedUpdate}" th:if="${failedUpdate}"></div>
 
+    <!-- button & id -->
+    <div class="row my-3">
+      <p class="c3">
+        <a type="button" class="btn-small btn-outline-raisin-black h6 me-4" th:href="@{/manajemen-user/viewall/}">
+          <i class="bi-chevron-left"></i>
+          Back
+        </a>
+        <text th:text="${user.username}" class="c3"></text>
+      </p>
+    </div>
 
     <!-- title -->
     <div class="row mt-3 mb-4">
@@ -44,62 +44,62 @@
     </div>
 
     <!-- detail -->
-    <div class="card rounded-3 shadow-sm m-2 p-2">
+    <div class="card rounded-25 shadow-sm m-2 p-2">
       <div class="card-body">
         <div class="row">
           <div class="col-4 px-5">
             <div class="mb-5 mt-3">
               <p2 class="p2">Username</p2>
-              <h3 class="h4" th:text="'@'+${user.username}"></h3>
+              <h4 class="h4" th:text="'@'+${user.username}"></h4>
             </div>
             <div class="my-5">
               <p2 class="p2">Nama</p2>
-              <h3 class="h4" th:text="${user.nama}"></h3>
+              <h4 class="h4" th:text="${user.nama}"></h4>
             </div>
             <div th:if="${#strings.equals(user.role.toString(), 'PARTNER')}" >
               <div class="my-5">
                 <p2 class="p2">Nama PIC</p2>
-                <h3 class="h4" th:text="${user.namaPic}"></h3>
+                <h4 class="h4" th:text="${user.namaPic}"></h4>
               </div>
             </div>
             <div th:if="${#strings.equals(user.role.toString(), 'CUSTOMER')}" >
               <div class="my-5">
                 <p2 class="p2">Nama PIC</p2>
-                <h3 class="h4" th:text="${user.namaPic}"></h3>
+                <h4 class="h4" th:text="${user.namaPic}"></h4>
               </div>
             </div>
             <div th:if="${#strings.equals(user.role.toString(), 'DONATUR')}" >
               <div class="my-5">
                 <p2 class="p2">Poin</p2>
-                <h3 class="h4" th:text="${user.poin.toString()}"></h3>
+                <h4 class="h4" th:text="${user.poin.toString()}"></h4>
               </div>
             </div>
           </div>
           <div class="col-4 px-5">
             <div class="mb-5 mt-3">
               <p2 class="p2">Posisi</p2>
-              <h3 class="h4" th:text="${user.role}"></h3>
+              <h4 class="h4" th:text="${user.role}"></h4>
             </div>
             <div class="my-5">
               <p2 class="p2">Kontak (Email/Nomor Telepon)</p2>
-              <h3 class="h4" th:text="${user.emailHp}"></h3>
+              <h4 class="h4" th:text="${user.emailHp}"></h4>
             </div>
             <div th:if="${#strings.equals(user.role.toString(), 'PARTNER')}" >
               <div class="my-5">
                 <p2 class="p2">Alamat</p2>
-                <h3 class="h4" th:text="${user.alamat}"></h3>
+                <h4 class="h4" th:text="${user.alamat}"></h4>
               </div>
             </div>
             <div th:if="${#strings.equals(user.role.toString(), 'CUSTOMER')}" >
               <div class="my-5">
                 <p2 class="p2">Alamat</p2>
-                <h3 class="h4" th:text="${user.alamat}"></h3>
+                <h4 class="h4" th:text="${user.alamat}"></h4>
               </div>
             </div>
             <div th:if="${#strings.equals(user.role.toString(), 'DONATUR')}" >
               <div class="my-5">
                 <p2 class="p2">Alamat</p2>
-                <h3 class="h4" th:text="${user.alamat}"></h3>
+                <h4 class="h4" th:text="${user.alamat}"></h4>
               </div>
             </div>
           </div>
@@ -109,7 +109,7 @@
             <div class="col-4">
               <a type="button" class="mx-2 btn-small btn-primary-green" th:href="@{/manajemen-user/update(username=${user.username})}">Update</a>
 
-              <button type="button" class="mx-2 btn-small btn-danger"  data-bs-toggle="modal" data-bs-target="#deleteKaryawan">
+              <button type="button" class="mx-2 btn-small btn-red-danger"  data-bs-toggle="modal" data-bs-target="#deleteKaryawan">
                 Delete
               </button>
 
@@ -117,14 +117,14 @@
               <div class="modal fade" id="deleteKaryawan" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered text-center justify-content-center">
                   <div class="modal-content">
-                    <div class="modal-header">
+                    <div class="modal-header text-center">
                       <h6 class="modal-title h6" id="exampleModalLabel">Hapus Karyawan</h6>
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="modal-body p3" th:text="'Apakah Anda yakin ingin menghapus karyawan dengan Username ' + ${user.username} + ' ?'"></div>
+                    <div class="modal-body p3" th:text="'Apakah Anda yakin ingin menghapus karyawan dengan username ' + ${user.username} + ' ?'"></div>
                     <div class="modal-footer justify-content-center">
                       <button type="button" class="btn-small btn-outline-raisin-black" data-bs-dismiss="modal">Cancel</button>
-                      <a type="button" class="btn-small btn-danger" th:href="@{/manajemen-user/delete/} + ${user.username}">Ya, hapus</a>
+                      <a type="button" class="btn-small btn-red-danger" th:href="@{/manajemen-user/delete/} + ${user.username}">Ya, hapus</a>
                     </div>
                   </div>
                 </div>
@@ -140,6 +140,8 @@
   </div>
 
 </div>
+
+<footer th:replace="fragments/fragment :: footer"></footer>
 
 <script src = "/bootstrap/js/bootstrap.js"></script>
 <script src="/script.js"></script>

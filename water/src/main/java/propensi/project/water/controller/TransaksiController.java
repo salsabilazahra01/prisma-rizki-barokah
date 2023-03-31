@@ -29,8 +29,11 @@ public class TransaksiController {
     }
 
     @PostMapping(value = "/add")
-    public String addTransaksiSubmit(@ModelAttribute ProsesLainModel transaksiManual){
+    public String addTransaksiSubmit(@ModelAttribute ProsesLainModel transaksiManual,
+                                     RedirectAttributes redirectAttrs
+    ){
         transaksiService.addTransaksiManual(transaksiManual);
+        redirectAttrs.addFlashAttribute("success","Transaksi baru berhasil ditambahkan");
         return "redirect:/transaksi/viewall/semua";
     }
 

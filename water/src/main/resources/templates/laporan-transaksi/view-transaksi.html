@@ -23,26 +23,26 @@
 
     <div class="container my-5">
 
-        <!-- button & id -->
-        <div class="row my-3">
-            <p>
-                <a type = "button" class = "btn-small btn-outline-raisin-black h6 me-3" th:href="@{/transaksi/viewall/semua}">
-                    <i class="bi-chevron-left"></i> Back
-                </a>
-                <i class="c3" th:text="${transaksi.idTransaksi}"></i>
-            </p>
-        </div>
-
         <!-- alert -->
         <div class="alert alert-success" role="alert" th:text="${success}" th:if="${success}"></div>
 
+        <!-- button & id -->
+        <div class="row my-3">
+            <p class="c3">
+                <a type = "button" class = "btn-small btn-outline-raisin-black h6 me-4" th:href="@{/transaksi/viewall/semua}">
+                    <i class="bi-chevron-left"></i> Back
+                </a>
+                <text class="c3" th:text="${transaksi.idTransaksi}"></text>
+            </p>
+        </div>
+
         <!-- title -->
         <div class="row mt-3 mb-4">
-            <h2 class="h2">Daftar Transaksi Perusahaan</h2>
+            <h2 class="h2">Detail Transaksi</h2>
         </div>
 
         <!-- detail -->
-        <div class="card rounded-3 shadow-sm m-2 p-2">
+        <div class="card rounded-25 shadow-sm m-2 p-2">
             <div class="card-body">
                 <div class="row">
                     <div class="col-4 px-5">
@@ -87,7 +87,7 @@
                 <div class="row flex-row-reverse text-end">
                     <div class="col-4">
                         <a type="button" class="mx-2 btn-small btn-primary-green" th:href="@{/transaksi/update/} + ${transaksi.idTransaksi}">Update</a>
-                        <button th:if="${transaksi.proses == 2}" type="button" class="mx-2 btn-small btn-danger"  data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        <button th:if="${transaksi.proses == 2}" type="button" class="mx-2 btn-small btn-red-danger"  data-bs-toggle="modal" data-bs-target="#exampleModal">
                             Delete
                         </button>
 
@@ -102,7 +102,7 @@
                                     <div class="modal-body p3" th:text="'Apakah Anda yakin ingin menghapus transaksi dengan ID ' + ${transaksi.idTransaksi} + '?'"></div>
                                     <div class="modal-footer justify-content-center">
                                         <button type="button" class="btn-small btn-outline-raisin-black" data-bs-dismiss="modal">Cancel</button>
-                                        <a type="button" class="btn-small btn-danger" th:href="@{/transaksi/delete/} + ${transaksi.idTransaksi}">Ya, hapus</a>
+                                        <a type="button" class="btn-small btn-red-danger" th:href="@{/transaksi/delete/} + ${transaksi.idTransaksi}">Ya, hapus</a>
                                     </div>
                                 </div>
                             </div>

@@ -93,7 +93,7 @@
         <ul class="navbar-nav pull-right mr-sm-2">
             <a th:href="@{/}" class="btn btn-yellow-sun text-dark mx-2" sec:authorize="hasAuthority('DONATUR')"><span class="px-2">0 Points</span></a>
             <a th:href="@{/login}" class="btn btn-primary-green mx-2" sec:authorize="isAnonymous()">Login</a>
-            <a th:href="@{/logout}" class="btn btn-outline-danger mx-2" sec:authorize="isAuthenticated()">Logout</a>
+            <a th:href="@{/logout}" class="btn btn-outline-red-danger mx-2" sec:authorize="isAuthenticated()">Logout</a>
         </ul>
     </div>
 </nav>
