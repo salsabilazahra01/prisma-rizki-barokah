@@ -46,6 +46,18 @@ public class PartnerController {
         String password = partner.getPassword();
         String passwordConfirmer = request.getParameter("passwordConfirmer");
 
+        if (partner.getEmail().isEmpty() && partner.getHp().isEmpty()) {
+            return "partner/failed-add-partner";
+        }
+
+        if (partner.getEmail().equals("")) {
+            partner.setEmail(null);
+        }
+
+        if (partner.getHp().equals("")) {
+            partner.setHp(null);
+        }
+
         for (UserModel user : userService.getListUser()) {
             if (user.getUsername().equals(partner.getUsername())) {
                 return "partner/failed-add-partner";

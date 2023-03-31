@@ -43,6 +43,18 @@ public class DonaturController {
         String password = donatur.getPassword();
         String passwordConfirmer = request.getParameter("passwordConfirmer");
 
+        if (donatur.getEmail().isEmpty() && donatur.getHp().isEmpty()) {
+            return "donatur/failed-add-donatur";
+        }
+
+        if (donatur.getEmail().equals("")) {
+            donatur.setEmail(null);
+        }
+
+        if (donatur.getHp().equals("")) {
+            donatur.setHp(null);
+        }
+
         for (UserModel user : userService.getListUser()) {
             if (user.getUsername().equals(donatur.getUsername())) {
                 return "donatur/failed-add-donatur";
