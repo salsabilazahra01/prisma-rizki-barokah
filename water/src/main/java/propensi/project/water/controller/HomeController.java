@@ -50,7 +50,8 @@ public class HomeController {
                 ManajerModel manajer = new ManajerModel();
                 manajer.setNama("Manajer Perusahaan");
                 manajer.setRole(Role.MANAJER);
-                manajer.setEmailHp("water@gmail.com");
+                manajer.setEmail("water@gmail.com");
+                manajer.setHp("08123456789");
                 manajer.setUsername("manajerwater");
                 manajer.setPassword("Test1234!");
 
@@ -68,7 +69,8 @@ public class HomeController {
                 ManajerModel manajer = new ManajerModel();
                 manajer.setNama("Manajer Perusahaan");
                 manajer.setRole(Role.MANAJER);
-                manajer.setEmailHp("water@gmail.com");
+                manajer.setEmail("water@gmail.com");
+                manajer.setHp("08123456789");
                 manajer.setUsername("manajerwater");
                 manajer.setPassword("Test1234!");
 
@@ -86,7 +88,8 @@ public class HomeController {
                 ManajerModel manajer = new ManajerModel();
                 manajer.setNama("Manajer Perusahaan");
                 manajer.setRole(Role.MANAJER);
-                manajer.setEmailHp("water@gmail.com");
+                manajer.setEmail("water@gmail.com");
+                manajer.setHp("08123456789");
                 manajer.setUsername("manajerwater");
                 manajer.setPassword("Test1234!");
 

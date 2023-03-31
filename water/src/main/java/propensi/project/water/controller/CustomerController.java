@@ -44,6 +44,18 @@ public class CustomerController {
         String password = customer.getPassword();
         String passwordConfirmer = request.getParameter("passwordConfirmer");
 
+        if (customer.getEmail().isEmpty() && customer.getHp().isEmpty()) {
+            return "customer/failed-add-customer";
+        }
+
+        if (customer.getEmail().equals("")) {
+            customer.setEmail(null);
+        }
+
+        if (customer.getHp().equals("")) {
+            customer.setHp(null);
+        }
+
         for (UserModel user : userService.getListUser()) {
             if (user.getUsername().equals(customer.getUsername())) {
                 return "customer/failed-add-customer";
