@@ -81,8 +81,12 @@
               <h4 class="h4" th:text="${user.role}"></h4>
             </div>
             <div class="my-5">
-              <p2 class="p2">Kontak (Email/Nomor Telepon)</p2>
-              <h4 class="h4" th:text="${user.emailHp}"></h4>
+              <p2 class="p2">Email</p2>
+              <h4 class="h4" th:text="${user.email != null} ? ${user.email} : '-'"></h4>
+            </div>
+            <div class="my-5">
+              <p2 class="p2">Nomor Telepon</p2>
+              <h4 class="h4" th:text="${user.hp != null} ? ${user.hp} : '-'"></h4>
             </div>
             <div th:if="${#strings.equals(user.role.toString(), 'PARTNER')}" >
               <div class="my-5">
@@ -104,7 +108,9 @@
             </div>
           </div>
         </div>
-        <div th:if="${#strings.equals(user.role.toString(), 'MANAJER') or #strings.equals(user.role.toString(), 'SUPERVISOR') or #strings.equals(user.role.toString(), 'PEKERJA') or #strings.equals(user.role.toString(), 'TEKNISI')}">
+        <!-- check if logged user equals the user viewed-->
+        <div th:unless="${#strings.equals(user.username, userSession.username)}">
+          <div th:if="${#strings.equals(user.role.toString(), 'MANAJER') or #strings.equals(user.role.toString(), 'SUPERVISOR') or #strings.equals(user.role.toString(), 'PEKERJA') or #strings.equals(user.role.toString(), 'TEKNISI')}">
           <div class="row flex-row-reverse text-end">
             <div class="col-4">
               <a type="button" class="mx-2 btn-small btn-primary-green" th:href="@{/manajemen-user/update(username=${user.username})}">Update</a>
@@ -133,6 +139,7 @@
 
             </div>
           </div>
+        </div>
         </div>
       </div>
     </div>

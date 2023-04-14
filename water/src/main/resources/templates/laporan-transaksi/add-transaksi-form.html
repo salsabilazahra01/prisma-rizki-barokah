@@ -39,8 +39,7 @@
 
         <!-- form -->
         <form th:action="@{/transaksi/add}" th:object="${transaksi}" method="POST">
-            <input type="hidden" th:field="*{tanggalDibuat}">
-            <input type="hidden" th:field="*{proses}"/>
+        <input type="hidden" th:field="*{proses}"/>
         <div class="container my-2">
         <div class = "card rounded-25">
             <div class="card-body">
