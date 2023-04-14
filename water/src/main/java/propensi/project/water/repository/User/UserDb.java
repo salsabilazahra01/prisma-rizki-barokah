@@ -14,5 +14,7 @@ public interface UserDb extends JpaRepository<UserModel, String> {
     List<UserModel> findAll();
     void delete(UserModel user);
 
-    // Optional<UserModel> findByEmailHp(String email);
+     Optional<UserModel> findByEmail(String email);
+
+     Optional<UserModel> findByHp(String hp);
 }

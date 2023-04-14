@@ -11,6 +11,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import propensi.project.water.model.User.UserModel;
 import propensi.project.water.service.MengelolaKaryawanService;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,12 +45,15 @@ public class MengelolaKaryawanController {
     private String retrieveUserDetail(
             Model model,
             @PathVariable(name="username") String username,
-            String role
+            String role,
+            Principal principal
     ){
+        UserModel userSession = mengelolaKaryawanService.retrieveUserDetail(principal.getName());
         UserModel user = mengelolaKaryawanService.retrieveUserDetail(username);
 
         model.addAttribute("role", role);
         model.addAttribute("user", user);
+        model.addAttribute("userSession", userSession);
 
         return "mengelola-karyawan/view-user";
     }
@@ -92,10 +96,9 @@ public class MengelolaKaryawanController {
             @ModelAttribute UserModel user,
             RedirectAttributes redirectAttributes
             ){
-        boolean uniqueValueConstraintIsTrue = mengelolaKaryawanService.uniqueValueConstraintUpdate(user);
 
         // new kontak is not unique
-        if (!uniqueValueConstraintIsTrue) {
+        if (!mengelolaKaryawanService.uniqueValueConstraintUpdate(user)) {
             System.out.println("masuk di false controller");
             redirectAttributes.addFlashAttribute("failedUpdate",
                     String.format("Email dan Nomor Telepon harus unik"));

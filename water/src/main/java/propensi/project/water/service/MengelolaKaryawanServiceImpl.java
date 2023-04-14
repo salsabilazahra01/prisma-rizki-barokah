@@ -34,11 +34,24 @@ public class MengelolaKaryawanServiceImpl implements MengelolaKaryawanService{
 
     @Override
     public boolean uniqueValueConstraint(UserModel user) {
-        Optional<UserModel> uniqueUsername =  userDb.findByUsername(user.getUsername());
-        Optional<UserModel> uniqueEmail = userDb.findByEmailHp(user.getEmailHp());
-        if (uniqueUsername.isPresent() || uniqueEmail.isPresent()) {
+        Optional<UserModel> uniqueUsername = userDb.findByUsername(user.getUsername());
+        Optional<UserModel> uniqueEmail = null;
+        Optional<UserModel> uniqueHp = null;
+
+        if (!user.getEmail().equals(null)) {
+            uniqueEmail = userDb.findByEmail(user.getEmail());
+        }
+        if (!user.getHp().equals(null)) {
+            uniqueHp = userDb.findByHp(user.getHp());
+        }
+
+        // if username/email/hp already in database
+        if (uniqueUsername.isPresent() || uniqueEmail.isPresent() || uniqueHp.isPresent()) {
             return true;
-        } return false;
+        }
+
+        // else if username & email & hp is unique
+        return false;
     }
 
     @Override
@@ -88,49 +101,62 @@ public class MengelolaKaryawanServiceImpl implements MengelolaKaryawanService{
         UserModel userLama = userDb.findByUsername(user.getUsername()).orElse(null);
         userLama.setNama(user.getNama());
         userLama.setRole(user.getRole());
-        userLama.setEmailHp(user.getEmailHp());
+        userLama.setEmail(user.getEmail());
+        userLama.setHp(user.getHp());
         userDb.save(userLama);
     }
 
-    private UserModel getByEmailHp(UserModel user) {
-        return userDb.findByEmailHp(user.getEmailHp()).orElse(null);
-    }
 
     @Override
     public boolean uniqueValueConstraintUpdate(UserModel user) {
         UserModel karyawanLama = retrieveUserDetail(user.getUsername());
-        String kontakKaryawanLama = karyawanLama.getEmailHp();
-        String kontakKaryawanUpdated = user.getEmailHp();
-        UserModel cariKaryawan = getByEmailHp(user);
 
-        // case kontak unchanged
-        if(kontakKaryawanLama.equals(kontakKaryawanUpdated)){
+        String emailKaryawanLama = karyawanLama.getEmail();
+        String emailKaryawanUpdated = user.getEmail();
+        UserModel cariKaryawanEmail = userDb.findByEmail(user.getEmail()).orElse(null);
+
+        String hpKaryawanLama = karyawanLama.getHp();
+        String hpKaryawanUpdated = user.getHp();
+        UserModel cariKaryawanHp = userDb.findByHp(user.getHp()).orElse(null);
+
+        boolean emailHpUnique = true;
+
+        // case email unchanged
+        if(emailKaryawanLama.equals(emailKaryawanUpdated)) {}
+        // case email changed
+        else {
+            // case new email is unique
+            if (cariKaryawanEmail == null){}
+            // case new email is NOT unique
+            else {
+                emailHpUnique = false;
+            }
+        }
+
+        if (!emailHpUnique) return emailHpUnique;
+
+        // case hp unchanged
+        if(hpKaryawanLama.equals(hpKaryawanUpdated)){}
+        // case hp changed
+        else {
+            // case new hp is unique
+            if (cariKaryawanHp == null){}
+            // case new hp is NOT unique
+            else {
+                emailHpUnique = false;
+            }
+        }
+
+        // case if both email and hp are unique, do update
+        if (emailHpUnique) {
             updateUser(user);
-            return true;
         }
-        // case kontak changed
-        else{
-            // new kontak is unique
-            if(cariKaryawan == null){
-                updateUser(user);
-                return true;
-            }
-            // new kontak is not unique
-            else{
-                System.out.println("masuk di false service");
-                return false;
-            }
-        }
+
+        return emailHpUnique;
     }
 
     @Override
     public void deleteUser(UserModel user) {
         userDb.delete(user);
-    }
-
-    @Override
-    public UserModel getUserByKontak(String kontak) {
-        Optional<UserModel> user =  userDb.findByEmailHp(kontak);
-        return user.orElse(null);
     }
 }

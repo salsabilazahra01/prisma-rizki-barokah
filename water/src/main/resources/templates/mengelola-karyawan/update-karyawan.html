@@ -64,15 +64,25 @@
                   </div>
 
                   <div class="form-group">
-                    <label class="h5 text-raisin-black">Email/Nomor Telepon<span class="text-danger"> *</span></label>
-                    <input required type="text" class="form-control p2 has-validation" th:field="*{emailHp}">
-                    <small id="kontakHelp" class="form-text text-muted ">Masukkan email ATAU nomor telepon (salah satu saja)</small>
+                    <label class="h5 text-raisin-black">Email</label>
+                    <input type="text" class="form-control p2 has-validation" th:field="*{email}">
                     <div class="invalid-feedback">
-                      Email atau nomor telepon harus diisi
+                      Email harus diisi
                     </div>
   <!--                  <div th:if="${email_constraint}" class="text-danger">-->
   <!--                    Email sudah didaftarkan-->
   <!--                  </div>-->
+                  </div>
+
+                  <div class="form-group">
+                    <label class="h5 text-raisin-black">Nomor Telepon</label>
+                    <input type="text" class="form-control p2 has-validation" th:field="*{hp}">
+                    <div class="invalid-feedback">
+                      Nomor telepon harus diisi
+                    </div>
+                    <!--                  <div th:if="${email_constraint}" class="text-danger">-->
+                    <!--                    Email sudah didaftarkan-->
+                    <!--                  </div>-->
                   </div>
                 </div>
               </div>

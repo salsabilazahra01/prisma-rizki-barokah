@@ -20,9 +20,4 @@ public interface MengelolaKaryawanService {
     void updateUser(UserModel user);
 
     void deleteUser(UserModel user);
-
-    UserModel getUserByKontak(String kontak);
-
-
-
 }
