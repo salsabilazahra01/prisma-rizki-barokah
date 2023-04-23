@@ -61,6 +61,7 @@
                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <li sec:authorize="hasAuthority('MANAJER') || hasAuthority('SUPERVISOR') || hasAuthority('ADMIN')"><a class="dropdown-item" th:href="@{/}">Daftar Donasi Sampah</a></li>
                     <li sec:authorize="hasAuthority('MANAJER') || hasAuthority('SUPERVISOR') || hasAuthority('ADMIN')"><a class="dropdown-item" th:href="@{/}">Penukaran Poin</a></li>
+                    <li sec:authorize="hasAuthority('MANAJER') || hasAuthority('SUPERVISOR') || hasAuthority('ADMIN')"><a class="dropdown-item" th:href="@{/reward/viewall}">Daftar Jenis Reward</a></li>
                 </ul>
             </li>
             <li sec:authorize="hasAuthority('MANAJER') || hasAuthority('ADMIN')">

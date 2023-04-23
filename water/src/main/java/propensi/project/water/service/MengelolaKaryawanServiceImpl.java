@@ -106,7 +106,6 @@ public class MengelolaKaryawanServiceImpl implements MengelolaKaryawanService{
         userDb.save(userLama);
     }
 
-
     @Override
     public boolean uniqueValueConstraintUpdate(UserModel user) {
         UserModel karyawanLama = retrieveUserDetail(user.getUsername());
