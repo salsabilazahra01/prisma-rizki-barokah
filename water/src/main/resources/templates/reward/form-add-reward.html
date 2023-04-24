@@ -49,18 +49,30 @@
                                     <label class="h5 text-raisin-black text-left">Jenis Reward</label>
                                     <div class="control">
                                         <label class="radio">
-                                            <input type="radio" name="uang" value="uang" id="uang" onclick="javascript:changeField();">
+                                            <input
+                                                    type="radio"
+                                                    name="uang"
+                                                    value="uang"
+                                                    id="uang"
+                                                    onclick="javascript:handleFormUang();"
+                                            />
                                             Uang
                                         </label>
                                         <label class="radio">
-                                            <input type="radio" name="barang" value="barang" id="barang" onclick="javascript:changeField();">
+                                            <input
+                                                    type="radio"
+                                                    name="barang"
+                                                    value="barang"
+                                                    id="barang"
+                                                    onclick="javascript:handleFormBarang();"
+                                            />
                                             Barang
                                         </label>
                                     </div>
                                     <br>
                                     <!--                                    Reward jenis uang-->
                                     <div class="form-outline mb-4" style="visibility: visible" id="uangForm">
-                                        <label class="h5 text-raisin-black text-left" for="uangForm">Nama dan Jumlah</label>
+                                        <label class="h5 text-raisin-black text-left" for="uangForm">Nominal Jumlah</label>
                                         <input type="text" class="form-control form-control-lg" name="jenis" th:field="*{jenisReward}" placeholder="ex: Rp100.000"/>
                                         <small id="jenisUang" class="form-text text-muted">Nominal uang harus dalam bentuk angka</small>
                                     </div>
@@ -108,17 +120,16 @@
 <script src="/script.js"></script>
 
 <script>
-    function changeField() {
-        if (document.getElementById('barang').checked) {
-            document.getElementById('barangForm').style.visibility = 'visible';
-            document.getElementById('uangForm').style.visibility = 'hidden';
-            document.getElementById('uang').reset();
-        }
-        else  {
-            document.getElementById('barangForm').style.visibility = 'hidden';
-            document.getElementById('uangForm').style.visibility = 'visible';
-            document.getElementById('barang').reset();
-        }
+    function handleFormUang() {
+        document.getElementById('barangForm').style.visibility = 'hidden';
+        document.getElementById('uangForm').style.visibility = 'visible';
+        document.getElementById('barang').checked = false;
+    }
+
+    function handleFormBarang() {
+        document.getElementById('barangForm').style.visibility = 'visible';
+        document.getElementById('uangForm').style.visibility = 'hidden';
+        document.getElementById('uang').checked = false;
     }
 </script>
 
