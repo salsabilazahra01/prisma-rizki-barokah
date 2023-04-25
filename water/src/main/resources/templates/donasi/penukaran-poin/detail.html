@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org" th:with="pageTitle='Water'">
+
+<head th:replace="fragments/head :: head"></head>
+
+<body class="d-flex flex-column min-vh-100">
+  <header>
+    <nav th:replace="fragments/fragment :: navbar('Donasi')"></nav>
+  </header>
+  <main class="container flex-grow-1 pt-lg-5">
+    <a type="button" class="btn-small btn-outline-raisin-black h6 me-4" th:href="@{/donasi/penukaran-poin/}">
+      <i class="bi-chevron-left"></i>
+      Back
+    </a>
+    <article class="card rounded-25 m-4 p-4">
+      <section class="card-body justify-content-center">
+        <header class="row mt-2 mb-4">
+          <h2 class="col text-start h2">Detail Penukaran Poin</h2>
+        </header>
+        <main class="section">
+            <row class="mb-3 row">
+              <dl class="col">
+                <dt>ID Tukar Poin</dt>
+                <dd>[[${item.idTukarPoin}]]</dd>
+                <dt>Reward</dt>
+                <dd>[[${item.reward.jenisReward()}]]</dd>
+                <dt>Claimant</dt>
+                <dd>[[${item.donatur.username}]]</dd>
+                <dt>Alamat</dt>
+                <dd>[[${item.donatur.alamat}]]</dd>
+                <dt>Status</dt>
+                <dd>[[${item.statusStr}]]</dd>
+              </dl>
+              <dl class="col">
+                <dt>Tanggal Penukaran</dt>
+                <dd>[[${item.tanggal}]]</dd>
+                <dt>Poin ditukar</dt>
+                <dd>[[${item.reward.poin}]]</dd>
+                <th:block th:if="${item.billing}">
+                <dt>Bank</dt>
+                <dd>[[${item.billing.namaBank}]]</dd>
+                <dt>Nama Pemegang Rekening</dt>
+                <dd>[[${item.billing.namaRekening}]]</dd>
+                <dt>Nomor Rekening</dt>
+                <dd>[[${item.billing.nomorRekening}]]</dd>
+                </th:block>
+              </dl>
+            </row>
+            <form method="POST" th:if="${item.status != true}" sec:authorize="hasAuthority('MANAJER') || hasAuthority('SUPERVISOR') || hasAuthority('ADMIN')" class="mb-3 col-6">
+              <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+              <button type="submit" class="btn btn-outline-warning col-6">Submit</button>
+            </form>
+        </main>
+      </section>
+    </article>
+  </main>
+
+  <footer th:replace="fragments/fragment :: footer"></footer>
+
+  <th:block th:include="fragments/scripts :: scripts"></th:block>
+  
+</body>
+
+</html>

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org" th:with="pageTitle='Water'">
+
+<head th:replace="fragments/head :: head"></head>
+
+<body class="d-flex flex-column min-vh-100">
+  <header>
+    <nav th:replace="fragments/fragment :: navbar('Donasi')"></nav>
+  </header>
+  <main class="container flex-grow-1 pt-lg-5">
+    <article class="card rounded-25 m-4 p-4">
+      <section class="card-body justify-content-center">
+        <header class="row mt-2 mb-4">
+          <!-- If update = false show BUat Jenis -->
+          <h2 class="col text-start h2" th:text="${title}"></h2>
+        </header>
+        <main class="section">
+          <form th:object="${form}" method="POST" class="d-flex flex-column">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+            
+            <row class="mb-3 row">
+              <column class="col-6 d-flex flex-column gap-3">
+                <form-item>
+                  <label for="bank" class="form-label h6 w-100">
+                    Username<span class="text-danger">*</span>
+                  </label>
+                  <input type="text" class="form-control" name="username" readonly id="username" th:field="*{username}" required />
+                </form-item>
+              </column>
+            </row>
+
+            <row class="mb-3 row">
+              <column class="col-6 d-flex flex-column gap-3">
+                <!-- Jenis -->
+                <form-item>
+                  <label for="jenis" class="form-label h6 w-100">
+                    Jenis Reward<span class="text-danger">*</span>
+                  </label>
+                  <radio-group class="fs-5">
+                    <!-- Radio of Uang and Barang, use the form-item HTML5 tag as if it's div -->
+                    <radio-item class="form-check form-check-inline">
+                      <input type="radio" class="form-check-input" name="jenis" id="uang" th:field="*{jenis}" value="Uang">
+                      <label for="uang" class="form-check-label">Uang</label>
+                    </radio-item>
+                    <radio-item class="form-check form-check-inline">
+                      <input type="radio" class="form-check-input" name="jenis" id="barang" th:field="*{jenis}" value="Barang" />
+                      <label for="barang" class="form-check-label">Barang</label>
+                    </radio-item>
+                  </radio-group>
+                </form-item>
+              </column>
+            </row>
+            <!-- Jenis Reward -->
+            <row class="mb-3 row">
+              <column class="col-6 d-flex flex-column gap-3">
+                <!-- Jenis -->
+                <form-item>
+                  <label for="reward" class="form-label h6 w-100">
+                    Pilih Reward<span class="text-danger">*</span>
+                  </label>
+                  <select class="form-select" name="reward" id="reward" th:field="*{reward}" required>
+                    <option value="">Pilih Reward</option>
+                    <option th:each="reward : ${rewards}" th:value="${reward.idReward}" th:text="${reward.jenisReward() + ' (' + reward.poin + ' poin)'}" th:data-jenis="${reward.jenis}"></option>
+                  </select>
+                </form-item>
+              </column>
+            </row>
+            <!-- Something else -->
+
+            <row class="mb-3 row uang-specific">
+              <column class="col-6 d-flex flex-column gap-3">
+                <form-item>
+                  <label for="bank" class="form-label h6 w-100">
+                    Bank<span class="text-danger">*</span>
+                  </label>
+                  <input type="text" class="form-control uang-specific-form" name="bank" id="bank" th:field="*{bank}" required />
+                </form-item>
+              </column>
+            </row>
+
+            
+            <row class="mb-3 row uang-specific">
+              <column class="col-6 d-flex flex-column gap-3">
+                <form-item>
+                  <label for="noRek" class="form-label h6 w-100">
+                    No Rekening<span class="text-danger">*</span>
+                  </label>
+                  <input type="text" class="form-control uang-specific-form" 
+                    name="noRek" id="noRek" th:field="*{noRek}" required 
+                    pattern="[0-9]*" title="Hanya boleh angka [0-9]" />
+                </form-item>
+              </column>
+            </row>
+
+            
+            <row class="mb-3 row uang-specific">
+              <column class="col-6 d-flex flex-column gap-3">
+                <form-item>
+                  <label for="namaRek" class="form-label h6 w-100">
+                    Rekening atas Nama<span class="text-danger">*</span>
+                  </label>
+                  <input type="text" class="form-control uang-specific-form" name="namaRek" id="namaRek" th:field="*{namaRek}" required />
+                </form-item>
+              </column>
+            </row>
+            
+            <div class="mb-3 col-6">
+              <button type="submit" class="btn btn-primary col-6">Submit</button>
+
+            </div>
+          </form>
+        </main>
+      </section>
+    </article>
+  </main>
+
+  <footer th:replace="fragments/fragment :: footer"></footer>
+
+  <th:block th:include="fragments/scripts :: scripts"></th:block>
+  <script>
+    // On DOM load, set the value of the radio group to the value of the jenis field
+    
+    // On jenis value change, hide/show the satuan form item
+    const jenisRadioGroup = document.querySelector('radio-group');
+    jenisRadioGroup.addEventListener('change', ()=>{
+      const jenisSpan = jenisRadioGroup.querySelector('input:checked').value;
+      // Uang specific form
+      const uangSpecificForm = document.querySelectorAll('.uang-specific-form');
+      const uangSpecificFormItem = document.querySelectorAll('.uang-specific');
+
+
+      const rewardOptions = document.querySelectorAll('#reward option');
+      const rewardSelect = document.querySelector('#reward');
+      // Reset the reward select if the jenis is changed or selected reward is not the same jenis
+      if(rewardSelect.value !== '' && rewardSelect.querySelector(`option[value="${rewardSelect.value}"]`).dataset.jenis !== jenisSpan){
+        rewardSelect.value = '';
+      }
+      rewardOptions.forEach((option)=>{
+        // If the option's data-jenis attribute is the same as the jenisSpan, show it
+        option.style.display = option.dataset.jenis === jenisSpan ? 'block' : 'none';
+      });
+
+      // Uang specific form
+      if(jenisSpan === 'Uang'){
+        uangSpecificForm.forEach((form)=>{
+          form.required = true;
+        });
+        uangSpecificFormItem.forEach((formItem)=>{
+          formItem.style.display = 'block';
+        });
+      }else{
+        uangSpecificForm.forEach((form)=>{
+          form.required = false;
+        });
+        uangSpecificFormItem.forEach((formItem)=>{
+          formItem.style.display = 'none';
+        });
+      }
+    });
+    jenisRadioGroup.dispatchEvent(new Event('change'));
+  </script>
+</body>
+
+</html>

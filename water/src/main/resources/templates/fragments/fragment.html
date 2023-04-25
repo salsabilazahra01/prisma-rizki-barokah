@@ -55,13 +55,13 @@
                 </ul>
             </li>
             <li class="nav-item dropdown" sec:authorize="hasAuthority('MANAJER') || hasAuthority('SUPERVISOR') || hasAuthority('ADMIN')">
-                <a th:class="${#strings.equals(activeLink, 'Donasi Sampah')}  ? 'nav-link nav-underline active dropdown-toggle' : 'nav-link dropdown-toggle'" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Donasi Sampah<span class="sr-only">(current)</span>
+                <a th:class="${#strings.equals(activeLink, 'Donasi')}  ? 'nav-link nav-underline active dropdown-toggle' : 'nav-link dropdown-toggle'" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Donasi<span th:if="${#strings.equals(activeLink, 'Donasi')}" class="sr-only">(current)</span>
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <li sec:authorize="hasAuthority('MANAJER') || hasAuthority('SUPERVISOR') || hasAuthority('ADMIN')"><a class="dropdown-item" th:href="@{/}">Daftar Donasi Sampah</a></li>
-                    <li sec:authorize="hasAuthority('MANAJER') || hasAuthority('SUPERVISOR') || hasAuthority('ADMIN')"><a class="dropdown-item" th:href="@{/}">Penukaran Poin</a></li>
-                    <li sec:authorize="hasAuthority('MANAJER') || hasAuthority('SUPERVISOR') || hasAuthority('ADMIN')"><a class="dropdown-item" th:href="@{/reward/viewall}">Daftar Jenis Reward</a></li>
+                    <li sec:authorize="hasAuthority('MANAJER') || hasAuthority('SUPERVISOR') || hasAuthority('ADMIN')"><a class="dropdown-item" th:href="@{/donasi/penukaran-poin}">Penukaran Poin</a></li>
+                    <li sec:authorize="hasAuthority('MANAJER') || hasAuthority('SUPERVISOR') || hasAuthority('ADMIN')"><a class="dropdown-item" th:href="@{/donasi/reward}">Reward</a></li>
                 </ul>
             </li>
             <li sec:authorize="hasAuthority('MANAJER') || hasAuthority('ADMIN')">
@@ -76,6 +76,9 @@
                 <a th:class="${#strings.equals(activeLink, 'Riwayat Donasi')}  ? 'nav-link nav-underline active' : 'nav-link'" th:href="@{/}">Riwayat Donasi<span class="sr-only">(current)</span></a>
             </li>
 
+            <li sec:authorize="hasAuthority('DONATUR')">
+                <a th:class="${#strings.equals(activeLink, 'Donasi')}  ? 'nav-link nav-underline active' : 'nav-link'"  th:href="@{/donasi/penukaran-poin}">Penukaran Poin</a>
+            </li>
             <li sec:authorize="hasAuthority('PARTNER')">
                 <a th:class="${#strings.equals(activeLink, 'Jual Sampah')}  ? 'nav-link nav-underline active' : 'nav-link'" th:href="@{/}">Jual Sampah<span class="sr-only">(current)</span></a>
             </li>
@@ -99,7 +102,7 @@
     </div>
 </nav>
 
-<div th:fragment="footer" align="center" class = "py-4 container-primary-green">
+<div th:fragment="footer" align="center" class = "py-4 container-primary-green mt-auto">
     <div class = "container">
         <div class="text-white text-center">
             <div>
