@@ -2,6 +2,7 @@ package propensi.project.water.model.PoinReward;
 
 //import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,11 +16,15 @@ import propensi.project.water.model.User.DonaturModel;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.util.Optional;
 
 @Entity
 @Table(name = "tukar_poin")
 @Setter
 @Getter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class TukarPoinModel implements Serializable {
@@ -38,7 +43,8 @@ public class TukarPoinModel implements Serializable {
 
     @NotNull
     @Column(name = "status", nullable = false)
-    private Boolean status;
+    @Builder.Default
+    private Boolean status = false;
 
     // relasi dengan donatur
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
@@ -51,4 +57,22 @@ public class TukarPoinModel implements Serializable {
     @JoinColumn(name = "reward", referencedColumnName = "jenis")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private RewardModel reward;
+
+    // Date created with default value
+    @NotNull
+    @Column(name = "tanggal", nullable = false)
+    @Builder.Default
+    private Timestamp tanggal = new Timestamp(System.currentTimeMillis());
+
+    
+    
+
+
+    // relasi dengan billing, optional
+    @OneToOne(mappedBy = "tukarPoin", fetch = FetchType.EAGER, cascade = CascadeType.ALL, optional = true)
+    private TukarPoinBillingModel billing;
+
+    public String statusStr() {
+        return status ? "Sudah Dikirim" : "Belum Dikirim";
+    }
 }

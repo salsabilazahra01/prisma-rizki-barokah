@@ -2,11 +2,16 @@ package propensi.project.water.model.PoinReward;
 
 //import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.val;
+
 import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.GenericGenerator;
+
+import propensi.project.water.dto.RewardDTO;
 import propensi.project.water.model.StringPrefixedSequenceIdGenerator;
 
 import javax.persistence.*;
@@ -18,6 +23,7 @@ import java.util.List;
 @Table(name = "reward")
 @Setter
 @Getter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class RewardModel implements Serializable {
@@ -41,6 +47,19 @@ public class RewardModel implements Serializable {
     @NotNull
     @Column(name = "poin", nullable = false)
     private int poin;
+
+
+    public String jenisReward() {
+        val dto = RewardDTO.fromModel(this);
+        if (dto.getJenis().equals("Uang")) 
+                return dto.getJenis() + " Rp. " + dto.getJumlah();
+        return dto.getJenis() + " " + dto.getNama() + " " + dto.getJumlah() + " " + dto.getSatuan();
+    }
+    
+    public String jenis() {
+        val dto = RewardDTO.fromModel(this);
+        return dto.getJenis();
+    }
 
     // relasi dengan tukar poin
     @OneToMany(mappedBy = "reward", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
