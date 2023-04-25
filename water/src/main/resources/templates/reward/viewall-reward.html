@@ -20,22 +20,28 @@
 <nav th:replace="fragments/fragment :: navbar('Donasi Sampah')"></nav>
 
 <br><br>
-<div class = "row my-3">
-    <p class="c3">
-        <a type="button" class = "btn-small btn-outline-raisin-black h6 me-4" th:href="@{/reward/viewall}">
-            <i class="bi-chevron-left"></i>
-            Back
-        </a>
-    </p>
-</div>
-<br><br>
-<div class="d-flex justify-content-between">
-    <h2 class="h2 text-lg-start mx-5">Daftar Jenis Reward</h2>
-    <span class="btn btn-primary-green mx-4">Filter</span>
+<div class="d-flex justify-content-center">
+    <div class = "container my-5">
+        <div class = "row my-3">
+            <p class="c3">
+                <a type="button" class = "btn-small btn-outline-raisin-black h6 me-4" th:href="@{/}">
+                    <i class="bi-chevron-left"></i>
+                    Back
+                </a>
+            </p>
+        </div>
+        <div class="d-flex justify-content-between">
+            <h2 class="h2 text-lg-start">Daftar Jenis Reward</h2>
+            <span class="btn btn-primary-green mx-4">Filter</span>
+        </div>
+    </div>
 </div>
 
 <div class="container mt-lg-5">
+
     <div class="alert alert-success" role="alert" th:text="${success}" th:if="${success}"></div>
+    <div class="alert alert-danger" role="alert" th:text="${error}" th:if="${error}"></div>
+
     <div class="card m-4 p-4 rounded-25">
         <div class="card-body">
             <div class="justify-content-center">
