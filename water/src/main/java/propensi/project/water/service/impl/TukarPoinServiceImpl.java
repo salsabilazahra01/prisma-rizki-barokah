@@ -55,16 +55,16 @@ public class TukarPoinServiceImpl implements TukarPoinService {
                 .reward(dto.getReward())
                 .build();
         tukarPoinDb.save(tukarPoin);
-        if (tukarPoin.getReward().jenis().equals("Uang")) {
-            TukarPoinBillingModel tukarPoinBilling = TukarPoinBillingModel.builder()
-                    .namaBank(dto.getBank())
-                    .nomorRekening(dto.getNoRek())
-                    .namaRekening(dto.getNamaRek())
-                    .tukarPoin(tukarPoin)
-                    .build();
-            tukarPoinBillingDb.save(tukarPoinBilling);
-            tukarPoin.setBilling(tukarPoinBilling);
-        }
+//        if (tukarPoin.getReward().jenis().equals("Uang")) {
+//            TukarPoinBillingModel tukarPoinBilling = TukarPoinBillingModel.builder()
+//                    .namaBank(dto.getBank())
+//                    .nomorRekening(dto.getNoRek())
+//                    .namaRekening(dto.getNamaRek())
+//                    .tukarPoin(tukarPoin)
+//                    .build();
+//            tukarPoinBillingDb.save(tukarPoinBilling);
+//            tukarPoin.setBilling(tukarPoinBilling);
+//        }
         return tukarPoin;
     }
 

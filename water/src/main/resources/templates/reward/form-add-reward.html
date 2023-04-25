@@ -46,7 +46,7 @@
                         <div class="row">
                             <div class="col">
                                 <div class="form-outline mb-4">
-                                    <label class="h5 text-raisin-black text-left">Jenis Reward</label>
+                                    <label class="h5 text-raisin-black text-left">Jenis Reward<span class="text-danger">*</span></label>
                                     <div class="control">
                                         <label class="radio">
                                             <input
@@ -73,14 +73,14 @@
                                     <br>
                                     <!--                                    Reward jenis uang-->
                                     <div class="form-outline mb-4" style="visibility: visible" id="uangForm">
-                                        <label class="h5 text-raisin-black text-left" for="uangForm">Nominal Jumlah</label>
+                                        <label class="h5 text-raisin-black text-left" for="uangForm">Nominal Jumlah<span class="text-danger">*</span></label>
                                         <input type="text" class="form-control form-control-lg" name="jenis" th:field="*{jenisReward}" placeholder="ex: Rp100.000"/>
                                         <small id="jenisUang" class="form-text text-muted">Nominal uang harus dalam bentuk angka</small>
                                     </div>
 
                                     <!--                                    Reward jenis barang-->
                                     <div class="form-outline mb-4" style="visibility: hidden"  id="barangForm">
-                                        <label class="h5 text-raisin-black text-left" for="barangForm">Nama dan Jumlah</label>
+                                        <label class="h5 text-raisin-black text-left" for="barangForm">Nama dan Jumlah<span class="text-danger">*</span></label>
                                         <input type="text"class="form-control form-control-lg" name="jenis" th:field="*{jenisReward}" placeholder="ex: 5 KG Beras"/>
                                         <small class="form-text text-muted">Sertakan nama, kuantitas, dan satuan barang</small>
                                     </div>
@@ -90,7 +90,7 @@
                                 <div class="form-outline mb-4">
                                     <!--                                    Jumlah poin-->
                                     <div class="form-outline mb-4">
-                                        <label class="h5 text-raisin-black text-left" for="form2Example28341">Poin Ekuivalen</label>
+                                        <label class="h5 text-raisin-black text-left" for="form2Example28341">Poin Ekuivalen<span class="text-danger">*</span></label>
                                         <input type="text" id="form2Example28341" class="form-control form-control-lg" name="poin" th:field="*{poin}" required="required" placeholder="ex: 5000" max="2147483647"/>
                                         <small id="poinUang" class="form-text text-muted">Poin harus dalam bentuk angka</small>
                                     </div>

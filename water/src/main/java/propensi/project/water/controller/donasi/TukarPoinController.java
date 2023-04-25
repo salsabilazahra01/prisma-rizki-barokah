@@ -66,7 +66,7 @@ public class TukarPoinController {
     public String create(Model model) {
         model.addAttribute("form", new TukarPoinDTO());
         model.addAttribute("title", "Tukar Poin");
-        model.addAttribute("rewards", rewardService.findAll());
+        model.addAttribute("rewards", rewardService.getListReward());
         return "/donasi/penukaran-poin/form";
     }
     

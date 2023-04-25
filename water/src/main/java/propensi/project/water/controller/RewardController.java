@@ -9,8 +9,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import propensi.project.water.model.PoinReward.RewardModel;
+import propensi.project.water.model.PoinReward.TukarPoinModel;
 import propensi.project.water.service.RewardService;
+import propensi.project.water.service.TukarPoinService;
 
 @Slf4j
 @Controller
@@ -19,6 +22,10 @@ public class RewardController {
     @Qualifier("rewardServiceImpl")
     @Autowired
     private RewardService rewardService;
+
+    @Qualifier("tukarPoinServiceImpl")
+    @Autowired
+    private TukarPoinService tukarPoinService;
 
     @GetMapping(value = "/add")
     public String addRewardForm(Model model) {
@@ -29,7 +36,15 @@ public class RewardController {
     }
 
     @PostMapping(value = "/add")
-    public String addRewardSubmit(@ModelAttribute RewardModel reward, Model model) {
+    public String addRewardSubmit(@ModelAttribute RewardModel reward, Model model, RedirectAttributes redirectAttributes) {
+        List<RewardModel> listReward = rewardService.getListReward();
+
+        for (int i = 0; i < listReward.size(); i++) {
+            if (listReward.get(i).getJenisReward().equals(reward.getJenisReward())) {
+                return "reward/failed-add-reward";
+            }
+        }
+
         rewardService.addReward(reward);
         model.addAttribute("reward", reward);
 
@@ -53,18 +68,43 @@ public class RewardController {
     }
 
     @PostMapping(value = "/update")
-    public String updateRewardSubmit(Model model, @ModelAttribute RewardModel reward) {
+    public String updateRewardSubmit(Model model, @ModelAttribute RewardModel reward, RedirectAttributes redirectAttributes) {
+        String id = reward.getIdReward();
+        Boolean rewardChecker = false;
+        List<TukarPoinModel> listPenukaranPoin = tukarPoinService.findAll();
+
+        for (int i = 0; i < listPenukaranPoin.size(); i++) {
+            if (listPenukaranPoin.get(i).getReward().getIdReward().equals(id)) {
+                rewardChecker = true;
+            }
+        }
+
+        if (rewardChecker) {
+            return "reward/failed-update-reward";
+        }
+
         RewardModel updatedReward = rewardService.updateReward(reward);
         model.addAttribute("reward", updatedReward);
-
         return "reward/success-update-reward";
     }
 
     @GetMapping(value = "/delete/{id}")
     public String deleteReward(Model model, @PathVariable String id) {
         RewardModel rewardTarget = rewardService.getRewardById(id);
-        rewardService.deleteReward(rewardTarget);
+        Boolean rewardChecker = false;
+        List<TukarPoinModel> listPenukaranPoin = tukarPoinService.findAll();
 
+        for (int i = 0; i < listPenukaranPoin.size(); i++) {
+            if (listPenukaranPoin.get(i).getReward().getIdReward().equals(id)) {
+                rewardChecker = true;
+            }
+        }
+
+        if (rewardChecker) {
+            return "reward/failed-delete-reward";
+        }
+
+        rewardService.deleteReward(rewardTarget);
         return "reward/success-delete-reward";
     }
 }
