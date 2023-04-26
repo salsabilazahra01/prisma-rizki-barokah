@@ -184,6 +184,10 @@ a {
     padding-inline: 3rem;
     font-size: 0.75rem;
 }
+.btn-add-row {
+    border: 2px dashed;
+    border-radius: 1rem;
+}
 
 /* container */
 .container-primary-green{

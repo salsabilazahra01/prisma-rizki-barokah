@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Water</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap css -->
+    <link rel = "stylesheet" href = "/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="/style.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Bootstrap icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+</head>
+
+<body>
+
+<nav sec:authorize="hasAuthority('CUSTOMER')" th:replace="fragments/fragment :: navbar('Riwayat Pembelian')"></nav>
+<nav sec:authorize="!hasAuthority('CUSTOMER')" th:replace="fragments/fragment :: navbar('Pembelian dan Penjualan')"></nav>
+
+<div class="d-flex justify-content-center">
+
+    <div class="container my-5">
+
+        <!-- alert -->
+        <div class="alert alert-success" role="alert" th:text="${success}" th:if="${success}"></div>
+
+        <!-- button & id -->
+        <div class="row my-1">
+            <p class="c3">
+                <a type = "button" class = "btn-small btn-outline-raisin-black h6 me-4" th:href="@{/penawaran-hasil-olahan/viewall/0}">
+                    <i class="bi-chevron-left"></i> Back
+                </a>
+                <text class="c3" th:text="${penawaranOlahan.idPenawaranOlahan}"></text>
+            </p>
+        </div>
+
+        <!-- title -->
+        <div class="row mb-3">
+            <p class="align-content-center">
+                <h2 sec:authorize="hasAuthority('CUSTOMER')" class="h2">Detail Pembelian Hasil Olahan
+                <a th:if="${penawaranOlahan.status == 0}" type = "button" class = "btn-small-fit btn-primary-green h6 ms-2" th:href="@{/penawaran-hasil-olahan/update/} + ${idPenawaranOlahan}">
+                    <i class="bi-pencil-fill"></i> Edit
+                </a>
+                <a th:if="${penawaranOlahan.status == 0}" type = "button" class = "btn-small-fit btn-red-danger h6" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                    <i class="bi-trash2-fill"></i> Hapus
+                </a>
+<!--                <a th:replace="fragments/fragment-penawaran-olahan :: modal('btn-red-danger', 'bi-trash2-fill', 'Hapus', 'Hapus Penawaran Pembelian', 'Apakah Anda yakin ingin menghapus penawaran pembelian hasil olahan?', 'Ya, Hapus', @{/penawaran-hasil-olahan/delete/} + ${penawaranOlahan.idPenawaranOlahan})"></a>-->
+                </h2>
+                <h2 sec:authorize="!hasAuthority('CUSTOMER')" class="h2">Detail Penjualan Hasil Olahan</h2>
+            </p>
+        </div>
+
+        <!-- detail -->
+        <div class="row">
+            <div class="col-6">
+                <div class="card rounded-25 shadow-sm px-5 py-3">
+                    <div class="card-body">
+                        <div class="mb-3 mt-3">
+                            <p sec:authorize="hasAuthority('CUSTOMER')" class="p2">ID Pembelian Hasil Olahan Sampah</p>
+                            <p sec:authorize="!hasAuthority('CUSTOMER')" class="p2">ID Penjualan Hasil Olahan Sampah</p>
+                            <h3 class="h4" th:text="${penawaranOlahan.idPenawaranOlahan}"></h3>
+                        </div>
+                        <div class="my-3">
+                            <p class="p2">Nama Customer</p>
+                            <h3 class="h4" th:text="${penawaranOlahan.namaCustomer}"></h3>
+                        </div>
+                        <div class="my-3">
+                            <p class="p2">Nama PIC</p>
+                            <h3 class="h4" th:text="${penawaranOlahan.namaPic}"></h3>
+                        </div>
+                        <div class="my-3">
+                            <p class="p2">E-mail</p>
+                            <h3 class="h4" th:text="${penawaranOlahan.email == NULL} ? '-' : ${penawaranOlahan.email}"></h3>
+                        </div>
+                        <div class="my-3">
+                            <p class="p2">Nomor telepon</p>
+                            <h3 class="h4" th:text="${penawaranOlahan.hp == NULL} ? '-' : ${penawaranOlahan.hp}"></h3>
+                        </div>
+                        <div class="my-3">
+                            <p sec:authorize="hasAuthority('CUSTOMER')" class="p2">Tanggal, waktu pembelian</p>
+                            <p sec:authorize="!hasAuthority('CUSTOMER')" class="p2">Tanggal, waktu penjualan</p>
+                            <h3 class="h4" th:text="${#temporals.format(penawaranOlahan.tanggalDibuat, 'dd-MM-yyyy HH:mm')}"></h3>
+                        </div>
+                        <div class="my-3">
+                            <p class="p2">Pilihan pengiriman</p>
+                            <h3 class="h4" th:text="${penawaranOlahan.isPickedUp} ? 'Diambil customer':'Dikirimkan CV'"></h3>
+                        </div>
+                        <div class="my-3">
+                            <p class="p2">Alamat</p>
+                            <h3 class="h4" th:text="${penawaranOlahan.alamatPic}"></h3>
+                        </div>
+                        <div class="my-3">
+                            <p class="p2">Rekening</p>
+                            <h3 class="h4" th:text="${penawaranOlahan.bank} + ' ' + ${penawaranOlahan.noRekening} + ' a.n ' + ${penawaranOlahan.namaRekening}"></h3>
+                        </div>
+                        <div class="mt-3 mb-3" th:switch="${penawaranOlahan.status}">
+                            <p class="p2">Status</p>
+                            <h3 class="h4" th:case=0>Menunggu Persetujuan</h3>
+                            <h3 class="h4" th:case=1>Penawaran Disetujui/Ditolak</h3>
+                            <h3 class="h4" th:case=2>Dalam perjalanan</h3>
+                            <h3 class="h4" th:case=3>Selesai</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 px-5">
+                <p class="h5 mb-4">Jenis dan Berat Hasil Olahan yang Dibeli</p>
+                <table class="table table-striped text-center align-middle">
+                    <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Jenis Hasil Olahan</th>
+                        <th>Berat (kg)</th>
+                        <th>Harga</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="item, iterationStatus : ${listItem}">
+                        <td th:text="${iterationStatus.count}"></td>
+                        <td th:text="${item.idItem.namaItem}"></td>
+                        <td th:text="${item.kuantitas}"></td>
+                        <td th:text="${item.harga == NULL} ? '-' : ${item.harga}"></td>
+                    </tr>
+                    <tr class="fw-bold">
+                        <td colspan="2">Total</td>
+                        <td>100 kg</td>
+                        <td>Rp250.000,00</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div>
+                    <a sec:authorize="!hasAuthority('CUSTOMER')" th:if="${penawaranOlahan.status == 0}" type = "button"
+                       class = "btn btn-primary-green h6 d-block" data-bs-toggle="modal" data-bs-target="#setujuiModal">Setujui Pembelian</a>
+                </div>
+                <div>
+                    <a sec:authorize="!hasAuthority('CUSTOMER')" th:if="${penawaranOlahan.status == 0}" type = "button"
+                       class = "btn btn-red-danger h6 d-block" data-bs-toggle="modal" data-bs-target="#tolakModal">Tolak Pembelian</a>
+                </div>
+                <div>
+                    <a sec:authorize="!hasAuthority('CUSTOMER')" th:if="${penawaranOlahan.status == 1 and !penawaranOlahan.isPickedUp}" type = "button"
+                       class = "btn btn-outline-primary-green h6 d-block" data-bs-toggle="modal" data-bs-target="#kirimModal">Hasil olahan sudah dikirim</a>
+                </div>
+                <div>
+                    <a sec:authorize="!hasAuthority('CUSTOMER')" th:if="${penawaranOlahan.status == 1 and penawaranOlahan.isPickedUp}" type = "button"
+                       class = "btn btn-outline-primary-green h6 d-block" data-bs-toggle="modal" data-bs-target="ambilModal">Hasil olahan dapat diambil</a>
+                </div>
+                <div>
+                    <a sec:authorize="!hasAuthority('CUSTOMER')" th:if="${penawaranOlahan.status == 2 and penawaranOlahan.isPickedUp}" type = "button"
+                       class = "btn btn-outline-primary-green h6 d-block" data-bs-toggle="modal" data-bs-target="#konfirmasiAmbilModal">Konfirmasi pengambilan</a>
+                    <a sec:authorize="hasAuthority('CUSTOMER')" th:if="${penawaranOlahan.status == 2 and !penawaranOlahan.isPickedUp}" type = "button"
+                       class = "btn btn-outline-primary-green h6 d-block" data-bs-toggle="modal" data-bs-target="#konfirmasiTerimaModal">Konfirmasi penerimaan</a>
+                </div>
+                <div>
+                    <p sec:authorize="!hasAuthority('CUSTOMER')" th:if="${penawaranOlahan.status == 2 and !penawaranOlahan.isPickedUp}"
+                       class = "btn btn-disabled c3 d-block">Menunggu konfirmasi penerimaan dari customer</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Modal Hapus -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered text-center justify-content-center">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title h6" id="deleteModalLabel">Hapus Penawaran Pembelian Hasil Olahan</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p3" th:text="'Apakah Anda yakin ingin menghapus penawaran pembelian hasil olahan dengan ID ' + ${idPenawaranOlahan} + '?'"></div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn-small btn-outline-raisin-black" data-bs-dismiss="modal">Cancel</button>
+                <a type="button" class="btn-small btn-red-danger" th:href="@{/penawaran-hasil-olahan/delete/} + ${penawaranOlahan.idPenawaranOlahan}">Ya, hapus</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!--end modal-->
+
+<!-- Modal Setujui -->
+<div class="modal fade" id="setujuiModal" tabindex="-1" aria-labelledby="setujuiModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered text-center justify-content-center">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title h6" id="setujuiModalLabel">Setujui Pembelian Hasil Olahan</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p3" th:text="'Apakah Anda yakin ingin menyetujui penawaran pembelian hasil olahan dengan ID ' + ${idPenawaranOlahan} + '?'"></div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn-small btn-outline-raisin-black" data-bs-dismiss="modal">Cancel</button>
+                <a type="button" class="btn-small btn-primary-green" th:href="@{/penawaran-hasil-olahan/update-status/} + ${penawaranOlahan.idPenawaranOlahan}">Ya, setujui</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!--end modal-->
+
+<!-- Modal Tolak -->
+<div class="modal fade" id="tolakModal" tabindex="-1" aria-labelledby="tolakModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered text-center justify-content-center">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title h6" id="tolakModalLabel">Tolak Pembelian Hasil Olahan</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p3" th:text="'Apakah Anda yakin ingin menolak penawaran pembelian hasil olahan dengan ID ' + ${idPenawaranOlahan} + '?'"></div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn-small btn-outline-raisin-black" data-bs-dismiss="modal">Cancel</button>
+                <a type="button" class="btn-small btn-red-danger" th:href="@{/penawaran-hasil-olahan/update-status/} + ${penawaranOlahan.idPenawaranOlahan} + '?isApproved=false'">Ya, tolak</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!--end modal-->
+
+<!-- Modal sudah dikirim -->
+<div class="modal fade" id="kirimModal" tabindex="-1" aria-labelledby="tolakModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered text-center justify-content-center">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title h6" id="kirimModalLabel">Hasil Olahan Sudah Dikirim</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p3" th:text="'Apakah Anda yakin pembelian hasil olahan dengan ID ' + ${idPenawaranOlahan} + ' sudah dikirim?'"></div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn-small btn-outline-raisin-black" data-bs-dismiss="modal">Cancel</button>
+                <a type="button" class="btn-small btn-primary-green" th:href="@{/penawaran-hasil-olahan/update-status/} + ${penawaranOlahan.idPenawaranOlahan}">Ya, sudah</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!--end modal-->
+
+<!-- Modal dapat diambil -->
+<div class="modal fade" id="ambilModal" tabindex="-1" aria-labelledby="ambilModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered text-center justify-content-center">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title h6" id="ambilModalLabel">Hasil Olahan Dapat Diambil</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p3" th:text="'Apakah Anda yakin ingin pembelian hasil olahan dengan ID ' + ${idPenawaranOlahan} + ' sudah dapat diambil?'"></div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn-small btn-outline-raisin-black" data-bs-dismiss="modal">Cancel</button>
+                <a type="button" class="btn-small btn-primary-green" th:href="@{/penawaran-hasil-olahan/update-status/} + ${penawaranOlahan.idPenawaranOlahan}">Ya, sudah</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!--end modal-->
+
+<!-- Modal sudah diambil -->
+<div class="modal fade" id="konfirmasiAmbilModal" tabindex="-1" aria-labelledby="konfirmasiAmbilModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered text-center justify-content-center">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title h6" id="konfirmasiAmbilLabel">Konfirmasi Pengambilan Hasil Olahan</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p3" th:text="'Apakah Anda yakin bahwa pembelian hasil olahan dengan ID ' + ${idPenawaranOlahan} + ' sudah diambil?'"></div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn-small btn-outline-raisin-black" data-bs-dismiss="modal">Cancel</button>
+                <a type="button" class="btn-small btn-primary-green" th:href="@{/penawaran-hasil-olahan/update-status/} + ${penawaranOlahan.idPenawaranOlahan}">Ya, konfirmasi</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!--end modal-->
+
+<!-- Modal sudah diterima -->
+<div class="modal fade" id="konfirmasiTerimaModal" tabindex="-1" aria-labelledby="konfirmasiTerimaModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered text-center justify-content-center">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title h6" id="konfirmasiTerimaLabel">Konfirmasi Penerimaan Hasil Olahan</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p3" th:text="'Apakah Anda yakin bahwa pembelian hasil olahan dengan ID ' + ${idPenawaranOlahan} + ' sudah diterima?'"></div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn-small btn-outline-raisin-black" data-bs-dismiss="modal">Cancel</button>
+                <a type="button" class="btn-small btn-primary-green" th:href="@{/penawaran-hasil-olahan/update-status/} + ${penawaranOlahan.idPenawaranOlahan}">Ya, konfirmasi</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!--end modal-->
+
+<footer th:replace="fragments/fragment :: footer"></footer>
+
+<script src = "/bootstrap/js/bootstrap.js"></script>
+<script src="/script.js"></script>
+
+</body>
+</html>

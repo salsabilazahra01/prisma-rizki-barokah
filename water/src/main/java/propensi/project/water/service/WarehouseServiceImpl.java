@@ -60,5 +60,8 @@ public class WarehouseServiceImpl implements WarehouseService {
         return item.orElse(null);
     }
 
-
+    @Override
+    public List<WarehouseModel> getListItemWarehouse() {
+        return warehouseDb.findAll();
+    }
 }

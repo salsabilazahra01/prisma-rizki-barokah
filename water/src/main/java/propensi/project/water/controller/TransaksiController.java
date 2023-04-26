@@ -28,7 +28,6 @@ public class TransaksiController {
     public String addTransaksiForm(Model model){
         ProsesLainModel transaksiManual = new ProsesLainModel();
         transaksiManual.setProses(2);
-        transaksiManual.setTanggalDibuat(LocalDateTime.now());
         model.addAttribute("transaksi", transaksiManual);
         return "laporan-transaksi/add-transaksi-form";
     }
@@ -37,6 +36,7 @@ public class TransaksiController {
     public String addTransaksiSubmit(@ModelAttribute ProsesLainModel transaksiManual,
                                      RedirectAttributes redirectAttrs
     ){
+        transaksiManual.setTanggalDibuat(LocalDateTime.now());
         transaksiService.addTransaksiManual(transaksiManual);
         redirectAttrs.addFlashAttribute("success","Transaksi baru berhasil ditambahkan");
         return "redirect:/transaksi/viewall/semua";

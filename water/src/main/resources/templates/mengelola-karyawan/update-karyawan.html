@@ -23,7 +23,7 @@
   <div class = "container my-5">
 
     <!-- alert -->
-    <div class="alert alert-danger" role="alert" th:text="${error}" th:if="${error}"></div>
+    <div class="alert alert-danger rounded-25" role="alert" th:text="${error}" th:if="${error}"></div>
 
     <!-- back button -->
     <div class="row my-3">
@@ -42,8 +42,9 @@
     </div>
 
     <!-- form -->
-    <form th:action="@{/manajemen-user/update(username=${user.username})}" th:object="${user}" class="needs-validation" novalidate  method="POST">
-    <!--    <input type="hidden" th:field="*{username}"/>-->
+    <form th:action="@{/manajemen-user/update}" th:object="${user}" class="needs-validation" novalidate  method="POST">
+      <input type="hidden" th:field="*{username}"/>
+      <input type="hidden" th:field="*{password}"/>
       <div class="container my-2">
         <div class = "card rounded-25">
           <div class="card-body">
