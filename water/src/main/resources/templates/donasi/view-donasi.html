@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Water</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Bootstrap css -->
+  <link rel = "stylesheet" href = "/bootstrap/css/bootstrap.css">
+  <link rel="stylesheet" href="/style.css">
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <!-- Bootstrap icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+</head>
+
+<body>
+<div sec:authorize="hasAuthority('DONATUR')">
+  <nav th:replace="fragments/fragment :: navbar('Riwayat Donasi')"></nav>
+</div>
+<div sec:authorize="hasAuthority('ADMIN') || hasAuthority('MANAJER')">
+  <nav th:replace="fragments/fragment :: navbar('Donasi Sampah')"></nav>
+</div>
+
+<div class="d-flex justify-content-center">
+
+  <div class="container my-5">
+
+    <!-- alert -->
+    <div class="alert alert-success" role="alert" th:text="${success}" th:if="${success}"></div>
+    <div class="alert alert-danger" role="alert" th:text="${failedUpdate}" th:if="${failedUpdate}"></div>
+
+    <!-- button & id -->
+    <div class="row my-3">
+      <p class="c3">
+        <a type="button" class="btn-small btn-outline-raisin-black h6 me-4" th:href="@{/donasi/viewall/}">
+          <i class="bi-chevron-left"></i>
+          Back
+        </a>
+        <text th:text="${donasi.idDonasi}" class="c3"></text>
+      </p>
+    </div>
+
+    <!-- title -->
+    <div class="row mt-3 mb-4">
+      <div class="col-sm-6 w-auto justify-content-start pr-0">
+        <h2 class="h2">Detail Donasi Sampah</h2>
+      </div>
+      <div class="col-sm-3 w-auto justify-content-start px-0 mx-0" sec:authorize="hasAuthority('DONATUR')" th:if="${donasi.status == 0}">
+        <a type="button" class="btn-small btn-primary-green" th:href="@{/donasi/update/} + ${donasi.idDonasi}">
+          <i class="bi bi-pencil-fill">
+            Edit
+          </i>
+        </a>
+      </div>
+      <div class="col-sm-3 w-auto justify-content-start px-0 mx-0" sec:authorize="hasAuthority('DONATUR')" th:if="${donasi.status == 0}">
+        <button type="button" class="mx-2 btn-small btn-red-danger"  data-bs-toggle="modal" data-bs-target="#deleteDonasi">
+          Batalkan
+        </button>
+
+        <!-- modal -->
+        <div class="modal fade" id="deleteDonasi" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered text-center justify-content-center">
+            <div class="modal-content">
+              <div class="modal-header text-center">
+                <h6 class="modal-title h6">Batalkan</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body p3" th:text="'Apakah Anda yakin ingin menghapus donasi dengan ID ' + ${donasi.idDonasi} + ' ?'"></div>
+              <div class="modal-footer justify-content-center">
+                <button type="button" class="btn-small btn-outline-raisin-black" data-bs-dismiss="modal">Cancel</button>
+                <a type="button" class="btn-small btn-red-danger" th:href="@{/donasi/delete/} + ${donasi.idDonasi}">Ya, hapus</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--end modal-->
+
+      </div>
+    </div>
+
+    <div class="row">
+      <!-- detail card left column -->
+      <div class="col">
+        <div class="card rounded-25 shadow-sm m-2 p-2">
+          <div class="card-body">
+            <div class="row">
+
+              <div class="col px-5">
+                <div class="mb-5 mt-3">
+                  <p2 class="p2">ID Donasi</p2>
+                  <h4 class="h4" th:text="${donasi.idDonasi}"></h4>
+                </div>
+                <div class="my-5">
+                  <p2 class="p2">Nama Donatur</p2>
+                  <h4 class="h4" th:text="${donasi.namaPic}"></h4>
+                </div>
+                <div class="my-5">
+                  <p2 class="p2">Kontak Donatur</p2>
+                  <h4 class="h4" th:text="${donasi.kontakPic}"></h4>
+                </div>
+                <div class="my-5">
+                  <p2 class="p2">Tanggal, Waktu Donasi</p2>
+                  <h4 class="h4" th:text="${#temporals.format(donasi.tanggalDibuat, 'dd-MM-yyyy HH:mm')}"></h4>
+                </div>
+                <div class="my-5">
+                  <p2 class="p2">Pilihan Pengiriman</p2>
+                  <h4 class="h4" th:text="${donasi.isPickedUp} ? 'Diambil Oleh Perusahaan' : 'Dikirim Donatur'">
+                  </h4>
+                </div>
+                <div class="my-5">
+                  <p2 class="p2">Status</p2>
+                  <h4 class="h4">
+                    <div th:if="${donasi.status == -1}"><span class="bi bi-file-earmark-x"></span>Donasi Ditolak</div>
+                    <div th:if="${donasi.status == 0}"><span class="bi bi-hourglass-split"></span> Menunggu Persetujuan</div>
+                    <div th:if="${donasi.status == 1}"><span class="bi bi-file-earmark-check"></span>Donasi Disetujui</div>
+                    <div th:if="${donasi.status == 2}"><span class="bi bi-truck"></span>Dalam Perjalanan</div>
+                    <div th:if="${donasi.status == 3}"><span class="bi bi-search"></span>Dalam Proses Inspeksi</div>
+                    <div th:if="${donasi.status == 4}"><span class="bi bi-check-circle"></span>Selesai</div>
+                  </h4>
+                </div>
+              </div>
+
+          </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- donasi item detail right column -->
+      <div class="col">
+<!--        <p2>Jenis dan Berat Sampah Didonasikan</p2>-->
+        <div class="row">
+          <div class="col">
+            <!-- list jenis sampah -->
+            <div class="card rounded-25 shadow-sm m-2 p-2">
+              <div class="card-body text-center">
+                <h5 class="h5 card-title">Jenis Sampah</h5>
+
+                <div th:if="*{donasi.listItemDonasi.size()!=0}">
+                  <table class="table text-center align-middle">
+                    <thead>
+                    </thead>
+                    <tbody>
+                    <tr th:each="jenisItemDonasi, iterationStatus : ${donasi.listItemDonasi}" align="center">
+                      <td th:text="${jenisItemDonasi.idItem.namaItem}"></td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div th:unless="*{donasi.listItemDonasi.size()!=0}" class="text-center">
+                  <p2 class="p2">-</p2>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col">
+            <!-- estimasi berat -->
+            <div class="card rounded-25 shadow-sm m-2 p-2">
+              <div class="card-body text-center">
+                <h5 class="h5 card-title">Estimasi Berat (kg)</h5>
+                <p2 class="p2" th:text="${donasi.beratSebelum}"></p2>
+              </div>
+            </div>
+
+            <!-- berat diterima -->
+            <div class="card rounded-25 shadow-sm m-2 p-2">
+              <div class="card-body text-center">
+                <h5 class="h5 card-title">Berat Diterima (kg)</h5>
+                <p2 class="p2" th:if="${donasi.beratSetelah!=-1}" th:text="${donasi.beratSetelah}"></p2>
+                <p2 class="p2" th:unless="${donasi.beratSetelah!=-1}">-</p2>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer th:replace="fragments/fragment :: footer"></footer>
+
+<script src = "/bootstrap/js/bootstrap.js"></script>
+<script src="/script.js"></script>
+
+</body>
+</html>

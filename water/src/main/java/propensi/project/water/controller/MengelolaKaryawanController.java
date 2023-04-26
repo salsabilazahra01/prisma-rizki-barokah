@@ -71,17 +71,18 @@ public class MengelolaKaryawanController {
             RedirectAttributes redirectAttributes
     ){
         if (mengelolaKaryawanService.uniqueValueConstraint(user)) {
-            redirectAttributes.addFlashAttribute("error", "Username and email has to be unique");
+            redirectAttributes.addFlashAttribute("error", "Username dan email telah terdaftar");
             return "redirect:add";
         } else {
             mengelolaKaryawanService.addKaryawan(user);
+            redirectAttributes.addFlashAttribute("success", "Berhasil menambahkan karyawan");
             return "redirect:viewall";
         }
     }
 
-    @GetMapping("/update")
-    public String updateKaryawanPage(
-            @RequestParam(value="username") String username,
+    @GetMapping("/update/{username}")
+    private String updateKaryawanForm(
+            @PathVariable String username,
             Model model
     ){
         UserModel user = mengelolaKaryawanService.retrieveUserDetail(username);

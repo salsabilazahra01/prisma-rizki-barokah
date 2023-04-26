@@ -11,4 +11,6 @@ public interface WarehouseService {
     void deleteItem(WarehouseModel item);
     WarehouseModel getItemById(String idItem);
     WarehouseModel getItemByNamaItem(String namaItem);
+
+    List<WarehouseModel> getListItemWarehouse();
 }

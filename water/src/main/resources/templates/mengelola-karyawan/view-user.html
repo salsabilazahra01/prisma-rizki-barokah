@@ -24,7 +24,7 @@
   <div class="container my-5">
 
     <!-- alert -->
-    <div class="alert alert-success" role="alert" th:text="${success}" th:if="${success}"></div>
+    <div class="alert alert-success rounded-25 text-center" role="alert" th:text="${success}" th:if="${success}"></div>
     <div class="alert alert-danger" role="alert" th:text="${failedUpdate}" th:if="${failedUpdate}"></div>
 
     <!-- button & id -->
@@ -113,7 +113,7 @@
           <div th:if="${#strings.equals(user.role.toString(), 'MANAJER') or #strings.equals(user.role.toString(), 'SUPERVISOR') or #strings.equals(user.role.toString(), 'PEKERJA') or #strings.equals(user.role.toString(), 'TEKNISI')}">
           <div class="row flex-row-reverse text-end">
             <div class="col-4">
-              <a type="button" class="mx-2 btn-small btn-primary-green" th:href="@{/manajemen-user/update(username=${user.username})}">Update</a>
+              <a type="button" class="mx-2 btn-small btn-primary-green" th:href="@{/manajemen-user/update/} + ${user.username}">Update</a>
 
               <button type="button" class="mx-2 btn-small btn-red-danger"  data-bs-toggle="modal" data-bs-target="#deleteKaryawan">
                 Delete

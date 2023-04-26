@@ -63,7 +63,7 @@ public class DonasiModel implements Serializable {
     private LocalDateTime tanggalDibuat;
 
     @NotNull
-    @Column(name = "status", nullable = false, columnDefinition = "int default 0")
+    @Column(name = "status", nullable = false, columnDefinition = "integer default 0")
     private Integer status;
 
     @Column(name = "keterangan", nullable = false)
@@ -74,11 +74,11 @@ public class DonasiModel implements Serializable {
     private Integer beratSebelum;
 
     @NotNull
-    @Column(name = "berat_setelah", nullable = false, columnDefinition = "int default -1")
+    @Column(name = "berat_setelah", nullable = false, columnDefinition = "integer default -1")
     private Integer beratSetelah;
 
     @NotNull
-    @Column(name = "poin_earned", nullable = false, columnDefinition = "int default -1")
+    @Column(name = "poin_earned", nullable = false, columnDefinition = "integer default -1")
     private Integer poinEarned;
 
     // relasi dengan donatur
