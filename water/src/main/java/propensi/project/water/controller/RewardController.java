@@ -1,110 +1,136 @@
 package propensi.project.water.controller;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.List;
-
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import lombok.AllArgsConstructor;
+import lombok.val;
+import lombok.extern.slf4j.Slf4j;
+import propensi.project.water.dto.RewardDTO;
+import propensi.project.water.exceptions.donasi.RewardDuplicateJenisException;
+import propensi.project.water.exceptions.donasi.RewardNotFoundException;
 import propensi.project.water.model.PoinReward.RewardModel;
-import propensi.project.water.model.PoinReward.TukarPoinModel;
 import propensi.project.water.service.RewardService;
-import propensi.project.water.service.TukarPoinService;
 
 @Slf4j
 @Controller
 @RequestMapping("/reward")
+@AllArgsConstructor
 public class RewardController {
-    @Qualifier("rewardServiceImpl")
     @Autowired
-    private RewardService rewardService;
+    private final RewardService rewardService;
 
-    @Qualifier("tukarPoinServiceImpl")
-    @Autowired
-    private TukarPoinService tukarPoinService;
+    @GetMapping("/viewall")
+    public String index(Model model,
+                        @RequestParam(defaultValue = "1") int page,
+                        @RequestParam(defaultValue = "5") int size) {
+        Pageable paging = PageRequest.of(page - 1, size);
+        Page<RewardModel> pageReward = rewardService.findAll(paging);
+        int currentPage = pageReward.getNumber()+1;
+        int firstItem = (currentPage-1) * size + 1;
+        int lastItem = firstItem + pageReward.getContent().size() - 1;
 
-    @GetMapping(value = "/add")
-    public String addRewardForm(Model model) {
-        RewardModel reward = new RewardModel();
-        model.addAttribute("reward", reward);
-
-        return "reward/form-add-reward";
+        model.addAttribute("currentPage", currentPage);
+        model.addAttribute("firstItem", firstItem);
+        model.addAttribute("lastItem", lastItem);
+        model.addAttribute("totalItems", pageReward.getTotalElements());
+        model.addAttribute("totalPages", pageReward.getTotalPages());
+        model.addAttribute("pageSize", size);
+        model.addAttribute("rewards", pageReward.getContent());
+        return "/reward/index";
     }
 
-    @PostMapping(value = "/add")
-    public String addRewardSubmit(@ModelAttribute RewardModel reward, Model model, RedirectAttributes redirectAttributes) {
-        List<RewardModel> listReward = rewardService.getListReward();
+    // Create form
+    @GetMapping("/add")
+    public String create(Model model) {
+        model.addAttribute("reward", new RewardDTO());
+        model.addAttribute("title", "Buat Jenis Reward");
+        return "/reward/form";
+    }
 
-        for (int i = 0; i < listReward.size(); i++) {
-            if (listReward.get(i).getJenisReward().equals(reward.getJenisReward())) {
-                return "reward/failed-add-reward";
-            }
+    @PostMapping("/add")
+    public String create(Model model, RewardDTO reward) {
+        try {
+            rewardService.add(reward);
+        } catch (Exception e) {
+            log.error("Error while creating reward", e);
+            model.addAttribute("reward", reward);
+            model.addAttribute("title", "Buat Jenis Reward");
+            return "/reward/form";
         }
-
-        rewardService.addReward(reward);
-        model.addAttribute("reward", reward);
-
-        return "reward/success-add-reward";
+        return "redirect:/reward/viewall";
     }
 
-    @GetMapping(value = "/viewall")
-    public String viewAllReward(Model model) {
-        List<RewardModel> listReward = rewardService.getListReward();
-        model.addAttribute("listReward", listReward);
-
-        return "reward/viewall-reward";
+    /**
+     * Edit form
+     *
+     * @param model  Model to be passed to the view (Thymeleaf)
+     * @param reward RewardModel to be edited
+     * @param dto    RewardDTO to be passed to the view (Thymeleaf)
+     * @return
+     */
+    private String edit(Model model, RewardDTO dto) {
+        model.addAttribute("reward", dto);
+        model.addAttribute("title", "Edit Jenis Reward ");
+        return "/reward/form";
     }
 
-    @GetMapping(value = "/update/{id}")
-    public String updateRewardForm(Model model, @PathVariable String id) {
-        RewardModel reward = rewardService.getRewardById(id);
-        model.addAttribute("reward", reward);
-
-        return "reward/form-update-reward";
-    }
-
-    @PostMapping(value = "/update")
-    public String updateRewardSubmit(Model model, @ModelAttribute RewardModel reward, RedirectAttributes redirectAttributes) {
-        String id = reward.getIdReward();
-        Boolean rewardChecker = false;
-        List<TukarPoinModel> listPenukaranPoin = tukarPoinService.findAll();
-
-        for (int i = 0; i < listPenukaranPoin.size(); i++) {
-            if (listPenukaranPoin.get(i).getReward().getIdReward().equals(id)) {
-                rewardChecker = true;
-            }
+    @GetMapping("/{id}/edit")
+    public String edit(Model model, @PathVariable("id") String id) {
+        try {
+            val reward = rewardService.findById(id);
+            return edit(model, RewardDTO.fromModel(reward));
+        } catch (RewardNotFoundException err) {
+            log.error("Error while editing reward", err);
+            // Redirect to error 404 page
+            return "redirect:/error/404";
+        } catch (Exception e) {
+            log.error("Error while editing reward", e);
+            // Redirect to error 500 page
+            return "redirect:/error/500";
         }
-
-        if (rewardChecker) {
-            return "reward/failed-update-reward";
-        }
-
-        RewardModel updatedReward = rewardService.updateReward(reward);
-        model.addAttribute("reward", updatedReward);
-        return "reward/success-update-reward";
     }
 
-    @GetMapping(value = "/delete/{id}")
-    public String deleteReward(Model model, @PathVariable String id) {
-        RewardModel rewardTarget = rewardService.getRewardById(id);
-        Boolean rewardChecker = false;
-        List<TukarPoinModel> listPenukaranPoin = tukarPoinService.findAll();
-
-        for (int i = 0; i < listPenukaranPoin.size(); i++) {
-            if (listPenukaranPoin.get(i).getReward().getIdReward().equals(id)) {
-                rewardChecker = true;
-            }
+    @PostMapping("/{id}/edit")
+    public String edit(Model model, @PathVariable("id") String id, RewardDTO reward) {
+        try {
+            val rewardModel = rewardService.findById(id);
+            rewardService.update(reward, rewardModel);
+            return "redirect:/reward/viewall";
+        } catch (RewardDuplicateJenisException duplicate) {
+            log.error("Error while editing reward", duplicate);
+            model.addAttribute("error", duplicate.getMessage());
+            return edit(model, reward);
+        } catch (RewardNotFoundException notFound) {
+            log.error("Error while editing reward", notFound);
+            return "redirect:/error/404";
         }
-
-        if (rewardChecker) {
-            return "reward/failed-delete-reward";
-        }
-
-        rewardService.deleteReward(rewardTarget);
-        return "reward/success-delete-reward";
     }
+
+    @GetMapping("/{id}/delete")
+    public String delete(Model model, @PathVariable("id") String id) {
+        try {
+            val reward = rewardService.findById(id);
+            rewardService.delete(reward);
+            return "redirect:/reward/viewall";
+        } catch (RewardNotFoundException err) {
+            log.error("Error while deleting reward", err);
+            // Redirect to error 404 page
+            return "redirect:/error/404";
+        } catch (Exception e) {
+            log.error("Error while deleting reward", e);
+            // Redirect to error 500 page
+            return "redirect:/error/500";
+        }
+    }
+
 }
