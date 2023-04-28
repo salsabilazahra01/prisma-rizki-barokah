@@ -21,10 +21,15 @@ import propensi.project.water.service.WarehouseService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+
+import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Controller
@@ -60,19 +65,29 @@ public class DonasiController {
     @PostMapping(value="/add", params={"save"})
     private String addDonasiSubmit(
             @ModelAttribute DonasiModel donasi,
-            RedirectAttributes redirectAttributes) {
+            RedirectAttributes redirectAttributes,
+            Model model) {
         if (donasi.getListItemDonasi()==null) {
             donasi.setListItemDonasi(new ArrayList<>());
         } else{
             for (ItemDonasiModel itemDonasi:donasi.getListItemDonasi()) {
                 itemDonasi.setIdDonasi(donasi);
-                itemDonasi.setKuantitas(-1);
+                itemDonasi.setKuantitas(0);
             }
         }
+
+        List<ItemDonasiModel> listItemDonasi = donasi.getListItemDonasi();
+
+        if(isDuplicate(listItemDonasi)) {
+            redirectAttributes.addFlashAttribute("failed",
+                    "Pembuatan donasi gagal dilakukan karena terdapat duplikasi jenis item donasi");
+            return "redirect:/donasi/add/";
+        }
+
         donasi.setTanggalDibuat(LocalDateTime.now());
         donasi.setStatus(0);
-        donasi.setBeratSetelah(-1);
-        donasi.setPoinEarned(-1);
+        donasi.setBeratSetelah(0);
+        donasi.setPoinEarned(0);
         donasiService.addDonasi(donasi);
         redirectAttributes.addFlashAttribute("success", "Berhasil menambahkan donasi");
         return "redirect:viewall";
@@ -84,11 +99,14 @@ public class DonasiController {
             Model model) {
         if (donasi.getListItemDonasi()==null || donasi.getListItemDonasi().size()==0) {
             donasi.setListItemDonasi(new ArrayList<>());
+        } else{
+            for (ItemDonasiModel itemDonasi:donasi.getListItemDonasi()) {
+                itemDonasi.setIdDonasi(donasi);
+                itemDonasi.setKuantitas(0);
+            }
         }
         donasi.getListItemDonasi().add(new ItemDonasiModel());
         List<WarehouseModel> listItemWarehouse = warehouseService.getListItemWarehouse();
-
-        System.out.println(listItemWarehouse.get(0).getIdItem());
 
         model.addAttribute("donasi", donasi);
         model.addAttribute("listItemWarehouse", listItemWarehouse);
@@ -208,23 +226,47 @@ public class DonasiController {
             @ModelAttribute DonasiModel donasi,
             RedirectAttributes redirectAttributes
     ){
-        for (ItemDonasiModel itemDonasi:donasi.getListItemDonasi()) {
-            itemDonasi.setIdDonasi(donasi);
-            itemDonasi.setKuantitas(-1);
+        if (donasi.getListItemDonasi()==null) {
+            donasi.setListItemDonasi(new ArrayList<>());
+        } else{
+            for (ItemDonasiModel itemDonasi:donasi.getListItemDonasi()) {
+                itemDonasi.setIdDonasi(donasi);
+                itemDonasi.setKuantitas(0);
+            }
         }
+
+        List<ItemDonasiModel> listItemDonasi = donasi.getListItemDonasi();
+
+        if(isDuplicate(listItemDonasi)) {
+            redirectAttributes.addFlashAttribute("failed",
+                    "Perubahan tidak dapat dilakukan karena terdapat duplikasi jenis item donasi");
+            return "redirect:/donasi/update/" + donasi.getIdDonasi();
+        }
+
+        // delete items in itemDonasiList
+        DonasiModel donasiEx = donasiService.findByIdDonasi(donasi.getIdDonasi());
+        donasiEx.getListItemDonasi().removeAll(donasiEx.getListItemDonasi());
+        donasiService.deleteAllItemDonasi(donasiEx);
         donasiService.updateDonasi(donasi);
+
         redirectAttributes.addFlashAttribute("success", "Detail donasi berhasil diubah");
         return "redirect:view/" + donasi.getIdDonasi();
     }
 
-    @PostMapping(value="/update", params={"addRowUpdate"})
+    @PostMapping(value="/update", params={"addRow"})
     private String addRowListItemDonasiUpdate(
             @ModelAttribute DonasiModel donasi,
             Model model) {
+        if (donasi.getListItemDonasi()==null || donasi.getListItemDonasi().size()==0) {
+            donasi.setListItemDonasi(new ArrayList<>());
+        } else{
+            for (ItemDonasiModel itemDonasi:donasi.getListItemDonasi()) {
+                itemDonasi.setIdDonasi(donasi);
+                itemDonasi.setKuantitas(0);
+            }
+        }
         donasi.getListItemDonasi().add(new ItemDonasiModel());
         List<WarehouseModel> listItemWarehouse = warehouseService.getListItemWarehouse();
-
-        System.out.println(listItemWarehouse.get(0).getIdItem());
 
         model.addAttribute("donasi", donasi);
         model.addAttribute("listItemWarehouse", listItemWarehouse);
@@ -232,10 +274,10 @@ public class DonasiController {
         return "donasi/update-donasi";
     }
 
-    @PostMapping(value="/update", params={"deleteRowUpdate"})
+    @PostMapping(value="/update", params={"deleteRow"})
     private String deleteRowListItemDonasiUpdate(
             @ModelAttribute DonasiModel donasi,
-            @RequestParam("deleteRowUpdate") Integer row,
+            @RequestParam("deleteRow") Integer row,
             Model model) {
         final Integer rowId = Integer.valueOf(row);
         donasi.getListItemDonasi().remove(rowId.intValue());
@@ -246,5 +288,170 @@ public class DonasiController {
         model.addAttribute("listItemWarehouse", listItemWarehouse);
 
         return "donasi/update-donasi";
+    }
+
+    @GetMapping(value = "/update-status/{idDonasi}")
+    private String updateStatusDonasi(@PathVariable String idDonasi,
+                                      RedirectAttributes redirectAttrs,
+                                      Principal principal) {
+        DonasiModel donasi = donasiService.findByIdDonasi(idDonasi);
+        UserModel user = userService.getUserByUsername(principal.getName());
+
+        donasi.setStatus(donasi.getStatus()+1);
+
+        donasiService.updateStatus(donasi);
+
+        String status = "";
+        if (donasi.getStatus()==-1) {
+            status = "ditolak";
+        } else if (donasi.getStatus()==1) {
+            status = "disetujui";
+        } else if (donasi.getStatus()==2) {
+            status = "dalam perjalanan";
+        } else if (donasi.getStatus()==3) {
+            status = "dalam proses inspeksi";
+        } else if (donasi.getStatus()==4) {
+            status = "selesai";
+        }
+
+        if(user.getRole().equals("DONATUR")){
+            redirectAttrs.addFlashAttribute("success",
+                    String.format("Status donasi dengan id %s berhasil diperbarui menjadi %s",
+                            donasi.getIdDonasi(), status));
+        } else {
+            redirectAttrs.addFlashAttribute("success",
+                    String.format("Status donasi dengan id %s berhasil diperbarui menjadi %s",
+                            donasi.getIdDonasi(), status));
+        }
+
+        return "redirect:/donasi/view/" + donasi.getIdDonasi();
+    }
+
+    @PostMapping(value = "/update-status2/{idDonasi}")
+    private String updateStatusDonasi2(@PathVariable String idDonasi,
+                                      @ModelAttribute DonasiModel donasi,
+                                      @RequestParam(required = false, defaultValue = "true") String isApproved,
+                                      RedirectAttributes redirectAttrs,
+                                      Principal principal) {
+        UserModel user = userService.getUserByUsername(principal.getName());
+
+        donasi.setStatus(-1);
+        donasiService.updateStatus(donasi);
+
+        String status = "ditolak";
+        if(user.getRole().equals("DONATUR")){
+            redirectAttrs.addFlashAttribute("success",
+                    String.format("Status donasi dengan id %s berhasil diperbarui menjadi %s",
+                            donasi.getIdDonasi(), status));
+        } else {
+            redirectAttrs.addFlashAttribute("success",
+                    String.format("Status donasi dengan id %s berhasil diperbarui menjadi %s",
+                            donasi.getIdDonasi(), status));
+        }
+
+        return "redirect:/donasi/view/" + donasi.getIdDonasi();
+    }
+
+    @GetMapping("/update-status/{idDonasi}/inspeksi")
+    private String updateStatusDonasiInspeksiForm(@PathVariable String idDonasi,
+                                                  Model model) {
+        DonasiModel donasi = donasiService.findByIdDonasi(idDonasi);
+
+        if (donasi.getListItemDonasi()==null || donasi.getListItemDonasi().size()==0) {
+            donasi.setListItemDonasi(new ArrayList<>());
+        }
+        List<WarehouseModel> listItemWarehouse = warehouseService.getListItemWarehouse();
+
+        model.addAttribute("listItemWarehouse", listItemWarehouse);
+        model.addAttribute("donasi", donasi);
+        return "donasi/inspeksi-donasi";
+    }
+
+    @PostMapping(value="/update-status/inspeksi", params="save")
+    private String updateStatusDonasiInspeksiForm(
+            @ModelAttribute DonasiModel donasi,
+            RedirectAttributes redirectAttributes,
+            Principal principal
+    ){
+        if (donasi.getListItemDonasi() == null || donasi.getListItemDonasi().size() == 0) {
+            donasi.setListItemDonasi(new ArrayList<>());
+        }
+
+        List<ItemDonasiModel> listItemDonasi = donasi.getListItemDonasi();
+
+        if(isDuplicate(listItemDonasi)) {
+            redirectAttributes.addFlashAttribute("failed",
+                    "Penyimpanan gagal karena terdapat duplikasi jenis item donasi");
+            return "redirect:/donasi/update-status/" + donasi.getIdDonasi() + "/inspeksi";
+        }
+
+        // delete items in itemDonasiList
+        DonasiModel donasiEx = donasiService.findByIdDonasi(donasi.getIdDonasi());
+        donasiEx.getListItemDonasi().removeAll(donasiEx.getListItemDonasi());
+        donasiService.deleteAllItemDonasi(donasiEx);
+
+        donasi.setStatus(donasi.getStatus()+1);
+        donasiService.updateStatusDone(donasi);
+
+        redirectAttributes.addFlashAttribute("success",
+                String.format("Status donasi dengan id %s berhasil diperbarui menjadi selesai",
+                        donasi.getIdDonasi()));
+
+        return "redirect:/donasi/view/" + donasi.getIdDonasi();
+    }
+
+    @PostMapping(value="/update-status/inspeksi", params={"addRow"})
+    private String addRowListItemDonasiInspeksi(
+            @ModelAttribute DonasiModel donasi,
+            Model model) {
+        if (donasi.getListItemDonasi()==null || donasi.getListItemDonasi().size()==0) {
+            donasi.setListItemDonasi(new ArrayList<>());
+        }
+
+        donasi.getListItemDonasi().add(new ItemDonasiModel());
+
+        for (ItemDonasiModel itemDonasi:donasi.getListItemDonasi()) {
+            if (itemDonasi.getIdItem()==null) {
+                itemDonasi.setIdItem(warehouseService.getListItemWarehouse().get(0));
+                itemDonasi.setKuantitas(0);
+            }
+            itemDonasi.setIdDonasi(donasi);
+        }
+
+        List<WarehouseModel> listItemWarehouse = warehouseService.getListItemWarehouse();
+
+        model.addAttribute("donasi", donasi);
+        model.addAttribute("listItemWarehouse", listItemWarehouse);
+
+        return "donasi/inspeksi-donasi";
+    }
+
+    @PostMapping(value="/update-status/inspeksi", params={"deleteRow"})
+    private String deleteRowListItemDonasiInspeksi(
+            @ModelAttribute DonasiModel donasi,
+            @RequestParam("deleteRow") Integer row,
+            Model model) {
+        final Integer rowId = Integer.valueOf(row);
+        donasi.getListItemDonasi().remove(rowId.intValue());
+
+        List<WarehouseModel> listItemWarehouse = warehouseService.getListItemWarehouse();
+
+        model.addAttribute("donasi",donasi);
+        model.addAttribute("listItemWarehouse", listItemWarehouse);
+
+        return "donasi/inspeksi-donasi";
+    }
+
+    private boolean isDuplicate(List<ItemDonasiModel> listItemDonasi) {
+        final Set<WarehouseModel> set1 = new HashSet<>();
+
+        if (!listItemDonasi.isEmpty() || listItemDonasi == null) {
+            for (ItemDonasiModel item : listItemDonasi) {
+                if (!set1.add(item.getIdItem())) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }
