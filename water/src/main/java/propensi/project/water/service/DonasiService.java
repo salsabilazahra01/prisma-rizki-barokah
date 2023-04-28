@@ -26,5 +26,11 @@ public interface DonasiService {
 
     public void deleteDonasi(DonasiModel donasi);
 
-    void updateDonasi(DonasiModel UpdatedDonasi);
+    public void updateDonasi(DonasiModel updatedDonasi);
+
+    public void updateStatus(DonasiModel updatedDonasi);
+
+    public void updateStatusDone(DonasiModel updatedDonasi);
+
+    public void deleteAllItemDonasi(DonasiModel donasi);
 }

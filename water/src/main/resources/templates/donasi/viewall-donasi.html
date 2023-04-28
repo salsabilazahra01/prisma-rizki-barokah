@@ -21,7 +21,7 @@
   <nav th:replace="fragments/fragment :: navbar('Riwayat Donasi')"></nav>
 </div>
 <div sec:authorize="hasAuthority('ADMIN') || hasAuthority('MANAJER')">
-  <nav th:replace="fragments/fragment :: navbar('Donasi Sampah')"></nav>
+  <nav th:replace="fragments/fragment :: navbar('Donasi')"></nav>
 </div>
 
 <div class="container mt-lg-5">
@@ -91,12 +91,12 @@
                 <td th:text="${donasi.idDonasi}"></td>
                 <td th:text="${#temporals.format(donasi.tanggalDibuat, 'dd-MM-yyyy HH:mm')}"></td>
                 <td>
-                  <div th:if="${donasi.status == -1}"><span class="bi bi-file-earmark-x"></span>Donasi Ditolak</div>
+                  <div th:if="${donasi.status == -1}"><span class="bi bi-file-earmark-x"></span> Donasi Ditolak</div>
                   <div th:if="${donasi.status == 0}"><span class="bi bi-hourglass-split"></span> Menunggu Persetujuan</div>
-                  <div th:if="${donasi.status == 1}"><span class="bi bi-file-earmark-check"></span>Donasi Disetujui</div>
-                  <div th:if="${donasi.status == 2}"><span class="bi bi-truck"></span>Dalam Perjalanan</div>
-                  <div th:if="${donasi.status == 3}"><span class="bi bi-search"></span>Dalam Proses Inspeksi</div>
-                  <div th:if="${donasi.status == 4}"><span class="bi bi-check-circle"></span>Selesai</div>
+                  <div th:if="${donasi.status == 1}"><span class="bi bi-file-earmark-check"></span> Donasi Disetujui</div>
+                  <div th:if="${donasi.status == 2}"><span class="bi bi-truck"></span> Dalam Perjalanan</div>
+                  <div th:if="${donasi.status == 3}"><span class="bi bi-search"></span> Dalam Proses Inspeksi</div>
+                  <div th:if="${donasi.status == 4}"><span class="bi bi-check-circle"></span> Selesai</div>
                 </td>
                 <td>
                   <a type="button" class="mx-2 btn-small btn-primary-green" th:href="@{/donasi/view/} + ${donasi.idDonasi}">Detail</a>
