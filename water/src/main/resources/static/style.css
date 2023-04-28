@@ -283,8 +283,8 @@ a {
 
 /* radio button */
 input[type="radio"]:checked{
-    background-color: var(--yellow-sun);
-    border-color: var(--yellow-sun);
+    background-color: #5DAF40;
+    border-color: #5DAF40;
 }
 .disabled input[type="radio"]:checked{
     background-color: var(--grey-white);

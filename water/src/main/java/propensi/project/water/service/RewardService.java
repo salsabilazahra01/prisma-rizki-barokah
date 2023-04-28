@@ -1,13 +1,20 @@
 package propensi.project.water.service;
 
-import propensi.project.water.model.PoinReward.RewardModel;
-
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+import propensi.project.water.dto.RewardDTO;
+import propensi.project.water.model.PoinReward.RewardModel;
+
 public interface RewardService {
-    RewardModel addReward(RewardModel reward);
-    public RewardModel getRewardById(String id);
-    List<RewardModel> getListReward();
-    void deleteReward(RewardModel reward);
-    RewardModel updateReward(RewardModel reward);
+    List<RewardModel> findAll();
+    Page<RewardModel> findAll(Pageable paging);
+    RewardModel findById(String id);
+    RewardModel findByJenis(String jenis);
+    RewardModel add(RewardDTO dto);
+    RewardModel update(RewardDTO dto, RewardModel model);
+    RewardModel delete(RewardModel model);
+
 }
