@@ -56,6 +56,10 @@ public class DonasiController {
         DonasiModel donasi = new DonasiModel();
 
         donasiService.setDefaultDonatur(donasi, userSession);
+        donasi.setListItemDonasi(new ArrayList<>());
+        List<WarehouseModel> listItemWarehouse = warehouseService.getListItemWarehouse();
+
+        model.addAttribute("listItemWarehouse", listItemWarehouse);
 
         model.addAttribute("userSession", userSession);
         model.addAttribute("donasi", donasi);
