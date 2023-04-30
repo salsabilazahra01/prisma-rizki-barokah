@@ -24,6 +24,9 @@ public class PenawaranOlahanServiceImpl implements PenawaranOlahanService {
 
     @Override
     public Page<PenawaranOlahanModel> retrievePage(Pageable paging, Integer status){
+        if(status == -1){
+          return penawaranOlahanDb.findAllByIdPenawaranOlahanIsNotNullOrderByTanggalDibuat(paging);
+        }
         return penawaranOlahanDb.findAllByStatusOrderByTanggalDibuat(status, paging);
     }
 

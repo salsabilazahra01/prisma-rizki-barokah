@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import propensi.project.water.model.Donasi.ItemDonasiModel;
 import propensi.project.water.model.PenjualanHasilOlahan.ItemPenawaranOlahanModel;
 import propensi.project.water.model.PenjualanHasilOlahan.PenawaranOlahanModel;
 import propensi.project.water.model.Transaksi.ProsesPenawaranOlahanModel;
@@ -157,7 +158,7 @@ public class PenawaranHasilOlahanController {
                     penawaranOlahan.getIdPenawaranOlahan()));
 
         model.addAttribute("penawaranOlahan", penawaranOlahan.getIdPenawaranOlahan());
-        return "redirect:/penawaran-hasil-olahan/viewall/0";
+        return "redirect:/penawaran-hasil-olahan/viewall/-1";
     }
 
     @GetMapping(value="/update/{idPenawaranOlahan}")
@@ -302,7 +303,7 @@ public class PenawaranHasilOlahanController {
                 String.format("Penawaran hasil olahan sampah dengan id %s berhasil dihapus",
                         penawaranOlahan.getIdPenawaranOlahan()));
 
-        return "redirect:/penawaran-hasil-olahan/viewall/0";
+        return "redirect:/penawaran-hasil-olahan/viewall/-1";
     }
 
     @PostMapping(value = "/update-status")
@@ -396,11 +397,15 @@ public class PenawaranHasilOlahanController {
         return false;
     }
 
-    private boolean isDuplicate(List<ItemPenawaranOlahanModel> listItem){
-        Set<ItemPenawaranOlahanModel> duplicate = new HashSet<>();
-        Set<ItemPenawaranOlahanModel> isDuplicate =  listItem.stream().filter(e -> !duplicate.add(e)).collect(Collectors.toSet());
-        if (isDuplicate.size() > 0){
-            return true;
+    private boolean isDuplicate(List<ItemPenawaranOlahanModel> listItem) {
+        final Set<WarehouseModel> set1 = new HashSet<>();
+
+        if (!listItem.isEmpty() || listItem == null) {
+            for (ItemPenawaranOlahanModel item : listItem) {
+                if (!set1.add(item.getIdItem())) {
+                    return true;
+                }
+            }
         }
         return false;
     }

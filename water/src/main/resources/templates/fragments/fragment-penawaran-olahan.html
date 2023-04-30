@@ -17,6 +17,9 @@
     <div id="navbarsExampleDefault">
         <ul class="navbar-nav">
             <li>
+                <a th:class="${status == -1}  ? 'nav-link nav-underline active' : 'nav-link'" th:href="@{/penawaran-hasil-olahan/viewall/-1}">Semua<span class="sr-only">(current)</span></a>
+            </li>
+            <li>
                 <a th:class="${status == 0}  ? 'nav-link nav-underline active' : 'nav-link'" th:href="@{/penawaran-hasil-olahan/viewall/0}">Konfirmasi Perusahaan<span class="sr-only">(current)</span></a>
             </li>
             <li>

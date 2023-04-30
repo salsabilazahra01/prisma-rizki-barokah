@@ -9,6 +9,7 @@ import propensi.project.water.model.Transaksi.TransaksiModel;
 
 @Repository
 public interface PenawaranOlahanDb  extends JpaRepository<PenawaranOlahanModel, String> {
+    Page<PenawaranOlahanModel> findAllByIdPenawaranOlahanIsNotNullOrderByTanggalDibuat(Pageable pageable);
     Page<PenawaranOlahanModel> findAllByStatusOrderByTanggalDibuat(Integer status, Pageable pageable);
 
 }
