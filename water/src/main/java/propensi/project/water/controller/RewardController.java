@@ -19,7 +19,11 @@ import propensi.project.water.dto.RewardDTO;
 import propensi.project.water.exceptions.donasi.RewardDuplicateJenisException;
 import propensi.project.water.exceptions.donasi.RewardNotFoundException;
 import propensi.project.water.model.PoinReward.RewardModel;
+import propensi.project.water.model.PoinReward.TukarPoinModel;
 import propensi.project.water.service.RewardService;
+import propensi.project.water.service.TukarPoinService;
+
+import java.util.List;
 
 @Slf4j
 @Controller
@@ -28,6 +32,9 @@ import propensi.project.water.service.RewardService;
 public class RewardController {
     @Autowired
     private final RewardService rewardService;
+
+    @Autowired
+    private TukarPoinService tukarPoinService;
 
     @GetMapping("/viewall")
     public String index(Model model,
@@ -105,6 +112,16 @@ public class RewardController {
         try {
             val rewardModel = rewardService.findById(id);
             rewardService.update(reward, rewardModel);
+
+            List<TukarPoinModel> listPenukaran = tukarPoinService.findAll();
+            for (int i = 0; i < listPenukaran.size(); i++) {
+                if (listPenukaran.get(i).getReward().getIdReward().equals(id)) {
+                    if (listPenukaran.get(i).getStatus().equals(false)) {
+                        return "redirect:/error/404";
+                    }
+                }
+            }
+
             return "redirect:/reward/viewall";
         } catch (RewardDuplicateJenisException duplicate) {
             log.error("Error while editing reward", duplicate);
@@ -120,6 +137,16 @@ public class RewardController {
     public String delete(Model model, @PathVariable("id") String id) {
         try {
             val reward = rewardService.findById(id);
+
+            List<TukarPoinModel> listPenukaran = tukarPoinService.findAll();
+            for (int i = 0; i < listPenukaran.size(); i++) {
+                if (listPenukaran.get(i).getReward().getIdReward().equals(id)) {
+                    if (listPenukaran.get(i).getStatus().equals(false)) {
+                        return "redirect:/error/404";
+                    }
+                }
+            }
+
             rewardService.delete(reward);
             return "redirect:/reward/viewall";
         } catch (RewardNotFoundException err) {
@@ -128,9 +155,9 @@ public class RewardController {
             return "redirect:/error/404";
         } catch (Exception e) {
             log.error("Error while deleting reward", e);
+
             // Redirect to error 500 page
             return "redirect:/error/500";
         }
     }
-
 }

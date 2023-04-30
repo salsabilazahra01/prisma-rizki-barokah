@@ -331,8 +331,8 @@ a {
 
 /* radio button */
 input[type="radio"]:checked{
-    background-color: var(--primary-green);
-    border-color: var(--primary-green);
+    background-color: #5DAF40;
+    border-color: #5DAF40;
 }
 .disabled input[type="radio"]:checked{
     background-color: var(--grey-white);
