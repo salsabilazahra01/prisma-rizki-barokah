@@ -18,10 +18,11 @@
 </head>
 
 <body class="d-flex flex-column min-vh-100">
-  <header>
-    <nav th:replace="fragments/fragment :: navbar('Donasi')"></nav>
-  </header>
+<nav th:replace="fragments/fragment :: navbar('Donasi')"></nav>
   <main class="container flex-grow-1 pt-lg-5">
+    <div class="alert alert-success" role="alert" th:text="${success}" th:if="${success}"></div>
+    <div class="alert alert-danger" role="alert" th:text="${failed}" th:if="${failed}"></div>
+
     <article class="card rounded-25 m-4 p-4">
       <section class="card-body justify-content-center">
         <header class="row mt-2 mb-4">
@@ -41,7 +42,7 @@
               <tr>
                 <th>ID Jenis Reward</th>
                 <th>Jenis Reward</th>
-                <th>Poin Equivalen</th>
+                <th>Poin Ekuivalen</th>
                 <th colspan="2"></th>
               </tr>
             </thead>
@@ -54,15 +55,15 @@
                 <td>
                   <a th:href="@{/reward/{id}/edit(id=${reward.idReward})}"
                     class="btn-small btn-primary-green h6">
-                    <span class="bi-pencil-fill"></span> Update
+                    <span></span> Update
                   </a>
                 </td>
                 <td>
-                  <a th:href="@{/reward/{id}/delete(id=${reward.idReward})}"
-                    class="btn-small btn-danger h6">
-                    <span class="bi-trash-fill"></span> Delete
-                  </a>
+                  <div th:replace="fragments/fragment-reward :: modalDelete(${reward.idReward}, ${reward.jenisReward()})"></div>
                 </td>
+
+
+
               </tr>
               <tr th:unless="${rewards.size}">
                 <th colspan="6" class="h4 p-4 text-center">This list is empty</th>

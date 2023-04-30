@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import lombok.AllArgsConstructor;
 import lombok.val;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import propensi.project.water.dto.RewardDTO;
 import propensi.project.water.exceptions.donasi.RewardDuplicateJenisException;
 import propensi.project.water.exceptions.donasi.RewardNotFoundException;
@@ -53,7 +54,7 @@ public class RewardController {
         model.addAttribute("totalPages", pageReward.getTotalPages());
         model.addAttribute("pageSize", size);
         model.addAttribute("rewards", pageReward.getContent());
-        return "/reward/index";
+        return "/reward/viewall-reward";
     }
 
     // Create form
@@ -65,7 +66,7 @@ public class RewardController {
     }
 
     @PostMapping("/add")
-    public String create(Model model, RewardDTO reward) {
+    public String create(Model model, RewardDTO reward, RedirectAttributes redirectAttrs) {
         try {
             rewardService.add(reward);
         } catch (Exception e) {
@@ -74,6 +75,7 @@ public class RewardController {
             model.addAttribute("title", "Buat Jenis Reward");
             return "/reward/form";
         }
+        redirectAttrs.addFlashAttribute("success","Reward baru berhasil ditambahkan");
         return "redirect:/reward/viewall";
     }
 
@@ -108,7 +110,7 @@ public class RewardController {
     }
 
     @PostMapping("/{id}/edit")
-    public String edit(Model model, @PathVariable("id") String id, RewardDTO reward) {
+    public String edit(Model model, @PathVariable("id") String id, RewardDTO reward, RedirectAttributes redirectAttrs) {
         try {
             val rewardModel = rewardService.findById(id);
             rewardService.update(reward, rewardModel);
@@ -129,12 +131,13 @@ public class RewardController {
             return edit(model, reward);
         } catch (RewardNotFoundException notFound) {
             log.error("Error while editing reward", notFound);
-            return "redirect:/error/404";
+            redirectAttrs.addFlashAttribute("failed", "Reward gagal diupdate karena masih terdapat penukaran poin dengan reward ini");
+            return "redirect:/reward/form";
         }
     }
 
     @GetMapping("/{id}/delete")
-    public String delete(Model model, @PathVariable("id") String id) {
+    public String delete(Model model, @PathVariable("id") String id, RedirectAttributes redirectAttrs) {
         try {
             val reward = rewardService.findById(id);
 
@@ -148,6 +151,7 @@ public class RewardController {
             }
 
             rewardService.delete(reward);
+            redirectAttrs.addFlashAttribute("success","Reward berhasil dihapus");
             return "redirect:/reward/viewall";
         } catch (RewardNotFoundException err) {
             log.error("Error while deleting reward", err);
