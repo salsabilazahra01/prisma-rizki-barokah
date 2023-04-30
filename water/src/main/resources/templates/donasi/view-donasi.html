@@ -34,15 +34,15 @@
       <div class="col-sm-6 w-auto justify-content-start pr-0">
         <h2 class="h2">Detail Donasi Sampah</h2>
       </div>
-      <div class="col-sm-3 w-auto justify-content-start px-0 mx-0" sec:authorize="hasAuthority('DONATUR')" th:if="${donasi.status == 0}">
-        <a type="button" class="btn-small btn-primary-green" th:href="@{/donasi/update/} + ${donasi.idDonasi}">
+      <div class="col-sm-3 w-auto px-0 mx-0 ms-2" sec:authorize="hasAuthority('DONATUR')" th:if="${donasi.status == 0}">
+        <a type="button" class="btn-small-fit btn-primary-green h6" th:href="@{/donasi/update/} + ${donasi.idDonasi}">
           <i class="bi bi-pencil-fill">
             Edit
           </i>
         </a>
       </div>
-      <div class="col-sm-3 w-auto justify-content-start px-0 mx-0" sec:authorize="hasAuthority('DONATUR')" th:if="${donasi.status == 0}">
-        <button type="button" class="mx-2 btn-small btn-red-danger"  data-bs-toggle="modal" data-bs-target="#deleteDonasi">
+      <div class="col-sm-3 w-auto px-0 mx-0" sec:authorize="hasAuthority('DONATUR')" th:if="${donasi.status == 0}">
+        <button type="button" class="mx-2 btn-small-fit btn-red-danger h6"  data-bs-toggle="modal" data-bs-target="#deleteDonasi">
           Batalkan
         </button>
 

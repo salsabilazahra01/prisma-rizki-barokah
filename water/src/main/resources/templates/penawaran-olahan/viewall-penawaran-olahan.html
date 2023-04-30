@@ -31,6 +31,9 @@
                 </div>
 
                 <!--section bar-->
+                    <div class="my-3" th:if="${status == -1}">
+                        <nav th:replace="fragments/fragment-penawaran-olahan :: navbar('Semua')"></nav>
+                    </div>
                 <div class="my-3" th:if="${status == 0}">
                     <nav th:replace="fragments/fragment-penawaran-olahan :: navbar('Konfirmasi Perusahaan')"></nav>
                 </div>
@@ -60,7 +63,7 @@
                             <th>ID</th>
                             <th>Tanggal, Waktu</th>
                             <th>Harga</th>
-                            <th>Status</th>
+                            <th th:if="${status == -1}">Status</th>
                             <th></th>
                         </tr>
                         </thead>
@@ -70,6 +73,14 @@
                             <td class="text-center" th:text="${penawaranOlahan.idPenawaranOlahan}"></td>
                             <td th:text="${#temporals.format(penawaranOlahan.tanggalDibuat, 'dd-MM-yyyy HH:mm')}"></td>
                             <td th:text="${penawaranOlahan.harga != null} ? 'Rp ' + ${#numbers.formatDecimal(penawaranOlahan.harga, 0, 'POINT', 2, 'COMMA')} : '-'"></td>
+                            <td th:if="${status == -1}">
+                                <div th:if="${penawaranOlahan.status == 0}"><span class="bi bi-hourglass-split"></span> Konfirmasi Perusahaan</div>
+                                <div th:if="${penawaranOlahan.status == 1}"><span class="bi bi-hourglass-split"></span> Konfirmasi Harga</div>
+                                <div th:if="${penawaranOlahan.status == 2}"><span class="bi bi-arrow-repeat"></span> Diproses</div>
+                                <div th:if="${penawaranOlahan.status == 3}"><span class="bi bi-truck"></span> Konfirmasi Penerimaan</div>
+                                <div th:if="${penawaranOlahan.status == 4}"><span class="bi bi-check-circle"></span> Selesai</div>
+                                <div th:if="${penawaranOlahan.status == 5}"><span class="bi bi-file-earmark-x"></span> Batal</div>
+                            </td>
                             <td>
                                 <a type="button" class="mx-2 btn-small btn-primary-green" th:href="@{/penawaran-hasil-olahan/view/} + ${penawaranOlahan.idPenawaranOlahan}">Detail</a>
                             </td>
