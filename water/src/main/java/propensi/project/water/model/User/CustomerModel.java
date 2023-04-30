@@ -28,7 +28,16 @@ public class CustomerModel extends UserModel {
     @Column(name="alamat", nullable=false)
     private String alamat;
 
+    @Column(name = "bank")
+    private String bank;
+
+    @Column(name = "noRekening")
+    private Integer noRekening;
+
+    @Column(name = "namaRekening")
+    private String namaRekening;
+
     // relasi dengan penawaran olahan
-    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<PenawaranOlahanModel> listPenawaranOlahan;
+//    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    private List<PenawaranOlahanModel> listPenawaranOlahan;
 }

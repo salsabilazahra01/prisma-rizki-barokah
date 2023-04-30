@@ -39,14 +39,20 @@ public class PenawaranOlahanModel implements Serializable {
     @Column(name = "id_penawaran_olahan", nullable = false)
     private String idPenawaranOlahan;
 
+    @Size(max = 50)
+    @Column(name = "nama_customer", nullable = false)
+    private String namaCustomer;
+
     @NotNull
     @Size(max = 50)
     @Column(name = "nama_pic", nullable = false)
     private String namaPic;
 
-    @NotNull
-    @Column(name = "kontak_pic", nullable = false)
-    private String kontakPic;
+    @Column(name = "email")
+    private String email;
+
+    @Column(name = "hp")
+    private String hp;
 
     @NotNull
     @Column(name = "bank", nullable = false)
@@ -57,11 +63,13 @@ public class PenawaranOlahanModel implements Serializable {
     private Integer noRekening;
 
     @NotNull
-    @Column(name = "alamat_pic", nullable = false)
+    @Column(name = "namaRekening", nullable = false)
+    private String namaRekening;
+
+    @Column(name = "alamat_pic")
     private String alamatPic;
 
-    @NotNull
-    @Column(name = "is_picked_up", nullable = false)
+    @Column(name = "is_picked_up")
     private Boolean isPickedUp;
 
     @NotNull
@@ -73,16 +81,18 @@ public class PenawaranOlahanModel implements Serializable {
     @Column(name = "status", nullable = false)
     private Integer status;
 
-    @Column(name = "keterangan", nullable = false)
+    @Column(name = "keterangan")
     private String keterangan;
 
-    @NotNull
-    @Column(name = "harga", nullable = false, columnDefinition = "int default 0")
+    @Column(name = "keterangan_tolak")
+    private String keteranganTolak;
+
+    @Column(name = "harga", columnDefinition = "int default 0")
     private Integer harga;
 
     // relasi dengan customer
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "username_customer", referencedColumnName = "username", nullable = false)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "username_customer", referencedColumnName = "username")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private CustomerModel customer;
 

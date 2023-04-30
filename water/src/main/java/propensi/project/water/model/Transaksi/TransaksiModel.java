@@ -50,7 +50,7 @@ public class TransaksiModel implements Serializable{
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private LocalDateTime tanggalTransaksi;
 
-    @Column(name = "keterangan", nullable = false)
+    @Column(name = "keterangan")
     private String keterangan;
 
     @NotNull

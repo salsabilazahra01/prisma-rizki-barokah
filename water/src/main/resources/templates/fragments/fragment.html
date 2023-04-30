@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
-<head>
+<head  th:fragment="head">
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -51,7 +51,7 @@
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <li sec:authorize="hasAuthority('MANAJER') || hasAuthority('SUPERVISOR') || hasAuthority('ADMIN')"><a class="dropdown-item" th:href="@{/}">Pembelian Sampah</a></li>
-                    <li sec:authorize="hasAuthority('MANAJER') || hasAuthority('SUPERVISOR') || hasAuthority('ADMIN')"><a class="dropdown-item" th:href="@{/}">Penjualan Hasil Olahan</a></li>
+                    <li sec:authorize="hasAuthority('MANAJER') || hasAuthority('SUPERVISOR') || hasAuthority('ADMIN')"><a class="dropdown-item" th:href="@{/penawaran-hasil-olahan/viewall/0}">Penjualan Hasil Olahan</a></li>
                 </ul>
             </li>
             <li class="nav-item dropdown" sec:authorize="hasAuthority('MANAJER') || hasAuthority('SUPERVISOR') || hasAuthority('ADMIN')">
@@ -87,10 +87,10 @@
             </li>
 
             <li sec:authorize="hasAuthority('CUSTOMER')">
-                <a th:class="${#strings.equals(activeLink, 'Beli Hasil Olahan')}  ? 'nav-link nav-underline active' : 'nav-link'" th:href="@{/}">Beli Hasil Olahan<span class="sr-only">(current)</span></a>
+                <a th:class="${#strings.equals(activeLink, 'Beli Hasil Olahan')}  ? 'nav-link nav-underline active' : 'nav-link'" th:href="@{/penawaran-hasil-olahan/add}">Beli Hasil Olahan<span class="sr-only">(current)</span></a>
             </li>
             <li sec:authorize="hasAuthority('CUSTOMER')">
-                <a th:class="${#strings.equals(activeLink, 'Riwayat Hasil Olahan')}  ? 'nav-link nav-underline active' : 'nav-link'" th:href="@{/}">Riwayat Pembelian<span class="sr-only">(current)</span></a>
+                <a th:class="${#strings.equals(activeLink, 'Riwayat Pembelian')}  ? 'nav-link nav-underline active' : 'nav-link'" th:href="@{/penawaran-hasil-olahan/viewall/0}">Riwayat Pembelian<span class="sr-only">(current)</span></a>
             </li>
         </ul>
 
