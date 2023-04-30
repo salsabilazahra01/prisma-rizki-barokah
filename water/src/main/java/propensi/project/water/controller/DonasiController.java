@@ -145,6 +145,7 @@ public class DonasiController {
             if (userSession.getRole().toString().equals("DONATUR")) {
                 // case: fragment=semua
                 if (fragmentStatus == null){
+                    fragmentStatus = 88;
                     pageDonasi = donasiService.retrievePage((DonaturModel) userSession, fragmentStatus, paging);
                 } else {
                     pageDonasi = donasiService.retrievePage((DonaturModel) userSession, fragmentStatus, paging);
@@ -153,6 +154,7 @@ public class DonasiController {
             // case: userSession=internal
             else {
                 if (fragmentStatus == null){
+                    fragmentStatus = 88;
                     pageDonasi = donasiService.retrievePage(fragmentStatus, paging);
                 } else {
                     pageDonasi = donasiService.retrievePage(fragmentStatus, paging);

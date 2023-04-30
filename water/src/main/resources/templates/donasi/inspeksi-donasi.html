@@ -66,7 +66,7 @@
                                                 </td>
                                                 <td class="col-2">
                                                     <button disabled type="text" class="form-control p2 text-grey-white"
-                                                        th:text="'Rp' + ${itemDonasi.idItem.hargaBeli.toString()}"></button>
+                                                        th:text="'Rp' + ${itemDonasi.idItem.hargaBeli.toString()} + '/kg'"></button>
                                                 </td>
                                                 <td class="col-2">
                                                     <div class="input-group">
@@ -79,14 +79,14 @@
                                                     </div>
                                                 </td>
                                                 <td class="col-1">
-                                                    <button th:value="${iterationStatus.index}" class="btn btn-danger" type="submit" name="deleteRow">
+                                                    <button th:value="${iterationStatus.index}" class="btn-delete btn-danger" type="submit" name="deleteRow">
                                                         <i class="bi bi-dash"></i>
                                                     </button>
                                                 </td>
                                             </tr>
                                             </tbody>
                                         </table>
-                                        <div>
+                                        <div th:if="${listItemWarehouse.size() > 1 and donasi.listItemDonasi.size() < listItemWarehouse.size()}">
                                             <button class="btn-small btn-add-row w-100 text-grey-white" type="submit" name="addRow">Tambah Jenis Baru
                                                 <i class="bi bi-plus text-end"></i>
                                             </button>
