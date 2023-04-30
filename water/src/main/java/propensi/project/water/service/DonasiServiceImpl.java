@@ -63,7 +63,7 @@ public class DonasiServiceImpl implements DonasiService {
 
     @Override
     public Page<DonasiModel> retrievePage(Integer fragmentStatus, Pageable paging){
-        if (fragmentStatus == null){
+        if (fragmentStatus == 88){
             return donasiDb.findAllByIdDonasiIsNotNullOrderByTanggalDibuat(paging);
         }
         return donasiDb.findAllByStatusOrderByTanggalDibuat(fragmentStatus, paging);
@@ -71,7 +71,7 @@ public class DonasiServiceImpl implements DonasiService {
 
     @Override
     public Page<DonasiModel> retrievePage(DonaturModel donatur, Integer fragmentStatus, Pageable paging){
-        if (fragmentStatus == null){
+        if (fragmentStatus == 88){
             return donasiDb.findAllByDonaturOrderByTanggalDibuat(donatur, paging);
         }
         return donasiDb.findAllByDonaturAndStatusOrderByTanggalDibuat(donatur, fragmentStatus, paging);
@@ -158,7 +158,7 @@ public class DonasiServiceImpl implements DonasiService {
                 total += item.getKuantitas() * item.getIdItem().getHargaBeli();
             }
         }
-        total = total/100;
+        total = total/1000;
         return total;
     }
 

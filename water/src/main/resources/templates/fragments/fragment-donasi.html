@@ -41,6 +41,12 @@
   </div>
 </nav>
 
+<a th:fragment="paging(status, pageNum, label, tooltip)" class="page-link"
+   th:href="@{'/donasi/viewall/status=' + ${fragmentStatus} + '?' + 'page=' + ${pageNum} + '&size=' + ${pageSize}}"
+   th:title="${tooltip}" rel="tooltip">
+  [[${label}]]
+</a>
+
 <script src = "bootstrap/js/bootstrap.js"></script>
 <script src="script.js"></script>
 

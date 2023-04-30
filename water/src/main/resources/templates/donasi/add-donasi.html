@@ -102,23 +102,23 @@
                       <thead></thead>
                       <tbody>
                       <tr th:each="itemDonasi, iterationStatus: *{listItemDonasi}">
-                        <td>
-                          <select class="form-select"
+                        <td class="col-11">
+                          <select class="form-select" pla
                                   name="idItem" th:field="*{listItemDonasi[__${iterationStatus.index}__].idItem}">
                             <div th:each="itemWarehouse, iterationStatus2 : ${listItemWarehouse}">
                               <option th:value="${itemWarehouse.idItem}" th:text="${itemWarehouse.namaItem}"></option>
                             </div>
                           </select>
                         </td>
-                        <td>
-                          <button th:value="${iterationStatus.index}" class="btn btn-danger" type="submit" name="deleteRow">
+                        <td class="col-1">
+                          <button th:value="${iterationStatus.index}" class="btn-delete btn-danger" type="submit" name="deleteRow">
                             <i class="bi bi-dash"></i>
                           </button>
                         </td>
                       </tr>
                       </tbody>
                     </table>
-                    <div>
+                    <div th:if="${listItemWarehouse.size() > 1 and donasi.listItemDonasi.size() < listItemWarehouse.size()}">
                       <button class="btn-small btn-add-row w-100 text-grey-white" type="submit" name="addRow">Tambah Jenis Baru
                         <i class="bi bi-plus text-end"></i>
                       </button>

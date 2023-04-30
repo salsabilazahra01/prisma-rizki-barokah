@@ -16,10 +16,10 @@
     <!-- button & id -->
     <div class="row my-3">
       <p class="c3">
-        <a type="button" class="btn-small btn-outline-raisin-black h6 me-4" th:href="@{/manajemen-user/viewall/}">
+        <button type="button" class="btn-small btn-outline-raisin-black h6 me-4" onclick="history.back()">
           <i class="bi-chevron-left"></i>
           Back
-        </a>
+        </button>
         <text th:text="${user.username}" class="c3"></text>
       </p>
     </div>
