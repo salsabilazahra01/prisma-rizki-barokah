@@ -103,7 +103,7 @@
                       <tbody>
                       <tr th:each="itemDonasi, iterationStatus: *{listItemDonasi}">
                         <td class="col-11">
-                          <select class="form-select" pla
+                          <select class="form-select"
                                   name="idItem" th:field="*{listItemDonasi[__${iterationStatus.index}__].idItem}">
                             <div th:each="itemWarehouse, iterationStatus2 : ${listItemWarehouse}">
                               <option th:value="${itemWarehouse.idItem}" th:text="${itemWarehouse.namaItem}"></option>
