@@ -12,6 +12,8 @@
     --white: #fff;
 }
 
+/* TYPOGRAPHY */
+
 *{
     font-family: 'Montserrat', sans-serif;
 }
@@ -20,11 +22,11 @@
     font-weight: 700;
 }
 
-.p1, .p2, .p3 {
+.p1, .p2, .p3, .p4 {
     font-weight: 500;
 }
 
-.c1, .c2, .c3 {
+.c1, .c2, .c3, .c4 {
     font-weight: 300;
     font-style: italic;
 }
@@ -53,8 +55,12 @@
     font-size: 16px;
 }
 
-.h6,.p3,.c3{
+.h6, .p3,.c3{
     font-size: 14px;
+}
+
+.p4, .c4{
+    font-size: 12px;
 }
 
 /* detail fonts */
@@ -105,6 +111,14 @@ a {
     padding-block: 0.5rem;
     padding-inline: 3rem;
 }
+.btn-small {
+    font-weight: bold;
+    border: 2px solid;
+    border-radius: 1.5rem;
+    padding-block: 0.5rem;
+    padding-inline: 3rem;
+    font-size: 0.75rem;
+}
 .btn-primary-green{
     background-color: var(--primary-green);
     border-color: var(--primary-green);
@@ -131,7 +145,7 @@ a {
 .btn-yellow-sun{
     border-color: var(--yellow-sun);
     background-color: var(--yellow-sun);
-    color: var(--white);
+    color: var(--raisin-black);
 }
 .btn-outline-raisin-black{
     background-color: var(--white);
@@ -176,13 +190,47 @@ a {
     background-color: var(--danger-hover);
     border-color: var(--danger-hover)
 }
-.btn-small {
+.btn-small-fit{
     font-weight: bold;
     border: 2px solid;
     border-radius: 1.5rem;
     padding-block: 0.5rem;
-    padding-inline: 3rem;
     font-size: 0.75rem;
+    padding-inline: 1rem;
+}
+.btn-delete{
+    font-weight: bold;
+    font-size: 0.75rem;
+    border-radius: 0.5rem;
+    border: 2px solid;
+    padding-block: 0.5rem;
+    padding-inline: 0.7rem;
+    background-color: var(--danger);
+}
+.btn-delete:hover{
+    font-weight: bold;
+    font-size: 0.75rem;
+    border-radius: 0.5rem;
+    border: 2px solid;
+    padding-block: 0.5rem;
+    padding-inline: 0.7rem;
+    background-color: var(--danger-hover);
+}
+.btn-add-row{
+    background-color: white;
+    border-color: var(--grey-white);
+    color: var(--grey-white);
+    border: 1px dashed;
+    border-radius: 0.7rem;
+    display: block;
+}
+.btn-add-row:hover{
+    background-color: var(--primary-green);
+    border-color: var(--primary-green);
+    color: var(--white);
+    border: 1px solid;
+    border-radius: 0.7rem;
+    display: block;
 }
 .btn-add-row {
     border: 2px dashed;
@@ -283,8 +331,8 @@ a {
 
 /* radio button */
 input[type="radio"]:checked{
-    background-color: #5DAF40;
-    border-color: #5DAF40;
+    background-color: var(--primary-green);
+    border-color: var(--primary-green);
 }
 .disabled input[type="radio"]:checked{
     background-color: var(--grey-white);
@@ -311,7 +359,7 @@ input[type="radio"]:checked{
     }
 }
 
-/* pagination */
+/* PAGINATION */
 .pagination > li > a
 {
     background-color: white;

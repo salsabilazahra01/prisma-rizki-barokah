@@ -25,6 +25,10 @@ public class WarehouseServiceImpl implements WarehouseService {
     public List<JenisItemModel> getListJenisItem(){
         return jenisItemDb.findAll();
     }
+    @Override
+    public List<WarehouseModel> getListItem(){
+        return warehouseDb.findAll();
+    }
 
     @Override
     public WarehouseModel updateItem(WarehouseModel item){

@@ -46,6 +46,7 @@ public class WebSecurityConfig {
                 .antMatchers("/pengolahan-sampah/*").hasAnyAuthority("ADMIN","MANAJER","SUPERVISOR", "PEKERJA", "TEKNISI")
                 .antMatchers("/pengolahan-sampah/save").hasAnyAuthority("SUPERVISOR", "ADMIN")
                 .antMatchers("/warehouse/laporan").hasAnyAuthority("ADMIN", "MANAJER","SUPERVISOR","TEKNISI","PEKERJA")
+                .antMatchers("/penawaran-hasil-olahan/*").hasAnyAuthority("ADMIN", "MANAJER","SUPERVISOR","CUSTOMER")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()

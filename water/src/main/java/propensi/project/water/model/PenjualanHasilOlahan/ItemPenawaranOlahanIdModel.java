@@ -25,4 +25,5 @@ public class ItemPenawaranOlahanIdModel implements Serializable {
     @JoinColumn(name = "penawaran_olahan", referencedColumnName = "id_penawaran_olahan", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private PenawaranOlahanModel idPenawaranOlahan;
+
 }

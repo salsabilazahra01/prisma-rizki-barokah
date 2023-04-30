@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Pageable;
+import propensi.project.water.model.PenjualanHasilOlahan.PenawaranOlahanModel;
 import propensi.project.water.model.Transaksi.ProsesLainModel;
 import propensi.project.water.model.Transaksi.ProsesPenawaranOlahanModel;
 import propensi.project.water.model.Transaksi.ProsesPenawaranSampahModel;
@@ -14,6 +15,7 @@ import propensi.project.water.repository.TransaksiDb.TransaksiDb;
 import propensi.project.water.repository.TransaksiDb.ProsesLainDb;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,6 +43,23 @@ public class TransaksiServiceImpl implements TransaksiService {
     public void addTransaksiManual (ProsesLainModel transaksiManual) {
         prosesLainDb.save(transaksiManual);
     }
+
+    @Override
+    public void addTransaksiOlahan(PenawaranOlahanModel penawaranOlahan, Boolean isManual){
+        ProsesPenawaranOlahanModel transaksi = new ProsesPenawaranOlahanModel();
+        transaksi.setJenisTransaksi(Boolean.FALSE);
+        transaksi.setProses(1);
+        transaksi.setPenawaranOlahan(penawaranOlahan);
+        transaksi.setNominal(penawaranOlahan.getHarga());
+        transaksi.setTanggalDibuat(LocalDateTime.now());
+        transaksi.setTanggalTransaksi(LocalDateTime.now());
+
+        if(!isManual){
+            transaksi.setKeterangan(penawaranOlahan.getKeterangan());
+        }
+        prosesPenawaranOlahanDb.save(transaksi);
+    }
+
 
     @Override
     public List<TransaksiModel> retrieveListAllTransaksi(){
@@ -89,6 +108,16 @@ public class TransaksiServiceImpl implements TransaksiService {
     public ProsesPenawaranOlahanModel getTransaksiPenawaranOlahan(String idTransaksi){
         Optional<ProsesPenawaranOlahanModel> transaksi =
                 prosesPenawaranOlahanDb.findProsesPenawaranOlahanModelByIdTransaksi(idTransaksi);
+        if (transaksi.isPresent()){
+            return transaksi.get();
+        }
+        return null;
+    }
+
+    @Override
+    public ProsesPenawaranOlahanModel getTransaksiByPenawaranOlahan(PenawaranOlahanModel penawaranOlahanModel){
+        Optional<ProsesPenawaranOlahanModel> transaksi =
+                prosesPenawaranOlahanDb.findProsesPenawaranOlahanModelByPenawaranOlahan(penawaranOlahanModel);
         if (transaksi.isPresent()){
             return transaksi.get();
         }

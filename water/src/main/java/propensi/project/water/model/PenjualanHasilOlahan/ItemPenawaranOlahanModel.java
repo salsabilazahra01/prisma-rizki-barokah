@@ -33,9 +33,12 @@ public class ItemPenawaranOlahanModel {
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "penawaran_olahan", referencedColumnName = "id_penawaran_olahan", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private PenawaranSampahModel idPenawaranOlahan;
+    private PenawaranOlahanModel idPenawaranOlahan;
 
     @NotNull
     @Column(name = "kuantitas", nullable = false)
     private Integer kuantitas;
+
+    @Column(name = "harga", columnDefinition = "int default 0")
+    private Integer harga;
 }
