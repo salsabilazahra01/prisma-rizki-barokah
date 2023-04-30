@@ -22,6 +22,15 @@
     <nav th:replace="fragments/fragment :: navbar('Donasi')"></nav>
   </header>
   <main class="container flex-grow-1 pt-lg-5">
+    <div class="alert alert-danger" role="alert" th:text="${failed}" th:if="${failed}"></div>
+    <!-- button & id -->
+    <div class="row my-3">
+      <p class="c3">
+        <a type = "button" class = "btn-small btn-outline-raisin-black h6 me-4" th:href="@{/reward/viewall}">
+          <i class="bi-chevron-left"></i> Back
+        </a>
+      </p>
+    </div>
     <article class="card rounded-25 m-4 p-4">
       <section class="card-body justify-content-center">
         <header class="row mt-2 mb-4">
@@ -66,7 +75,7 @@
                       <label for="jumlah" class="form-label h6 w-100">
                         <span class="jumlah__name">Kuantitas</span><span class="text-danger">*</span>
                       </label>
-                      <input type="number" min="0" class="form-control" id="jumlah" required th:field="*{jumlah}" />
+                      <input type="number" min="1" class="form-control" id="jumlah" required th:field="*{jumlah}" />
                       <small><span class="jumlah__name">Kuantitas</span> harus dalam bentuk angka</small>
                     </form-item>
                     <!-- Satuan -->
@@ -75,6 +84,7 @@
                         Satuan<span class="text-danger">*</span>
                       </label>
                       <input placeholder="Masukan satuan barang" type="text" class="form-control" id="satuan" required th:field="*{satuan}">
+                      <small>Satuan tidak boleh mengandung angka</small>
                     </form-item>
                 </row>
               </column>
@@ -83,13 +93,35 @@
                   <label for="poin" class="form-label h6 w-100">
                     Poin Ekuivalen<span class="text-danger">*</span>
                   </label>
-                  <input type="number" min="0" class="form-control" id="poin" required th:field="*{poin}">
+                  <input type="number" min="1" class="form-control" id="poin" required th:field="*{poin}">
                   <small>Poin harus dalam bentuk angka</small>
                 </form-item>
               </column>
             </row>
-            <div class="mb-3 col-6">
-              <button type="submit" class="btn btn-primary col-6">Submit</button>
+            <div class="mb-3 col-6 text-end">
+<!--              <button type="submit" class="btn btn-primary-green col-6">Submit</button>-->
+              <a type="button" class="mx-2 btn-small btn-primary-green" data-bs-toggle="modal" data-bs-target="#save">
+                Save
+              </a>
+
+              <!-- Modal -->
+              <div class="modal fade" id="save" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered text-center justify-content-center">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h6 class="modal-title h6" id="exampleModalLabel">Simpan Reward</h6>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body p3" th:text="'Apakah Anda yakin ingin menyimpan reward ini?'">
+                    </div>
+                    <div class="modal-footer justify-content-center">
+                      <a type="button" class="btn-small btn-outline-raisin-black" data-bs-dismiss="modal">Cancel</a>
+                      <button type="submit" id="submitbutton" class="btn-small btn-primary-green">Ya, Simpan</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- end modal -->
 
             </div>
           </form>
@@ -107,7 +139,7 @@
     const poinForm = document.getElementById('poin');
     const jumlahForm = document.getElementById('jumlah');
     function onChangeUangNominal() {
-      poinForm.value = jumlahForm.value/20;
+      poinForm.value = jumlahForm.value/1000;
     }
     // On jenis value change, hide/show the satuan form item
     const jenisRadioGroup = document.querySelector('radio-group');
@@ -126,11 +158,12 @@
         // Set satuan form required to false
         namaForm.required = satuanForm.required = false;
         namaForm.value = satuanForm.value = '';
+
         // Set poin form to readonly
-        poinForm.readOnly = true;
+        // poinForm.readOnly = true;
 
         // On change jumlah, set poin to jumlah
-        jumlahForm.addEventListener('keyup', onChangeUangNominal);
+        // jumlahForm.addEventListener('keyup', onChangeUangNominal);
 
       }
       else {
@@ -143,11 +176,12 @@
         poinForm.readOnly = false;
 
         // Remove event listener from jumlahForm
-        jumlahForm.removeEventListener('keyup', onChangeUangNominal);
+        // jumlahForm.removeEventListener('keyup', onChangeUangNominal);
       }
     });
     jenisRadioGroup.dispatchEvent(new Event('change'));
   </script>
+
 </body>
 
 </html>
