@@ -60,19 +60,21 @@ public class PartnerController {
 
         for (UserModel user : userService.getListUser()) {
             if (user.getUsername().equals(partner.getUsername())) {
-                return "partner/failed-add-partner";
+                redirectAttributes.addFlashAttribute("failed", "Username telah terdaftar. Harap masukkan username lain");
+                return "redirect:/partner/add";
             }
         }
 
         if ((!userService.verifyPassword(password)) || (!userService.matchPassword(password, passwordConfirmer))) {
-            return "partner/failed-add-partner";
+            redirectAttributes.addFlashAttribute("failed", "Password dan konfirmasi password tidak sama. Masukkan password kembali");
+            return "redirect:/partner/add";
         }
 
         partner.setRole(Role.PARTNER);
         partnerService.addPartner(partner);
         model.addAttribute("partner", partner);
 
-        return "partner/success-add-partner";
+        return "redirect:/login";
     }
 
     @GetMapping("/viewall")

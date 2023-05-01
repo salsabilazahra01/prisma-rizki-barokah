@@ -39,9 +39,6 @@
         <div th:if="${fragmentStatus == 88}">
           <nav th:replace="fragments/fragment-donasi :: navbar('Semua')"></nav>
         </div>
-        <div th:if="${fragmentStatus == -1}">
-          <nav th:replace="fragments/fragment-donasi :: navbar('Ditolak')"></nav>
-        </div>
         <div th:if="${fragmentStatus == 0}" >
           <nav th:replace="fragments/fragment-donasi :: navbar('Menunggu Persetujuan')"></nav>
         </div>
@@ -56,6 +53,9 @@
         </div>
         <div th:if="${fragmentStatus == 4}">
           <nav th:replace="fragments/fragment-donasi :: navbar('Selesai')"></nav>
+        </div>
+        <div th:if="${fragmentStatus == -1}">
+          <nav th:replace="fragments/fragment-donasi :: navbar('Ditolak')"></nav>
         </div>
 
         <!--list donasi-->
@@ -79,7 +79,7 @@
                 <td th:text="${donasi.idDonasi}"></td>
                 <td th:text="${#temporals.format(donasi.tanggalDibuat, 'dd-MM-yyyy HH:mm')}"></td>
                 <td>
-                  <div th:if="${donasi.status == -1}"><span class="bi bi-file-earmark-x"></span> Donasi Ditolak</div>
+                  <div th:if="${donasi.status == -1}"><span class="bi bi-file-earmark-x"></span> Donasi Batal</div>
                   <div th:if="${donasi.status == 0}"><span class="bi bi-hourglass-split"></span> Menunggu Persetujuan</div>
                   <div th:if="${donasi.status == 1}"><span class="bi bi-file-earmark-check"></span> Donasi Disetujui</div>
                   <div th:if="${donasi.status == 2}"><span class="bi bi-truck"></span> Dalam Perjalanan</div>

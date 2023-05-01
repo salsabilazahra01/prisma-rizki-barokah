@@ -206,7 +206,7 @@ public class DonasiController {
         donasiService.deleteDonasi(donasi);
 
         redirectAttrs.addFlashAttribute("success",
-                String.format("Donasi dengan ID %s berhasil dihapus", idDonasi));
+                String.format("Donasi dengan ID %s berhasil dibatalkan", idDonasi));
 
         return "redirect:/donasi/viewall/";
     }

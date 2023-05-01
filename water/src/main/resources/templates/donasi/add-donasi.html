@@ -48,7 +48,7 @@
 
                   <div class="form-group">
                     <label class="h5 text-raisin-black">Nomor Telepon Donatur<span class="text-danger"> *</span></label>
-                    <input required type="text" autocomplete="off" class="form-control p2" th:field="*{kontakPic}">
+                    <input required type="number" autocomplete="off" class="form-control p2" th:field="*{kontakPic}">
                     <div class="invalid-feedback">
                       Masukkan nomor telepon donatur yang dapat dihubungi
                     </div>
@@ -118,8 +118,8 @@
                       </tr>
                       </tbody>
                     </table>
-                    <div th:if="${listItemWarehouse.size() > 1 and donasi.listItemDonasi.size() < listItemWarehouse.size()}">
-                      <button class="btn-small btn-add-row w-100 text-grey-white" type="submit" name="addRow">Tambah Jenis Baru
+                    <div th:if="${listItemWarehouse.size() > 0 and donasi.listItemDonasi.size() < listItemWarehouse.size()}">
+                      <button class="btn-small btn-add-row w-100" type="submit" name="addRow">Tambah Jenis Baru
                         <i class="bi bi-plus text-end"></i>
                       </button>
                     </div>

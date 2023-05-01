@@ -32,7 +32,7 @@
                     <i class="bi-pencil-fill"></i> Edit
                 </a>
                 <a th:if="${penawaranOlahan.status == 0}" type = "button" class = "btn-small-fit btn-red-danger h6" data-bs-toggle="modal" data-bs-target="#deleteModal">
-                    <i class="bi-trash2-fill"></i> Hapus
+                    <i class="bi bi-x-circle-fill"></i> Batalkan
                 </a>
 <!--                <a th:replace="fragments/fragment-penawaran-olahan :: modal('btn-red-danger', 'bi-trash2-fill', 'Hapus', 'Hapus Penawaran Pembelian', 'Apakah Anda yakin ingin menghapus penawaran pembelian hasil olahan?', 'Ya, Hapus', @{/penawaran-hasil-olahan/delete/} + ${penawaranOlahan.idPenawaranOlahan})"></a>-->
                 </h2>
