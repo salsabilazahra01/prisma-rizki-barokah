@@ -91,8 +91,11 @@ public class PenawaranOlahanServiceImpl implements PenawaranOlahanService {
     }
 
     @Override
-    public void delete(PenawaranOlahanModel penawaranOlahan){
-        penawaranOlahanDb.delete(penawaranOlahan);
+    public void delete(PenawaranOlahanModel updatedPenawaran){
+        PenawaranOlahanModel penawaranOlahan = getPenawaranOlahanById(updatedPenawaran.getIdPenawaranOlahan());
+        penawaranOlahan.setStatus(5);
+        penawaranOlahan.setKeteranganTolak("Penawaran dibatalkan oleh Customer");
+        penawaranOlahanDb.save(penawaranOlahan);
     }
 
     @Override

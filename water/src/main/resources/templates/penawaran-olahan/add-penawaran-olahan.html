@@ -81,12 +81,12 @@
                             <div sec:authorize="hasAuthority('CUSTOMER')" class="mb-4 mt-3">
                                 <label class="h5">Pengiriman <span class="text-danger"> *</span></label>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="diambil" id="diambil" value="1" th:field="*{isPickedUp}">
-                                    <label class="form-check-label" for="dikirim"> Diambil sendiri </label>
+                                    <input required class="form-check-input" type="radio" name="pengiriman" id="diambil" value="1" th:field="*{isPickedUp}">
+                                    <label class="form-check-label" for="diambil"> Diambil sendiri </label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="dikirim" id="dikirim" value="0" th:field="*{isPickedUp}">
-                                    <label class="form-check-label" for="diambil"> Dikirim oleh perusahaan </label>
+                                    <input required class="form-check-input" type="radio" name="pengiriman" id="dikirim" value="0" th:field="*{isPickedUp}">
+                                    <label class="form-check-label" for="dikirim"> Dikirim oleh perusahaan </label>
                                 </div>
                                 <div class="invalid-feedback">
                                     Pilih jenis pengiriman
@@ -147,7 +147,7 @@
                         </div>
 
                         <!--Section Jenis & Berat Hasil Olahan-->
-                        <div class="col-4 px-3">
+                        <div class="col-4 px-3 mb-4 mt-3">
                             <h5 class="h5">Jenis dan Berat Hasil Olahan</h5>
                             <p sec:authorize="hasAuthority('CUSTOMER')" class="p4">Pilih jenis hasil olahan yang ingin dibeli dan beratnya (kg)</p>
                             <p sec:authorize="!hasAuthority('CUSTOMER')" class="p4">Pilih jenis hasil olahan yang ingin dibeli, berat (kg), dan harganya (Rp)</p>

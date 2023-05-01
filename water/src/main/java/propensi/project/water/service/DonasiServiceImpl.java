@@ -82,7 +82,9 @@ public class DonasiServiceImpl implements DonasiService {
 
     @Override
     public void deleteDonasi(DonasiModel donasi) {
-        donasiDb.delete(donasi);
+        donasi.setKeterangan("Dibatalkan oleh donatur");
+        donasi.setStatus(-1);
+        updateStatus(donasi);
     }
 
     @Override
@@ -125,6 +127,9 @@ public class DonasiServiceImpl implements DonasiService {
 
         // list item donasi
         for (ItemDonasiModel item: updatedDonasi.getListItemDonasi()) {
+            if (item.getKuantitas() == 0) {
+                updatedDonasi.getListItemDonasi().remove(item);
+            }
             item.setIdDonasi(donasi);
             item.setKuantitas(item.getKuantitas());
         }
@@ -158,7 +163,7 @@ public class DonasiServiceImpl implements DonasiService {
                 total += item.getKuantitas() * item.getIdItem().getHargaBeli();
             }
         }
-        total = total/1000;
+        total = total/100;
         return total;
     }
 

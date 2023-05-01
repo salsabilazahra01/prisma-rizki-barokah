@@ -58,19 +58,21 @@ public class CustomerController {
 
         for (UserModel user : userService.getListUser()) {
             if (user.getUsername().equals(customer.getUsername())) {
-                return "customer/failed-add-customer";
+                redirectAttributes.addFlashAttribute("failed", "Username telah terdaftar. Harap masukkan username lain");
+                return "redirect:/customer/add";
             }
         }
 
         if ((!userService.verifyPassword(password)) || (!userService.matchPassword(password, passwordConfirmer))) {
-            return "customer/failed-add-customer";
+            redirectAttributes.addFlashAttribute("failed", "Password dan konfirmasi password tidak sama. Masukkan password kembali");
+            return "redirect:/customer/add";
         }
 
         customer.setRole(Role.CUSTOMER);
         customerService.addCustomer(customer);
         model.addAttribute("customer", customer);
 
-        return "customer/success-add-customer";
+        return "redirect:/login";
     }
 
     @GetMapping("/viewall")

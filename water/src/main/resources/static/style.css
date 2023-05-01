@@ -229,7 +229,7 @@ a {
     border-color: var(--primary-green);
     color: var(--white);
     border: 1px solid;
-    border-radius: 0.7rem;
+    border-radius: 1rem;
     display: block;
 }
 .btn-add-row {

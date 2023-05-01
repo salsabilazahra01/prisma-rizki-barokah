@@ -36,14 +36,14 @@
       </div>
       <div class="col-sm-3 w-auto px-0 mx-0 ms-2" sec:authorize="hasAuthority('DONATUR')" th:if="${donasi.status == 0}">
         <a type="button" class="btn-small-fit btn-primary-green h6" th:href="@{/donasi/update/} + ${donasi.idDonasi}">
-          <i class="bi bi-pencil-fill">
-            Edit
-          </i>
+          <i class="bi bi-pencil-fill"></i>
+             Edit
         </a>
       </div>
       <div class="col-sm-3 w-auto px-0 mx-0" sec:authorize="hasAuthority('DONATUR')" th:if="${donasi.status == 0}">
-        <button type="button" class="mx-2 btn-small-fit btn-red-danger h6"  data-bs-toggle="modal" data-bs-target="#deleteDonasi">
-          Batalkan
+        <button type="button" class="btn-small-fit btn-red-danger h6"  data-bs-toggle="modal" data-bs-target="#deleteDonasi">
+          <i class="bi bi-x-circle-fill"></i>
+            Batalkan
         </button>
 
         <!-- modal -->
@@ -105,7 +105,7 @@
                 <div class="my-5">
                   <p2 class="p2">Status</p2>
                   <h4 class="h4">
-                    <div th:if="${donasi.status == -1}"><span class="bi bi-file-earmark-x"></span> Donasi Ditolak</div>
+                    <div th:if="${donasi.status == -1}"><span class="bi bi-file-earmark-x"></span> Donasi Batal</div>
                     <div th:if="${donasi.status == 0}"><span class="bi bi-hourglass-split"></span> Menunggu Persetujuan</div>
                     <div th:if="${donasi.status == 1}"><span class="bi bi-file-earmark-check"></span> Donasi Disetujui</div>
                     <div th:if="${donasi.status == 2}"><span class="bi bi-truck"></span> Dalam Perjalanan</div>

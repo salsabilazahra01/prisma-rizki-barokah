@@ -86,8 +86,8 @@
                                             </tr>
                                             </tbody>
                                         </table>
-                                        <div th:if="${listItemWarehouse.size() > 1 and donasi.listItemDonasi.size() < listItemWarehouse.size()}">
-                                            <button class="btn-small btn-add-row w-100 text-grey-white" type="submit" name="addRow">Tambah Jenis Baru
+                                        <div th:if="${listItemWarehouse.size() > 0 and donasi.listItemDonasi.size() < listItemWarehouse.size()}">
+                                            <button class="btn-small btn-add-row w-100" type="submit" name="addRow">Tambah Jenis Baru
                                                 <i class="bi bi-plus text-end"></i>
                                             </button>
                                         </div>

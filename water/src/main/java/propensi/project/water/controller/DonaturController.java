@@ -39,7 +39,10 @@ public class DonaturController {
     }
 
     @PostMapping(value = "/add")
-    public String addDonaturSubmit(@ModelAttribute DonaturModel donatur, Model model, HttpServletRequest request, RedirectAttributes redirectAttributes) {
+    public String addDonaturSubmit(@ModelAttribute DonaturModel donatur,
+                                   Model model, HttpServletRequest request,
+                                   RedirectAttributes redirectAttributes)
+    {
         String password = donatur.getPassword();
         String passwordConfirmer = request.getParameter("passwordConfirmer");
 
@@ -57,19 +60,21 @@ public class DonaturController {
 
         for (UserModel user : userService.getListUser()) {
             if (user.getUsername().equals(donatur.getUsername())) {
-                return "donatur/failed-add-donatur";
+                redirectAttributes.addFlashAttribute("failed", "Username telah terdaftar. Harap masukkan username lain");
+                return "redirect:/donatur/add";
             }
         }
 
         if ((!userService.verifyPassword(password)) || (!userService.matchPassword(password, passwordConfirmer))) {
-            return "donatur/failed-add-donatur";
+            redirectAttributes.addFlashAttribute("failed", "Password dan konfirmasi password tidak sama. Masukkan password kembali");
+            return "redirect:/donatur/add";
         }
 
         donatur.setRole(Role.DONATUR);
         donaturService.addDonatur(donatur);
         model.addAttribute("donatur", donatur);
 
-        return "donatur/success-add-donatur";
+        return "redirect:/login";
     }
 
     @GetMapping("/viewall")
