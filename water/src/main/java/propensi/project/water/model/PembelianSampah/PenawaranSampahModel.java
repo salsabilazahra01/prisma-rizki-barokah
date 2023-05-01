@@ -87,8 +87,8 @@ public class PenawaranSampahModel implements Serializable {
 
 
     // relasi dengan partner
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "username_partner", referencedColumnName = "username", nullable = false)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "username_partner", referencedColumnName = "username")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private PartnerModel partner;
 
@@ -98,6 +98,6 @@ public class PenawaranSampahModel implements Serializable {
     private ProsesPenawaranSampahModel transaksiSampah;
 
     // relasi dengan item penawaran sampah
-    @OneToMany(mappedBy = "idPenawaranSampah", fetch = FetchType.LAZY,  cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "idPenawaranSampah", fetch = FetchType.LAZY,  cascade = CascadeType.ALL, orphanRemoval=true)
     private List<ItemPenawaranSampahModel> listItemPenawaranSampah;
 }

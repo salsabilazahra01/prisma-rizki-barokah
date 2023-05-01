@@ -34,5 +34,6 @@ public interface TransaksiService {
     //update
     TransaksiModel updateTransaksiSampahOlahan(TransaksiModel transaksi);
     ProsesLainModel updateTransaksiProsesLain(ProsesLainModel transaksi);
+    void generateTransaksi(TransaksiModel transaksi);
 
 }
