@@ -158,4 +158,10 @@ public class TransaksiServiceImpl implements TransaksiService {
         return transaksiDb.save(transaksi);
     }
 
+    @Override
+    public void  generateTransaksi(TransaksiModel transaksi){
+        transaksiDb.save(transaksi);
+    }
+
+
 }

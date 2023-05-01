@@ -68,4 +68,11 @@ public class WarehouseServiceImpl implements WarehouseService {
     public List<WarehouseModel> getListItemWarehouse() {
         return warehouseDb.findAll();
     }
+
+    @Override
+    public WarehouseModel updateKuantitas(WarehouseModel item){
+        WarehouseModel itemLama = getItemById(item.getIdItem());
+        itemLama.setKuantitasSampah(item.getKuantitasSampah());
+        return warehouseDb.save(itemLama);
+    }
 }

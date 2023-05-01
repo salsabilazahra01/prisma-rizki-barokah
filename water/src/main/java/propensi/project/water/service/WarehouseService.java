@@ -14,4 +14,5 @@ public interface WarehouseService {
     WarehouseModel getItemByNamaItem(String namaItem);
 
     List<WarehouseModel> getListItemWarehouse();
+    WarehouseModel updateKuantitas(WarehouseModel item);
 }

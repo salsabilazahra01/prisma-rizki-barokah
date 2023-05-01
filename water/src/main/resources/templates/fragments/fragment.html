@@ -50,7 +50,7 @@
                     Pembelian dan Penjualan<span class="sr-only">(current)</span>
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <li sec:authorize="hasAuthority('MANAJER') || hasAuthority('SUPERVISOR') || hasAuthority('ADMIN')"><a class="dropdown-item" th:href="@{/}">Pembelian Sampah</a></li>
+                    <li sec:authorize="hasAuthority('MANAJER') || hasAuthority('SUPERVISOR') || hasAuthority('ADMIN')"><a class="dropdown-item" th:href="@{/penawaran/sampah/viewall}">Pembelian Sampah</a></li>
                     <li sec:authorize="hasAuthority('MANAJER') || hasAuthority('SUPERVISOR') || hasAuthority('ADMIN')"><a class="dropdown-item" th:href="@{/penawaran-hasil-olahan/viewall/-1}">Penjualan Hasil Olahan</a></li>
                 </ul>
             </li>
@@ -80,10 +80,10 @@
                 <a th:class="${#strings.equals(activeLink, 'Donasi')}  ? 'nav-link nav-underline active' : 'nav-link'"  th:href="@{/donasi/penukaran-poin}">Penukaran Poin</a>
             </li>
             <li sec:authorize="hasAuthority('PARTNER')">
-                <a th:class="${#strings.equals(activeLink, 'Jual Sampah')}  ? 'nav-link nav-underline active' : 'nav-link'" th:href="@{/}">Jual Sampah<span class="sr-only">(current)</span></a>
+                <a th:class="${#strings.equals(activeLink, 'Jual Sampah')}  ? 'nav-link nav-underline active' : 'nav-link'" th:href="@{/penawaran/sampah/add}">Jual Sampah<span class="sr-only">(current)</span></a>
             </li>
             <li sec:authorize="hasAuthority('PARTNER')">
-                <a th:class="${#strings.equals(activeLink, 'Riwayat Penjualan')}  ? 'nav-link nav-underline active' : 'nav-link'" th:href="@{/}">Riwayat Penjualan<span class="sr-only">(current)</span></a>
+                <a th:class="${#strings.equals(activeLink, 'Riwayat Penjualan')}  ? 'nav-link nav-underline active' : 'nav-link'" th:href="@{/penawaran/sampah/viewall}">Riwayat Penjualan<span class="sr-only">(current)</span></a>
             </li>
 
             <li sec:authorize="hasAuthority('CUSTOMER')">
