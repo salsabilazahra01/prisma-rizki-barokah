@@ -127,9 +127,9 @@ public class DonasiServiceImpl implements DonasiService {
 
         // list item donasi
         for (ItemDonasiModel item: updatedDonasi.getListItemDonasi()) {
-            if (item.getKuantitas() == 0) {
-                updatedDonasi.getListItemDonasi().remove(item);
-            }
+//            if (item.getKuantitas() == 0) {
+//                updatedDonasi.getListItemDonasi().remove(item);
+//            }
             item.setIdDonasi(donasi);
             item.setKuantitas(item.getKuantitas());
         }

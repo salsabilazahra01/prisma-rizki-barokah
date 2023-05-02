@@ -19,12 +19,16 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import propensi.project.water.dto.RewardDTO;
 import propensi.project.water.exceptions.donasi.RewardDuplicateJenisException;
 import propensi.project.water.exceptions.donasi.RewardNotFoundException;
+import propensi.project.water.model.Donasi.ItemDonasiModel;
 import propensi.project.water.model.PoinReward.RewardModel;
 import propensi.project.water.model.PoinReward.TukarPoinModel;
+import propensi.project.water.model.Warehouse.WarehouseModel;
 import propensi.project.water.service.RewardService;
 import propensi.project.water.service.TukarPoinService;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Slf4j
 @Controller
@@ -73,6 +77,7 @@ public class RewardController {
             log.error("Error while creating reward", e);
             model.addAttribute("reward", reward);
             model.addAttribute("title", "Buat Jenis Reward");
+            redirectAttrs.addFlashAttribute("failed", "Penambahan reward gagal karena terdapat reward dengan jenis yang sama");
             return "/reward/form";
         }
         redirectAttrs.addFlashAttribute("success","Reward baru berhasil ditambahkan");
@@ -118,7 +123,7 @@ public class RewardController {
             List<TukarPoinModel> listPenukaran = tukarPoinService.findAll();
             for (int i = 0; i < listPenukaran.size(); i++) {
                 if (listPenukaran.get(i).getReward().getIdReward().equals(id)) {
-                    if (listPenukaran.get(i).getStatus().equals(false)) {
+                    if (!listPenukaran.get(i).getStatus()) {
                         return "redirect:/error/404";
                     }
                 }
@@ -127,7 +132,7 @@ public class RewardController {
             return "redirect:/reward/viewall";
         } catch (RewardDuplicateJenisException duplicate) {
             log.error("Error while editing reward", duplicate);
-            model.addAttribute("error", duplicate.getMessage());
+            redirectAttrs.addFlashAttribute("failed", duplicate.getMessage());
             return edit(model, reward);
         } catch (RewardNotFoundException notFound) {
             log.error("Error while editing reward", notFound);
@@ -145,7 +150,7 @@ public class RewardController {
             for (int i = 0; i < listPenukaran.size(); i++) {
                 if (listPenukaran.get(i).getReward().getIdReward().equals(id)) {
                     if (listPenukaran.get(i).getStatus().equals(false)) {
-                        return "redirect:/error/404";
+                        return "redirect:/viewall";
                     }
                 }
             }
