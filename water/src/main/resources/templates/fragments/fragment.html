@@ -90,7 +90,7 @@
                 <a th:class="${#strings.equals(activeLink, 'Beli Hasil Olahan')}  ? 'nav-link nav-underline active' : 'nav-link'" th:href="@{/penawaran-hasil-olahan/add}">Beli Hasil Olahan<span class="sr-only">(current)</span></a>
             </li>
             <li sec:authorize="hasAuthority('CUSTOMER')">
-                <a th:class="${#strings.equals(activeLink, 'Riwayat Pembelian')}  ? 'nav-link nav-underline active' : 'nav-link'" th:href="@{/penawaran-hasil-olahan/viewall/0}">Riwayat Pembelian<span class="sr-only">(current)</span></a>
+                <a th:class="${#strings.equals(activeLink, 'Riwayat Pembelian')}  ? 'nav-link nav-underline active' : 'nav-link'" th:href="@{/penawaran-hasil-olahan/viewall/-1}">Riwayat Pembelian<span class="sr-only">(current)</span></a>
             </li>
         </ul>
 
@@ -124,6 +124,6 @@
     </div>
 </div>
 
-    <script src = "bootstrap/js/bootstrap.js"></script>
-    <script src="script.js"></script></body>
+    <script src = "/bootstrap/js/bootstrap.js"></script>
+    <script src="/script.js"></script></body>
 </html>

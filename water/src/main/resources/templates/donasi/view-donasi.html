@@ -37,13 +37,13 @@
       <div class="col-sm-3 w-auto px-0 mx-0 ms-2" sec:authorize="hasAuthority('DONATUR')" th:if="${donasi.status == 0}">
         <a type="button" class="btn-small-fit btn-primary-green h6" th:href="@{/donasi/update/} + ${donasi.idDonasi}">
           <i class="bi bi-pencil-fill"></i>
-             Edit
+          Edit
         </a>
       </div>
       <div class="col-sm-3 w-auto px-0 mx-0" sec:authorize="hasAuthority('DONATUR')" th:if="${donasi.status == 0}">
         <button type="button" class="btn-small-fit btn-red-danger h6"  data-bs-toggle="modal" data-bs-target="#deleteDonasi">
           <i class="bi bi-x-circle-fill"></i>
-            Batalkan
+          Batalkan
         </button>
 
         <!-- modal -->
@@ -120,7 +120,7 @@
                 </div>
               </div>
 
-          </div>
+            </div>
           </div>
         </div>
       </div>
@@ -138,7 +138,7 @@
             </div>
           </div>
         </div>
-<!--        <p2>Jenis dan Berat Sampah Didonasikan</p2>-->
+        <!--        <p2>Jenis dan Berat Sampah Didonasikan</p2>-->
         <div class="row">
           <div class="col">
             <!-- list jenis sampah -->
@@ -273,10 +273,10 @@
         <input type="hidden" th:field="*{poinEarned}"/>
         <label class="h6 text-raisin-black text-start">Keterangan<span class="text-danger"> *</span></label>
         <textarea required class="form-control p3" th:field="*{keterangan}"></textarea>
-      <div class="modal-footer justify-content-center">
-        <button type="button" class="btn-small btn-outline-raisin-black" data-bs-dismiss="modal">Cancel</button>
-        <button type="submit" class="btn-small btn-red-danger">Ya, tolak</button>
-      </div>
+        <div class="modal-footer justify-content-center">
+          <button type="button" class="btn-small btn-outline-raisin-black" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn-small btn-red-danger">Ya, tolak</button>
+        </div>
       </form>
     </div>
   </div>
