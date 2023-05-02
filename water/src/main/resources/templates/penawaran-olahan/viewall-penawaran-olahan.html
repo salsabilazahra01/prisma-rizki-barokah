@@ -54,7 +54,7 @@
                 </div>
 
                 <!--list penawaran olahan-->
-                <div class="row" id="semuaPenawaranOlahan">
+                <div th:if="*{listPenawaranOlahan.size()!=0}" class="row" id="semuaPenawaranOlahan">
                     <br>
                     <table class="table table-striped text-center align-middle">
                         <thead>
@@ -87,6 +87,9 @@
                         </tr>
                         </tbody>
                     </table>
+                </div>
+                <div th:unless="*{listPenawaranOlahan.size()!=0}">
+                    <h4 class="h4 p-2 text-center">This list is empty</h4>
                 </div>
                 </form>
 

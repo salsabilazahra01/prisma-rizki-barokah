@@ -34,7 +34,6 @@
                 <a th:if="${penawaranOlahan.status == 0}" type = "button" class = "btn-small-fit btn-red-danger h6" data-bs-toggle="modal" data-bs-target="#deleteModal">
                     <i class="bi bi-x-circle-fill"></i> Batalkan
                 </a>
-<!--                <a th:replace="fragments/fragment-penawaran-olahan :: modal('btn-red-danger', 'bi-trash2-fill', 'Hapus', 'Hapus Penawaran Pembelian', 'Apakah Anda yakin ingin menghapus penawaran pembelian hasil olahan?', 'Ya, Hapus', @{/penawaran-hasil-olahan/delete/} + ${penawaranOlahan.idPenawaranOlahan})"></a>-->
                 </h2>
                 <h2 sec:authorize="!hasAuthority('CUSTOMER')" class="h2">Detail Penjualan Hasil Olahan</h2>
             </p>
@@ -45,51 +44,56 @@
             <div class="col-6">
                 <div class="card rounded-25 shadow-sm px-5 py-3">
                     <div class="card-body">
-                        <div class="mb-3 mt-3">
+                        <div class="mb-5 mt-3">
                             <p sec:authorize="hasAuthority('CUSTOMER')" class="p2">ID Pembelian Hasil Olahan Sampah</p>
                             <p sec:authorize="!hasAuthority('CUSTOMER')" class="p2">ID Penjualan Hasil Olahan Sampah</p>
                             <h3 class="h4" th:text="${penawaranOlahan.idPenawaranOlahan}"></h3>
                         </div>
-                        <div class="my-3">
+                        <div th:if="${#authorization.expression('hasAuthority(''CUSTOMER'')') || penawaranOlahan.customer == null}" class="my-5">
                             <p class="p2">Nama Customer</p>
                             <h3 class="h4" th:text="${penawaranOlahan.namaCustomer}"></h3>
                         </div>
-                        <div class="my-3">
+                        <div th:if="${#authorization.expression('!hasAuthority(''CUSTOMER'')') && penawaranOlahan.customer != null}" class="my-5">
+                            <p class="p2">Nama Customer</p>
+                            <a class="h4" th:href="@{/manajemen-user/view/} + ${penawaranOlahan.customer.username}"
+                               th:text="${penawaranOlahan.namaCustomer}"></a>
+                        </div>
+                        <div class="my-5">
                             <p class="p2">Nama PIC</p>
                             <h3 class="h4" th:text="${penawaranOlahan.namaPic}"></h3>
                         </div>
-                        <div class="my-3">
+                        <div class="my-5">
                             <p class="p2">E-mail</p>
                             <h3 class="h4" th:text="${penawaranOlahan.email == ''} ? '-' : ${penawaranOlahan.email}"></h3>
                         </div>
-                        <div class="my-3">
+                        <div class="my-5">
                             <p class="p2">Nomor telepon</p>
                             <h3 class="h4" th:text="${penawaranOlahan.hp == ''} ? '-' : ${penawaranOlahan.hp}"></h3>
                         </div>
-                        <div class="my-3">
+                        <div class="my-5">
                             <p sec:authorize="hasAuthority('CUSTOMER')" class="p2">Tanggal, waktu pembelian</p>
                             <p sec:authorize="!hasAuthority('CUSTOMER')" class="p2">Tanggal, waktu penjualan</p>
                             <h3 class="h4" th:text="${#temporals.format(penawaranOlahan.tanggalDibuat, 'dd-MM-yyyy HH:mm')}"></h3>
                         </div>
-                        <div class="my-3">
+                        <div class="my-5">
                             <p class="p2">Pilihan pengiriman</p>
                             <h3 class="h4" th:text="${penawaranOlahan.isPickedUp} ? 'Diambil customer':'Dikirimkan CV'"></h3>
                         </div>
-                        <div class="my-3">
+                        <div class="my-5">
                             <p class="p2">Alamat</p>
                             <h3 class="h4" th:text="${penawaranOlahan.alamatPic != NULL} ? ${penawaranOlahan.alamatPic} : '-'"></h3>
                         </div>
-                        <div class="my-3">
+                        <div class="my-5">
                             <p class="p2">Rekening</p>
                             <h3 class="h4" th:text="${penawaranOlahan.bank} + ' ' + ${penawaranOlahan.noRekening} + ' a.n ' + ${penawaranOlahan.namaRekening}"></h3>
                         </div>
-                        <div class="mt-3 mb-3" th:switch="${penawaranOlahan.status}">
+                        <div class="mt-5 mb-3" th:switch="${penawaranOlahan.status}">
                             <p class="p2">Status</p>
                             <h3 class="h4" th:case=0>Menunggu Persetujuan</h3>
                             <h3 class="h4" th:case=1>Penawaran Disetujui</h3>
                             <h3 class="h4" th:case=2>Harga Disetujui</h3>
                             <h3 class="h4" th:case=3>Dapat diterima</h3>
-                            <h3 class="h4" th:case=4>Selesai</h3>
+                            <h3 class="h4 text-success" th:case=4>Selesai</h3>
                             <h3 class="h4 text-danger" th:case=5>Penawaran Dibatalkan</h3>
                             <p th:if="${penawaranOlahan.keteranganTolak != null}" class="p3"
                                th:text="${penawaranOlahan.keteranganTolak}"></p>

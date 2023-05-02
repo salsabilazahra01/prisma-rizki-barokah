@@ -12,6 +12,7 @@ import propensi.project.water.repository.PenawaranOlahan.PenawaranOlahanDb;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -23,11 +24,20 @@ public class PenawaranOlahanServiceImpl implements PenawaranOlahanService {
     private ItemPenawaranOlahanDb itemPenawaranOlahanDb;
 
     @Override
-    public Page<PenawaranOlahanModel> retrievePage(Pageable paging, Integer status){
-        if(status == -1){
-          return penawaranOlahanDb.findAllByIdPenawaranOlahanIsNotNullOrderByTanggalDibuat(paging);
+    public Page<PenawaranOlahanModel> retrievePage(Pageable paging, Integer status, CustomerModel customer){
+
+        if(customer == null){
+            if(status == -1){
+                return penawaranOlahanDb.findAllByIdPenawaranOlahanIsNotNullOrderByTanggalDibuat(paging);
+            }
+            return penawaranOlahanDb.findAllByStatusOrderByTanggalDibuat(status, paging);
+        } else {
+            if(status == -1){
+                return penawaranOlahanDb.findAllByCustomerAndIdPenawaranOlahanIsNotNullOrderByTanggalDibuat(customer,paging);
+            }
+            return penawaranOlahanDb.findAllByCustomerAndStatusOrderByTanggalDibuat(customer,status, paging);
         }
-        return penawaranOlahanDb.findAllByStatusOrderByTanggalDibuat(status, paging);
+
     }
 
     @Override
@@ -48,10 +58,7 @@ public class PenawaranOlahanServiceImpl implements PenawaranOlahanService {
     @Override
     public  PenawaranOlahanModel getPenawaranOlahanById(String id){
         Optional<PenawaranOlahanModel> penawaranOlahan = penawaranOlahanDb.findById(id);
-        if (penawaranOlahan.isPresent()){
-            return penawaranOlahan.get();
-        }
-        return null;
+        return penawaranOlahan.orElse(null);
     }
 
     @Override
@@ -123,6 +130,10 @@ public class PenawaranOlahanServiceImpl implements PenawaranOlahanService {
         penawaranOlahan.setNamaRekening(customer.getNamaRekening());
 
         return penawaranOlahan;
+    }
+
+    public List<PenawaranOlahanModel> findAll(){
+        return penawaranOlahanDb.findAll();
     }
 
 }

@@ -9,7 +9,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import propensi.project.water.model.Donasi.ItemDonasiModel;
 import propensi.project.water.model.PenjualanHasilOlahan.ItemPenawaranOlahanModel;
 import propensi.project.water.model.PenjualanHasilOlahan.PenawaranOlahanModel;
 import propensi.project.water.model.Transaksi.ProsesPenawaranOlahanModel;
@@ -19,7 +18,6 @@ import propensi.project.water.service.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Controller
@@ -39,14 +37,18 @@ public class PenawaranHasilOlahanController {
     private String viewAllPenawaranOlahan(Model model,
                                           @PathVariable(name="status") String status,
                                           @RequestParam(defaultValue = "1") int page,
-                                          @RequestParam(defaultValue = "5") int size) {
+                                          @RequestParam(defaultValue = "5") int size,
+                                          HttpServletRequest request) {
 
         try{
             Integer statusInt = Integer.parseInt(status);
             Pageable paging = PageRequest.of(page - 1, size);
 
+            //get customer if exists
+            CustomerModel customer =  getCustomer(request);
+
             Page<PenawaranOlahanModel> pagePenawaranOlahan =
-                    penawaranOlahanService.retrievePage(paging, statusInt);
+                    penawaranOlahanService.retrievePage(paging, statusInt, customer);
 
             List<PenawaranOlahanModel> listPageOlahan = pagePenawaranOlahan.getContent();
 
@@ -91,12 +93,8 @@ public class PenawaranHasilOlahanController {
         //get customer if exists
         CustomerModel customer =  getCustomer(request);
 
-        //set new penawaranOlahan
         PenawaranOlahanModel penawaranOlahan = new PenawaranOlahanModel();
-
-        //create list of items that has > 0
-        List<WarehouseModel> listItemEx = warehouseService.getListItem();
-        listItemEx.removeIf(item -> (item.getKuantitasOlahan() == 0));
+        List<WarehouseModel> listItemEx = getListItemExisting(penawaranOlahan);
 
         //create new list item
         List<ItemPenawaranOlahanModel> listItemPenawaranOlahan = new ArrayList<>();
@@ -140,9 +138,10 @@ public class PenawaranHasilOlahanController {
                     "Perubahan tidak dapat dibuat karena terdapat jenis yang tidak valid");
             return "redirect:/penawaran-hasil-olahan/add";
         }
-        else if(quantityExceeded(listItem)){
+        else if(!quantityExceeded(listItem, penawaranOlahan).isEmpty()){
+            List<String> itemQuantity = quantityExceeded(listItem, penawaranOlahan);
             redirectAttrs.addFlashAttribute("failed",
-                    "Penawaran hasil olahan sampah tidak dapat dibuat karena berat melebihi kuantitas yang tersedia");
+                    String.format("Berat %s tidak boleh melebihi %s kg", itemQuantity.get(0), itemQuantity.get(1)));
             return "redirect:/penawaran-hasil-olahan/add";
         }
 
@@ -166,7 +165,7 @@ public class PenawaranHasilOlahanController {
                                              @PathVariable String idPenawaranOlahan) {
 
         PenawaranOlahanModel penawaranOlahan = penawaranOlahanService.getPenawaranOlahanById(idPenawaranOlahan);
-        List<WarehouseModel> listItemEx = warehouseService.getListItem();
+        List<WarehouseModel> listItemEx = getListItemExisting(penawaranOlahan);
 
         model.addAttribute("penawaranOlahan", penawaranOlahan);
         model.addAttribute("listItemEx", listItemEx);
@@ -196,9 +195,10 @@ public class PenawaranHasilOlahanController {
                     "Perubahan tidak dapat dibuat karena terdapat jenis yang tidak valid");
             return "redirect:/penawaran-hasil-olahan/update/" + penawaranOlahan.getIdPenawaranOlahan();
         }
-        else if(quantityExceeded(listItem)){
+        else if(!quantityExceeded(listItem, penawaranOlahan).isEmpty()){
+            List<String> itemQuantity = quantityExceeded(listItem, penawaranOlahan);
             redirectAttrs.addFlashAttribute("failed",
-                    "Perubahan tidak dapat dibuat karena berat melebihi kuantitas yang tersedia ");
+                    String.format("Berat %s tidak boleh melebihi %s kg", itemQuantity.get(0), itemQuantity.get(1)));
             return "redirect:/penawaran-hasil-olahan/update/" + penawaranOlahan.getIdPenawaranOlahan();
         }
 
@@ -388,13 +388,23 @@ public class PenawaranHasilOlahanController {
         }
     }
 
-    private boolean quantityExceeded(List<ItemPenawaranOlahanModel> listItem) {
+    private List<String> quantityExceeded(List<ItemPenawaranOlahanModel> listItem, PenawaranOlahanModel penawaranOlahan) {
+        List<String> itemQuantity = new ArrayList<>();
+        List<WarehouseModel> listItemEx = warehouseService.getListItem();
+
+        //check list of items in the ordering process
+        Map<String, Integer> qtyUnavailable = getOrderedQty(listItemEx, penawaranOlahan);
+
         for(ItemPenawaranOlahanModel item : listItem){
-            if(item.getKuantitas() > item.getIdItem().getKuantitasOlahan()){
-                return true;
+            Integer qtyAvailable = item.getIdItem().getKuantitasOlahan() - qtyUnavailable.get(item.getIdItem().getNamaItem());
+            Integer qtyNewPO = item.getKuantitas();
+            if(qtyNewPO > qtyAvailable){
+                itemQuantity.add(item.getIdItem().getNamaItem());
+                itemQuantity.add(qtyAvailable.toString());
             }
         }
-        return false;
+
+        return itemQuantity;
     }
 
     private boolean isDuplicate(List<ItemPenawaranOlahanModel> listItem) {
@@ -420,15 +430,49 @@ public class PenawaranHasilOlahanController {
     }
 
     private boolean kontakEmpty(PenawaranOlahanModel penawaranOlahan) {
-        if(penawaranOlahan.getEmail().isEmpty() && penawaranOlahan.getHp().isEmpty()){
-            return true;
-        }
-        return false;
+        return penawaranOlahan.getEmail().isEmpty() && penawaranOlahan.getHp().isEmpty();
     }
 
     private CustomerModel getCustomer(HttpServletRequest request) {
-        CustomerModel customer =  customerService.getCustomerByUsername(request.getRemoteUser()) == null ?
+        return customerService.getCustomerByUsername(request.getRemoteUser()) == null ?
                 null : customerService.getCustomerByUsername(request.getRemoteUser());
-        return customer;
     }
+
+    private List<WarehouseModel> getListItemExisting(PenawaranOlahanModel penawaranOlahan) {
+        //create list of items that has qty > 0
+        List<WarehouseModel> listItemEx = warehouseService.getListItem();
+        listItemEx.removeIf(item -> (item.getKuantitasOlahan() == 0));
+
+        Map<String, Integer> qtyUnavailable = getOrderedQty(listItemEx, penawaranOlahan);
+
+        //remove items if qty is used in the ordering process
+        listItemEx.removeIf(item -> (item.getKuantitasOlahan() - qtyUnavailable.get(item.getNamaItem()) <= 0));
+
+        return listItemEx;
+    }
+
+    private Map<String, Integer> getOrderedQty(List<WarehouseModel> listItemEx, PenawaranOlahanModel penawaranOlahan) {
+
+        List<PenawaranOlahanModel> listAllPO = penawaranOlahanService.findAll();
+        Map<String, Integer> orderedQty = new HashMap<>();
+
+        //put all items in warehouse
+        for(WarehouseModel item:listItemEx){
+            orderedQty.put(item.getNamaItem(), 0);
+        }
+
+        //put PO with existing status < 4 to qtyWarehouse
+        for(PenawaranOlahanModel po : listAllPO){
+            if(po.getStatus() < 4 && !po.getIdPenawaranOlahan().equals(penawaranOlahan.getIdPenawaranOlahan())){
+                for(ItemPenawaranOlahanModel item:po.getListItemPenawaranOlahan()){
+                    Integer qtyExisting = orderedQty.get(item.getIdItem().getNamaItem());
+                    orderedQty.put(item.getIdItem().getNamaItem(), qtyExisting + item.getKuantitas());
+                }
+            }
+        }
+
+        return orderedQty;
+    }
+
+
 }
