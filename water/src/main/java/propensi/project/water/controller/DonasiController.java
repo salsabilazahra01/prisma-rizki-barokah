@@ -53,14 +53,16 @@ public class DonasiController {
             Model model,
             Principal principal) {
         UserModel userSession = userService.getUserByUsername(principal.getName());
+        DonaturModel donatur = (DonaturModel) userSession;
+
         DonasiModel donasi = new DonasiModel();
 
         donasiService.setDefaultDonatur(donasi, userSession);
         donasi.setListItemDonasi(new ArrayList<>());
         List<WarehouseModel> listItemWarehouse = warehouseService.getListItemWarehouse();
 
+        model.addAttribute("poin", donatur.getPoin());
         model.addAttribute("listItemWarehouse", listItemWarehouse);
-
         model.addAttribute("userSession", userSession);
         model.addAttribute("donasi", donasi);
         return "donasi/add-donasi";
@@ -170,6 +172,11 @@ public class DonasiController {
             Integer firstItem = (pageDonasi.getNumber() + 1)*size-size+1;
             Integer lastItem = firstItem + listDonasi.size() -1;
 
+            if(userSession.getRole().toString().equals("DONATUR")){
+                DonaturModel donatur = (DonaturModel) userSession;
+                model.addAttribute("poin", donatur.getPoin());
+            }
+
             model.addAttribute("currentPage", pageDonasi.getNumber() + 1);
             model.addAttribute("firstItem", firstItem);
             model.addAttribute("lastItem", lastItem);
@@ -192,6 +199,10 @@ public class DonasiController {
         UserModel userSession = userService.getUserByUsername(principal.getName());
         DonasiModel donasi = donasiService.findByIdDonasi(idDonasi);
 
+        if(userSession.getRole().toString().equals("DONATUR")){
+            DonaturModel donatur = (DonaturModel) userSession;
+            model.addAttribute("poin", donatur.getPoin());
+        }
         model.addAttribute("donasi", donasi);
         model.addAttribute("userSession", userSession);
 
@@ -215,12 +226,17 @@ public class DonasiController {
     @GetMapping("/update/{idDonasi}")
     private String updateDonasiForm(
             @PathVariable String idDonasi,
-            Model model
+            Model model,
+            Principal principal
     ){
         DonasiModel donasi = donasiService.findByIdDonasi(idDonasi);
 
         List<WarehouseModel> listItemWarehouse = warehouseService.getListItemWarehouse();
 
+        UserModel userSession = userService.getUserByUsername(principal.getName());
+        DonaturModel donatur = (DonaturModel) userSession;
+
+        model.addAttribute("poin", donatur.getPoin());
         model.addAttribute("listItemWarehouse", listItemWarehouse);
         model.addAttribute("donasi", donasi);
 
@@ -360,7 +376,8 @@ public class DonasiController {
 
     @GetMapping("/update-status/{idDonasi}/inspeksi")
     private String updateStatusDonasiInspeksiForm(@PathVariable String idDonasi,
-                                                  Model model) {
+                                                  Model model,
+                                                  Principal principal) {
         DonasiModel donasi = donasiService.findByIdDonasi(idDonasi);
 
         if (donasi.getListItemDonasi()==null || donasi.getListItemDonasi().size()==0) {

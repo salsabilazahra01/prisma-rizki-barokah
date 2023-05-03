@@ -95,6 +95,7 @@ public class PenjualanSampahOlehPartnerController {
         penjualanSampahService.addPenawaranSampah(penawaranSampah);
         if(penawaranSampah.getPartner() == null){
             penawaranSampah.setStatus(3);
+            penjualanSampahService.saveStatus(penawaranSampah);
             String sRedirect = "redirect:selesai/" + penawaranSampah.getIdPenawaranSampah();
             return sRedirect ;
         }else{
@@ -327,8 +328,6 @@ public class PenjualanSampahOlehPartnerController {
             @ModelAttribute PenawaranSampahModel penawaranSampah,
             RedirectAttributes redirectAttributes) {
         Integer status = penawaranSampah.getStatus();
-        penawaranSampah.setStatus(status+1);
-        penjualanSampahService.saveStatus(penawaranSampah);
         Integer harga = 0;
         Integer berat = 0;
         for (ItemPenawaranSampahModel itemPenawaranSampah:penawaranSampah.getListItemPenawaranSampah()) {
@@ -352,6 +351,9 @@ public class PenjualanSampahOlehPartnerController {
         penawaranSampah.setHarga(harga);
         penjualanSampahService.simpanInspeksiPenawaranSampah(penawaranSampah);
         PenawaranSampahModel penawaranSampahAsli = penjualanSampahService.findByIdPenawaranSampah(penawaranSampah.getIdPenawaranSampah());
+
+        penawaranSampah.setStatus(status+1);
+        penjualanSampahService.saveStatus(penawaranSampah);
 
         //update transaksi
         penjualanSampahService.addTransaksiSampah(penawaranSampahAsli, false);

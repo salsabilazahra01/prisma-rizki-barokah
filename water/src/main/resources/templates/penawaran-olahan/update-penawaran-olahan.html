@@ -4,7 +4,7 @@
 
 <body>
 
-<nav sec:authorize="hasAuthority('CUSTOMER')" th:replace="fragments/fragment :: navbar('Riwayat Pembelian')"></nav>
+<nav sec:authorize="hasAuthority('CUSTOMER')" th:replace="fragments/fragment :: navbar('Riwayat Pembelian', '')"></nav>
 
 <div th:if="${listItemEx.size == 0}" class="d-flex text-center">
     <div class="container my-5">

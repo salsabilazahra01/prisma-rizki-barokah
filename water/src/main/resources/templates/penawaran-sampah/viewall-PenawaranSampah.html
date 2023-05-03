@@ -4,10 +4,10 @@
 <head th:replace="fragments/fragment :: head"></head>
 <body>
 <div sec:authorize="hasAuthority('PARTNER')">
-  <nav th:replace="fragments/fragment :: navbar('Riwayat Penjualan')"></nav>
+  <nav th:replace="fragments/fragment :: navbar('Riwayat Penjualan', '')"></nav>
 </div>
 <div sec:authorize="hasAuthority('ADMIN') || hasAuthority('MANAJER') || hasAuthority('SUPERVISOR')">
-  <nav th:replace="fragments/fragment :: navbar('Pembelian dan Penjualan')"></nav>
+  <nav th:replace="fragments/fragment :: navbar('Pembelian dan Penjualan', '')"></nav>
 </div>
 
 <div class="container mt-lg-5">

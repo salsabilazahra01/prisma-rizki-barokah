@@ -4,7 +4,7 @@
 
 <body class="d-flex flex-column min-vh-100">
   <header>
-    <nav th:replace="fragments/fragment :: navbar('Donasi')"></nav>
+    <nav th:replace="fragments/fragment :: navbar('Donasi', '')"></nav>
   </header>
   <main class="container flex-grow-1 pt-lg-5">
     <div class="alert alert-danger" role="alert" th:text="${failed}" th:if="${failed}"></div>

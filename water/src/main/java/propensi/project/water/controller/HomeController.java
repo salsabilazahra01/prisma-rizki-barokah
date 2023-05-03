@@ -20,9 +20,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.servlet.ModelAndView;
 
+import propensi.project.water.model.User.DonaturModel;
 import propensi.project.water.model.User.ManajerModel;
 import propensi.project.water.model.User.UserModel;
 import propensi.project.water.model.User.Role;
+import propensi.project.water.service.DonaturService;
 import propensi.project.water.setting.Settings;
 import propensi.project.water.setting.xml.Attributes;
 import propensi.project.water.setting.xml.ServiceResponse;
@@ -41,10 +43,13 @@ public class HomeController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private DonaturService donaturService;
+
     private WebClient webClient = WebClient.builder().build();
 
     @RequestMapping("/")
-    public String homeAfterLogin() {
+    public String homeAfterLogin(HttpServletRequest request, Model model) {
         for (UserModel user : userService.getListUser()) {
             if (!user.getRole().equals(Role.MANAJER)) {
                 ManajerModel manajer = new ManajerModel();
@@ -58,7 +63,11 @@ public class HomeController {
                 userService.addUser(manajer);
             }
         }
-
+        DonaturModel donaturModel = donaturService.getDonaturByUsername(request.getRemoteUser()) == null ?
+                null : donaturService.getDonaturByUsername(request.getRemoteUser());
+        if(donaturModel != null){
+            model.addAttribute("poin", donaturModel.getPoin());
+        }
         return "home";
     }
 

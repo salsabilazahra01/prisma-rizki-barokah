@@ -4,10 +4,10 @@
 
 <body>
 <div sec:authorize="hasAuthority('DONATUR')">
-  <nav th:replace="fragments/fragment :: navbar('Riwayat Donasi')"></nav>
+  <nav th:replace="fragments/fragment :: navbar('Riwayat Donasi', ${poin})"></nav>
 </div>
 <div sec:authorize="hasAuthority('ADMIN') || hasAuthority('MANAJER')">
-  <nav th:replace="fragments/fragment :: navbar('Donasi')"></nav>
+  <nav th:replace="fragments/fragment :: navbar('Donasi', ${poin})"></nav>
 </div>
 
 <div class="container mt-lg-5">
