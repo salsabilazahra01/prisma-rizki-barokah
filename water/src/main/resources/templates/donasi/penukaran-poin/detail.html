@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://thymeleaf.org" th:with="pageTitle='Water'">
+<html lang="en" xmlns:th="http://thymeleaf.org" th:with="pageTitle='Water'" xmlns:sec="http://www.w3.org/1999/xhtml">
 
 <head th:replace="fragments/head :: head"></head>
 
 <body class="d-flex flex-column min-vh-100">
   <header>
-    <nav th:replace="fragments/fragment :: navbar('Donasi')"></nav>
+    <nav sec:authorize="!hasAuthority('DONATUR')" th:replace="fragments/fragment :: navbar('Donasi', '')"></nav>
+    <nav sec:authorize="hasAuthority('DONATUR')" th:replace="fragments/fragment :: navbar('Donasi', ${poin})"></nav>
   </header>
   <main class="container flex-grow-1 pt-lg-5">
     <a type="button" class="btn-small btn-outline-raisin-black h6 me-4" th:href="@{/donasi/penukaran-poin/}">

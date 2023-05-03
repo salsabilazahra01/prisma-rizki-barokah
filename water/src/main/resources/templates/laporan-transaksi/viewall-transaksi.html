@@ -3,7 +3,7 @@
 <head th:replace="fragments/fragment :: head"></head>
 
 <body>
-<nav th:replace="fragments/fragment :: navbar('Laporan')"></nav>
+<nav th:replace="fragments/fragment :: navbar('Laporan', '')"></nav>
 
 <div class="container mt-lg-5">
     <div class="alert alert-success" role="alert" th:text="${success}" th:if="${success}"></div>

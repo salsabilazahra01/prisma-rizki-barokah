@@ -3,7 +3,7 @@
 
 <head th:replace="fragments/fragment :: head"></head>
 <body>
-<nav th:replace="fragments/fragment :: navbar('Buat Penawaran Sampah')"></nav>
+<nav th:replace="fragments/fragment :: navbar('Buat Penawaran Sampah', '')"></nav>
 
 <div class="d-flex justify-content-center">
     <div class="container my-5">
@@ -149,8 +149,8 @@
                                                     </select>
                                                 </td>
                                                 <td>
-                                                    <button th:value="${iterationStatus.index}" class="btn btn-danger"
-                                                            type="submit" name="deleteRowUpdate">
+                                                    <button th:value="${iterationStatus.index}" class="btn-delete btn-danger"
+                                                            type="submit" name="deleteRowUpdate" th:if="${penawaranSampah.listItemPenawaranSampah.size() > 1}">
                                                         <i class="bi bi-dash"></i>
                                                     </button>
                                                 </td>

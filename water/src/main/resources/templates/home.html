@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://thymeleaf.org">
+<html lang="en" xmlns:th="http://thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head th:replace="fragments/fragment :: head"></head>
 
 <body>
-<nav th:replace="fragments/fragment :: navbar('Home')"></nav>
+<nav sec:authorize="!hasAuthority('DONATUR')" th:replace="fragments/fragment :: navbar('Home', '')"></nav>
+<nav sec:authorize="hasAuthority('DONATUR')" th:replace="fragments/fragment :: navbar('Home', ${poin})"></nav>
 
 <section id="sec-welcome">
     <div class = "row pt-5 pb-2">

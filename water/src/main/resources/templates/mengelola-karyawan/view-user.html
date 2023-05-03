@@ -3,7 +3,7 @@
 <head th:replace="fragments/fragment :: head"></head>
 
 <body>
-<nav th:replace="fragments/fragment :: navbar('Manajemen User')"></nav>
+<nav th:replace="fragments/fragment :: navbar('Manajemen User', '')"></nav>
 
 <div class="d-flex justify-content-center">
 
@@ -16,7 +16,7 @@
     <!-- button & id -->
     <div class="row my-3">
       <p class="c3">
-        <button type="button" class="btn-small btn-outline-raisin-black h6 me-4" onclick="history.back()">
+        <button type="button" class="btn-small btn-outline-raisin-black h6 me-4" th:href="@{/manajemen-user/viewall}">
           <i class="bi-chevron-left"></i>
           Back
         </button>

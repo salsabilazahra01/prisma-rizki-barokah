@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head th:replace="fragments/fragment :: head"></head>
 <body>
-<nav th:replace="fragments/fragment :: navbar('Jual Sampah')"></nav>
+<nav th:replace="fragments/fragment :: navbar('Jual Sampah', '')"></nav>
 
 <div class="d-flex justify-content-center">
     <div class="container my-5">
@@ -144,8 +144,8 @@
                                                     </select>
                                                 </td>
                                                 <td>
-                                                    <button th:value="${iterationStatus.index}" class="btn btn-danger"
-                                                            type="submit" name="deleteRow">
+                                                    <button th:value="${iterationStatus.index}" class="btn-delete btn-danger"
+                                                            type="submit" name="deleteRow" th:if="${penawaranSampah.listItemPenawaranSampah.size() > 1}">
                                                         <i class="bi bi-dash"></i>
                                                     </button>
                                                 </td>

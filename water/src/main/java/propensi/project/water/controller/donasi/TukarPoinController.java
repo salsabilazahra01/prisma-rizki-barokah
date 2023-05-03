@@ -19,9 +19,12 @@ import lombok.extern.slf4j.Slf4j;
 import propensi.project.water.dto.TukarPoinDTO;
 import propensi.project.water.model.PoinReward.TukarPoinModel;
 import propensi.project.water.model.User.DonaturModel;
+import propensi.project.water.model.User.UserModel;
 import propensi.project.water.service.DonaturService;
 import propensi.project.water.service.RewardService;
 import propensi.project.water.service.TukarPoinService;
+
+import java.security.Principal;
 
 @Slf4j
 @Controller
@@ -39,7 +42,8 @@ public class TukarPoinController {
     public String index(Model model,
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "5") int size,
-            @RequestParam(required = false) Boolean status
+            @RequestParam(required = false) Boolean status,
+            Principal principal
             ) {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -50,7 +54,11 @@ public class TukarPoinController {
         int currentPage = pageModel.getNumber()+1;
         int firstItem = (currentPage-1) * size + 1;
         int lastItem = firstItem + pageModel.getContent().size() - 1;
-        
+
+        if(donatur != null){
+            DonaturModel donaturModel = donaturService.getDonaturByUsername(principal.getName());
+            model.addAttribute("poin", donaturModel.getPoin());
+        }
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("firstItem", firstItem);
         model.addAttribute("lastItem", lastItem);
@@ -63,10 +71,12 @@ public class TukarPoinController {
 
     // Create form
     @GetMapping("/add")
-    public String create(Model model) {
+    public String create(Model model, Principal principal) {
         model.addAttribute("form", new TukarPoinDTO());
         model.addAttribute("title", "Tukar Poin");
         model.addAttribute("rewards", rewardService.findAll());
+        DonaturModel donaturModel = donaturService.getDonaturByUsername(principal.getName());
+        model.addAttribute("poin", donaturModel.getPoin());
         return "/donasi/penukaran-poin/form";
     }
     
@@ -79,7 +89,11 @@ public class TukarPoinController {
 
     
     @GetMapping("/{item}/detail")
-    public String detail(Model model, @PathVariable("item") TukarPoinModel item) {
+    public String detail(Model model, @PathVariable("item") TukarPoinModel item, Principal principal) {
+        DonaturModel donaturModel = donaturService.getDonaturByUsername(principal.getName());
+        if(donaturModel != null){
+            model.addAttribute("poin", donaturModel.getPoin());
+        }
         model.addAttribute("item", item);
         return "/donasi/penukaran-poin/detail";
     }

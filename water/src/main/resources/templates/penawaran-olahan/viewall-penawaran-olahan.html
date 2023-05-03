@@ -4,8 +4,8 @@
 
 <body>
 
-<nav sec:authorize="hasAuthority('CUSTOMER')" th:replace="fragments/fragment :: navbar('Riwayat Pembelian')"></nav>
-<nav sec:authorize="!hasAuthority('CUSTOMER')" th:replace="fragments/fragment :: navbar('Pembelian dan Penjualan')"></nav>
+<nav sec:authorize="hasAuthority('CUSTOMER')" th:replace="fragments/fragment :: navbar('Riwayat Pembelian', '')"></nav>
+<nav sec:authorize="!hasAuthority('CUSTOMER')" th:replace="fragments/fragment :: navbar('Pembelian dan Penjualan', '')"></nav>
 
 <div class="container mt-lg-5">
     <div class="alert alert-success" role="alert" th:text="${success}" th:if="${success}"></div>

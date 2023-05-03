@@ -4,8 +4,8 @@
 
 <body>
 
-<nav sec:authorize="hasAuthority('CUSTOMER')" th:replace="fragments/fragment :: navbar('Beli Hasil Olahan')"></nav>
-<nav sec:authorize="!hasAuthority('CUSTOMER')" th:replace="fragments/fragment :: navbar('Pembelian dan Penjualan')"></nav>
+<nav sec:authorize="hasAuthority('CUSTOMER')" th:replace="fragments/fragment :: navbar('Beli Hasil Olahan', '')"></nav>
+<nav sec:authorize="!hasAuthority('CUSTOMER')" th:replace="fragments/fragment :: navbar('Pembelian dan Penjualan', '')"></nav>
 
 <div th:if="${listItemEx.size == 0}" class="d-flex text-center">
     <div class="container my-5">
