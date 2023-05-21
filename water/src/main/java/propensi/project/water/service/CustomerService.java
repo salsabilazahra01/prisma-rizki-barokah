@@ -13,4 +13,6 @@ public interface CustomerService {
     public CustomerModel getCustomerByUsername(String username);
 
     public String encrypt(String password);
+
+    void save(CustomerModel customerModel);
 }

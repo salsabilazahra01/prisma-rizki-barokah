@@ -21,6 +21,11 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
+    public void save(CustomerModel customerModel) {
+        this.customerDb.save(customerModel);
+    }
+
+    @Override
     public void addCustomer(CustomerModel customer) {
         customer.setPassword(encrypt(customer.getPassword()));
         customerDb.save(customer);

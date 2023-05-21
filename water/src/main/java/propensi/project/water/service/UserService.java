@@ -16,4 +16,6 @@ public interface UserService {
     Boolean verifyPassword(String password);
 
     Boolean matchPassword(String password, String passwordConfirmer);
+
+    void saveUser(UserModel userModel);
 }

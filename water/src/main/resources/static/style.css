@@ -16,6 +16,7 @@
 
 *{
     font-family: 'Montserrat', sans-serif;
+    box-sizing: border-box;
 }
 
 .h1, .h2, .h3, .h4, .h5, .h6 {
@@ -395,4 +396,58 @@ input[type="radio"]:checked{
 .rekening input[type=number]::-webkit-outer-spin-button {
     -webkit-appearance: none;
     margin: 0;
+}
+
+.button-save-profile{
+    color: white;
+    border: none;
+    background: #5DAF40;
+    border-radius: 50px;
+    height: 43px;
+}
+
+.text-info-profile{
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 44px;
+    color: #252525;
+}
+
+.text-label-profile{
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 22px;
+    color: #252525;
+}
+
+.text-head-profile{
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 48px;
+    line-height: 59px;
+    color: #252525;
+}
+
+
+.text-label-form-profile{
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 29px;
+    color: #252525;
+}
+
+.text-hint-form-profile{
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 17px;
+    color: #252525;
 }

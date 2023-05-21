@@ -12,4 +12,6 @@ public interface PartnerService {
     public PartnerModel getPartnerByUsername(String username);
 
     public String encrypt(String password);
+
+    void save(PartnerModel partnerModel);
 }
