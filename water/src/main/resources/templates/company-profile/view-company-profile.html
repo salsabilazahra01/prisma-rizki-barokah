@@ -3,36 +3,34 @@
 <head th:replace="fragments/fragment :: head"></head>
 
 <body>
-<nav th:replace="fragments/fragment :: navbar('About Us', '')"></nav>
-<!--<nav sec:authorize="hasAuthority('ADMIN') || hasAuthority('MANAJER')" th:replace="fragments/fragment :: navbar('Manajemen User', '')"></nav>-->
+<nav sec:authorize="hasAuthority('DONATUR')" th:replace="fragments/fragment :: navbar('About Us', ${poin})"></nav>
+<nav sec:authorize="!hasAuthority('DONATUR') || !isAuthenticated()" th:replace="fragments/fragment :: navbar('About Us', '')"></nav>
 
-<section id="sec-tentang-kami" class = "p-5 text-white container-primary-green">
+<section id="sec-tentang-kami" class = "p-5 text-raisin-black">
+    <div class="alert alert-success" role="alert" th:text="${success}" th:if="${success}"></div>
     <div class="row mt-3">
         <div class="col text-start">
             <h1 class="h1">Tentang Kami</h1>
         </div>
 
         <div class="col text-end">
-            <a sec:authorize="hasAuthority('ADMIN') || hasAuthority('MANAJER')" type = "button" class = "btn btn-about-us h5 text-white mt-4" th:href="@{/about-us/update}">
+            <a sec:authorize="hasAuthority('ADMIN') || hasAuthority('MANAJER')" type = "button" class = "btn btn-about-us h5 mt-4" th:href="@{/about-us/update}">
                 <span class="bi-pencil"></span> Edit Company Profile
             </a>
         </div>
     </div>
     <div class = "row">
         <div class = "col-lg-6 p-5">
-            <img src = "/images/section-2-bg.jpg" class = "img-fluid rounded-3">
+            <img src = "/images/tentang-kita.jpg" class = "img-fluid rounded-25">
         </div>
-        <div class = "col-lg-6 p-5 text-white text-center text-lg-start">
+        <div class = "col-lg-6 p-5 text-center text-lg-start">
             <h2 th:text="${companyProfile.namaPerusahaan}"></h2>
             <text th:text="${companyProfile.deskripsiPerusahaan}" class = "p2 my-5 lead"></text>
-<!--            <div>-->
-<!--                <button type = "button" class = "btn btn-about-us h5 text-white mt-4"><span class="bi-arrow-right"></span> Baca lebih lanjut</button>-->
-<!--            </div>-->
         </div>
     </div>
 </section>
 
-<section id="sec-visi-misi" class = "p-5">
+<section id="sec-visi-misi" class = "p-5 text-raisin-black">
     <div class = "row mb-5">
         <div class = "col text-center">
             <h1 class = "mb-4 h1">Visi & Misi Perusahaan</h1>
@@ -59,183 +57,10 @@
     </div>
 </section>
 
-<section id = "sec-what-we-offer" class = "py-5 container-primary-green">
-    <div class = "container my-4">
-        <div class = "row mb-5">
-            <div class = "col text-center text-white">
-                <h1 class = "mb-4 h1">Apa yang kami tawarkan?</h1>
-                <text class = "pt-2 w-75 mx-auto p2">lorem ipsum</text>
-            </div>
-        </div>
-
-        <div class = "row gx-md-5">
-            <div class = "col-md-4 my-3">
-                <div class = "card rounded-25 text-center">
-                    <img class = "card-img-top rounded-top-25" src = "/images/img-donasi.jpg">
-                    <div class = "card-body py-5">
-                        <h3 class = "card-title h3">Donasi Sampah</h3>
-                        <p class = "card-text py-3 p3">Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis libero reprehenderit, enim iure debitis doloremque nulla perspiciatis natus impedit obcaecati molestias sunt voluptate sed ipsa?</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class = "col-md-4 my-3">
-                <div class = "card rounded-25 text-center">
-                    <img class = "card-img-top rounded-top-25" src = "/images/img-handshake.jpg">
-                    <div class = "card-body py-5">
-                        <h3 class = "card-title h3">Penjualan Sampah</h3>
-                        <p class = "card-text py-3 p3">Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis libero reprehenderit, enim iure debitis doloremque nulla perspiciatis natus impedit obcaecati molestias sunt voluptate sed ipsa?</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class = "col-md-4 my-3">
-                <div class = "card rounded-25 text-center">
-                    <img class = "card-img-top rounded-top-25" src = "/images/img-penjualan-hasil-olahan.jpg">
-                    <div class = "card-body py-5">
-                        <h3 class = "card-title h3">Pembelian Hasil Olahan Sampah</h3>
-                        <p class = "card-text py-3 p3">Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis libero reprehenderit, enim iure debitis doloremque nulla perspiciatis natus impedit obcaecati molestias sunt voluptate sed ipsa?</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<section id = "sec-testimoni" class = "py-5">
-    <div class = "container my-5">
-
-        <div class = "row">
-            <div class = "col-12 text-center">
-                <h3 class = "mb-5 h1">Testimoni</h3>
-            </div>
-        </div>
-
-        <div class = "row">
-            <div id = "carouselInd" class = "carousel slide" data-bs-ride = "carousel">
-<!--                <div class = "carousel-indicators" th:each="testimoni, iterationStatus : *{listTestimoni}">-->
-<!--                    <button type = "button" data-bs-target = "#carouselInd" th:attr="data-bs-slide-to = *{iterationStatus.index - 1}" class = "active bg-primary"></button>-->
-<!--                </div>-->
-
-                <div class = "carousel-indicators">
-                    <button type = "button" data-bs-target = "#carouselInd" data-bs-slide-to = "0" class = "active bg-primary"></button>
-                    <button type = "button" data-bs-target = "#carouselInd" data-bs-slide-to = "1" class = "bg-primary"></button>
-                    <button type = "button" data-bs-target = "#carouselInd" data-bs-slide-to = "2" class = "bg-primary"></button>
-                    <button type = "button" data-bs-target = "#carouselInd" data-bs-slide-to = "3" class = "bg-primary"></button>
-                    <button type = "button" data-bs-target = "#carouselInd" data-bs-slide-to = "4" class = "bg-primary"></button>
-                </div>
-
-<!--                <div class = "carousel-inner" th:each="testimoni, iterationStatus : *{listTestimoni}">-->
-<!--                    <div class = "carousel-item active">-->
-<!--                        <div class = "col-12 row mx-auto">-->
-<!--                            <div class = "row text-center text-lg-start">-->
-<!--                                <p class = "p2" id="testimoni" th:text="*{listTestimoni[__${iterationStatus.index}__].review}"></p>-->
-<!--                                <h5 class = "h5 text-lg-end" id="nama" th:text="*{listTestimoni[__${iterationStatus.index}__].namaPembuatTestimoni}"></h5>-->
-<!--                                <p class = "p2 text-lg-end" id="role" th:text="*{listTestimoni[__${iterationStatus.index}__].role}"></p>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-
-
-
-                <div class = "carousel-inner">
-<!--                    <div th:if="*{listTestimoni.size() == 1}">-->
-                        <div class = "carousel-item active" id="item1">
-                            <div class = "col-12 row mx-auto">
-                                <div class = "row text-center text-lg-start">
-                                    <h4 class = "h4" id="testimoni1" th:text="*{listTestimoni[listTestimoni.size()-1].review}"></h4>
-                                    <h5 class = "h5 text-lg-end" id="nama1" th:text="*{listTestimoni[listTestimoni.size()-1].namaPembuatTestimoni}"></h5>
-                                    <p class = "p2 text-lg-end" id="role1" th:text="*{listTestimoni[listTestimoni.size()-1].role}"></p>
-                                </div>
-                            </div>
-                        </div>
-<!--                    </div>-->
-
-<!--                    <div th:if="*{listTestimoni.size() == 2}">-->
-                        <div class = "carousel-item" id="item2">
-                            <div class = "col-12 row mx-auto">
-                                <div class = "row text-center text-lg-start">
-                                    <h4 class = "h4" id="testimoni2" th:text="*{listTestimoni[listTestimoni.size()-2].review}"></h4>
-                                    <h5 class = "h5 text-lg-end" id="nama2" th:text="*{listTestimoni[listTestimoni.size()-2].namaPembuatTestimoni}"></h5>
-                                    <p class = "p2 text-lg-end" id="role2" th:text="*{listTestimoni[listTestimoni.size()-2].role}"></p>
-                                </div>
-                            </div>
-                        </div>
-<!--                    </div>-->
-
-<!--                    <div th:if="*{listTestimoni.size() == 3}">-->
-                        <div class = "carousel-item" id="item3">
-                            <div class = "col-12 row mx-auto">
-                                <div class = "row text-center text-lg-start">
-                                    <h4 class = "h4" id="testimoni3" th:text="*{listTestimoni[listTestimoni.size()-3].review}"></h4>
-                                    <h5 class = "h5 text-lg-end" id="nama3" th:text="*{listTestimoni[listTestimoni.size()-3].namaPembuatTestimoni}"></h5>
-                                    <p class = "p2 text-lg-end" id="role3" th:text="*{listTestimoni[listTestimoni.size()-3].role}"></p>
-                                </div>
-                            </div>
-                        </div>
-<!--                    </div>-->
-
-<!--                    <div th:if="*{listTestimoni.size() == 4}">-->
-                        <div class = "carousel-item" id="item4">
-                            <div class = "col-12 row mx-auto">
-                                <div class = "row text-center text-lg-start">
-                                    <h4 class = "h4" id="testimoni4" th:text="*{listTestimoni[listTestimoni.size()-4].review}"></h4>
-                                    <h5 class = "h5 text-lg-end" id="nama4" th:text="*{listTestimoni[listTestimoni.size()-4].namaPembuatTestimoni}"></h5>
-                                    <p class = "p2 text-lg-end" id="role4" th:text="*{listTestimoni[listTestimoni.size()-4].role}"></p>
-                                </div>
-                            </div>
-                        </div>
-<!--                    </div>-->
-
-<!--                    <div th:if="*{listTestimoni.size() == 5}">-->
-                        <div class = "carousel-item" id="item5">
-                            <div class = "col-12 row mx-auto">
-                                <div class = "row text-center text-lg-start">
-                                    <h4 class = "h4" id="testimoni5" th:text="*{listTestimoni[listTestimoni.size()-5].review}"></h4>
-                                    <h5 class = "h5 text-lg-end" id="nama5" th:text="*{listTestimoni[listTestimoni.size()-5].namaPembuatTestimoni}"></h5>
-                                    <p class = "p2 text-lg-end" id="role5" th:text="*{listTestimoni[listTestimoni.size()-5].role}"></p>
-                                </div>
-                            </div>
-                        </div>
-<!--                    </div>-->
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
 <footer th:replace="fragments/fragment :: footer"></footer>
 
 <script src = "/bootstrap/js/bootstrap.js"></script>
 <script src="/script.js"></script>
-
-<script>
-    function testiVisibility(id) {
-        var item1 = document.getElementById("item1");
-        if (item1 != null) {
-            item1.hidden = false;
-        }
-
-        var item2 = document.getElementById("item2");
-        if (item2 != null) {
-        }
-
-        var item3 = document.getElementById("item3");
-        if (item3 != null) {
-        }
-
-        var item4 = document.getElementById("item4");
-        if (item4 != null) {
-        }
-
-        var item5 = document.getElementById("item5");
-        if (item5 != null) {
-        }
-
-
-    }
-</script>
 
 </body>
 </html>

@@ -6,202 +6,377 @@
 <nav sec:authorize="!hasAuthority('DONATUR')" th:replace="fragments/fragment :: navbar('Home', '')"></nav>
 <nav sec:authorize="hasAuthority('DONATUR')" th:replace="fragments/fragment :: navbar('Home', ${poin})"></nav>
 
-<section id="sec-welcome">
-    <div class = "row pt-5 pb-2">
-        <div class = "col-lg-6 p-5">
-            <img src = "images/section-2-bg.jpg" class = "img-fluid rounded-3">
-        </div>
-        <div class = "col-lg-6 p-5 text-center text-lg-start align-middle">
-            <h1 class = "h2 mt-5">Selamat Datang,</h1>
-            <h1 class = "h1 username-welcome-text">Le Sserafim!</h1>
-            <p class = "p2 my-4 lead">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Temporibus tempora possimus quam aperiam hic. Consequatur eum atque molestias exercitationem quos!</p>
-        </div>
-    </div>
-</section>
+<!-- SCROLL UP BUTTON -->
+<button onclick="topFunction()" class="scrollUpBtn" id="scrollUpBtn" title="Go to top">
+    <span class="bi bi-chevron-double-up align-items-center"></span>
+</button>
 
-<section id="sec-tentang-kami" class = "p-5 text-white container-primary-green">
-    <div class = "row mx-4 my-3">
-        <div class = "col">
-            <h1 class = "h1">Tentang Kami</h1>
-        </div>
-    </div>
-    <div class = "row">
-        <div class = "col-lg-6 p-5">
-            <img src = "images/section-2-bg.jpg" class = "img-fluid rounded-3">
-        </div>
-        <div class = "col-lg-6 p-5 text-white text-center text-lg-start">
-            <p class = "p2 my-5 lead">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Temporibus tempora possimus quam aperiam hic. Consequatur eum atque molestias exercitationem quos!</p>
-            <button type = "button" class = "btn btn-about-us h5 text-white mt-4"><span class="bi-arrow-right"></span> Baca lebih lanjut</button>
-        </div>
-    </div>
-</section>
-
-<section id = "sec-what-we-offer" class = "py-5">
-    <div class = "container my-4">
-        <div class = "row mb-5">
-            <div class = "col text-center">
-                <h1 class = "mb-4 h1">Apa yang kami tawarkan?</h1>
-                <p class = "pt-2 w-75 mx-auto p2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto, alias a natus deleniti neque ad cupiditate dicta explicabo nemo vel?</p>
+<!-- WELCOME SECTION -->
+<main class="main">
+    <section id="sec-welcome" class="home">
+        <div class="home__container container">
+            <div class="home__img">
+                <img th:src = "@{/images/peeking-girl.png}" alt="">
+                <div class="home__shadow"></div>
             </div>
-        </div>
+            <div class="home__data">
 
-        <div class = "row gx-md-5">
-            <div class = "col-md-4 my-3">
-                <div class = "card rounded-25 text-center">
-                    <img class = "card-img-top rounded-top-25" src = "images/blog-1-img.jpg">
-                    <div class = "card-body py-5">
-                        <h3 class = "card-title h3">Donasi Sampah</h3>
-                        <p class = "card-text py-3 p3">Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis libero reprehenderit, enim iure debitis doloremque nulla perspiciatis natus impedit obcaecati molestias sunt voluptate sed ipsa?</p>
-                    </div>
+                <!-- guest view -->
+                <div sec:authorize="!isAuthenticated">
+                    <h2 class = "h2 animated-text1">Selamat Datang di</h2>
+                    <h1 class = "h-home username-welcome-text animated-text2">CV Prisma Rizki Barokah!</h1>
+                    <a type="button" class="scrollDownBtn" onClick="document.getElementById('sec-tentang-kami').scrollIntoView();">
+                        <span class="bi bi-chevron-double-down fw-bolder"></span>
+                    </a>
                 </div>
-            </div>
 
-            <div class = "col-md-4 my-3">
-                <div class = "card rounded-25 text-center">
-                    <img class = "card-img-top rounded-top-25" src = "images/blog-2-img.jpg">
-                    <div class = "card-body py-5">
-                        <h3 class = "card-title h3">Penjualan Sampah</h3>
-                        <p class = "card-text py-3 p3">Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis libero reprehenderit, enim iure debitis doloremque nulla perspiciatis natus impedit obcaecati molestias sunt voluptate sed ipsa?</p>
-                    </div>
+                <!-- donatur partner customer view -->
+                <div sec:authorize="hasAuthority('DONATUR') || hasAuthority('PARTNER') || hasAuthority('CUSTOMER')">
+                    <h2 class = "h2 animated-text1">Selamat Datang,</h2>
+                    <h1 class = "h-home username-welcome-text animated-text2" th:text="${user.username}"></h1>
+                    <a type="button" class="scrollDownBtn" onClick="document.getElementById('sec-tentang-kami').scrollIntoView();">
+                        <span class="bi bi-chevron-double-down fw-bolder"></span>
+                    </a>
                 </div>
-            </div>
 
-            <div class = "col-md-4 my-3">
-                <div class = "card rounded-25 text-center">
-                    <img class = "card-img-top rounded-top-25" src = "images/blog-2-img.jpg">
-                    <div class = "card-body py-5">
-                        <h3 class = "card-title h3">Pembelian Hasil Olahan Sampah</h3>
-                        <p class = "card-text py-3 p3">Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis libero reprehenderit, enim iure debitis doloremque nulla perspiciatis natus impedit obcaecati molestias sunt voluptate sed ipsa?</p>
-                    </div>
+                <!-- internal view -->
+                <div sec:authorize="!hasAuthority('DONATUR') && !hasAuthority('PARTNER') && !hasAuthority('CUSTOMER') && isAuthenticated()">
+                    <h2 class = "h2 animated-text1">Selamat Datang,</h2>
+                    <h1 class = "h-home username-welcome-text animated-text2" th:text="${user.username}"></h1>
+                    <a type="button" class="scrollDownBtn" onClick="document.getElementById('sec-internal').scrollIntoView();">
+                        <span class="bi bi-chevron-double-down fw-bolder"></span>
+                    </a>
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
+</main>
 
-<section id = "sec-testimoni" class = "py-5 container-primary-green text-white">
-    <div class = "container my-5">
-
-        <div class = "row">
-            <div class = "col-12 text-center">
-                <h3 class = "mb-5 h1">Testimoni</h3>
-            </div>
-        </div>
-
-        <div class = "row">
-            <div id = "carouselInd" class = "carousel slide" data-bs-ride = "carousel">
-                <div class = "carousel-indicators">
-                    <button type = "button" data-bs-target = "#carouselInd" data-bs-slide-to = "0" class = "active bg-white"></button>
-                    <button type = "button" data-bs-target = "#carouselInd" data-bs-slide-to = "1" class = "bg-white"></button>
-                    <button type = "button" data-bs-target = "#carouselInd" data-bs-slide-to = "2" class = "bg-white"></button>
-                </div>
-
-                <div class = "carousel-inner">
-                    <div class = "carousel-item active">
-                        <div class = "col-12 row mx-auto">
-                            <div class = "row text-center text-lg-start">
-                                <!--                                <img src = "images/tes-img-1.jpg" class = "col-lg-3 mx-auto rounded-circle">-->
-                                <!--                                <div class = "py-4 col-lg-9">-->
-                                <p class = "p2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente exercitationem natus, fugit fuga ducimus nihil? Corporis, voluptatibus repudiandae. At rem consectetur, nemo nisi aperiam iusto!</p>
-                                <h5 class = "h5 text-lg-end">-Christine Walter, LA</h5>
-                                <p class = "p2 text-lg-end">Lorem ipsum</p>
-                                <!--                                </div>-->
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class = "carousel-item">
-                        <div class = "col-12 row mx-auto">
-                            <div class = "row text-center text-lg-start">
-                                <!--                                <img src = "images/tes-img-2.jpg" class = "col-lg-3 mx-auto rounded-circle">-->
-                                <!--                                <div class = "py-4 col-lg-9">-->
-                                <p class = "p2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente exercitationem natus, fugit fuga ducimus nihil? Corporis, voluptatibus repudiandae. At rem consectetur, nemo nisi aperiam iusto!</p>
-                                <h5 class = "h5 text-lg-end">-Christine Walter, LA</h5>
-                                <p class = "p2 text-lg-end">Lorem ipsum</p>
-                                <!--                                </div>-->
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class = "carousel-item">
-                        <div class = "col-12 row mx-auto">
-                            <div class = "row text-center text-lg-start">
-                                <!--                                <img src = "images/tes-img-3.jpg" class = "col-lg-3 mx-auto rounded-circle">-->
-                                <!--                                <div class = "py-4 col-lg-9">-->
-                                <p class = "p2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente exercitationem natus, fugit fuga ducimus nihil? Corporis, voluptatibus repudiandae. At rem consectetur, nemo nisi aperiam iusto!</p>
-                                <h5 class = "h5 text-lg-end">-Christine Walter, LA</h5>
-                                <p class = "p2 text-lg-end">Lorem ipsum</p>
-                                <!--                                </div>-->
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<section id = "sec-artikel" class = "py-5">
-    <div class = "container my-2">
-        <div class = "row">
+<!-- DONATUR PARTNER CUSTOMER VIEW -->
+<div sec:authorize="hasAuthority('DONATUR') || hasAuthority('PARTNER') || hasAuthority('CUSTOMER') || !isAuthenticated()">
+    <section id="sec-tentang-kami" class = "p-5 text-white container-primary-green">
+        <div class = "row mx-4 my-3">
             <div class = "col">
-                <h1 class = "h1">Artikel</h1>
+                <h1 class = "h1">Tentang Kami</h1>
             </div>
         </div>
+        <div class = "row">
+            <div class = "col-lg-6 p-5">
+                <img src = "images/tentang-kita.jpg" class = "img-fluid rounded-25">
+            </div>
+            <div class = "col-lg-6 p-5 text-white text-center text-lg-start">
+                <p class = "p2 my-5 lead" th:text="${companyProfile.deskripsiPerusahaan}"></p>
+                <a type = "button" class = "btn btn-about-us h5 text-white mt-4" th:href="@{/about-us/view}">
+                    <span class="bi-arrow-right"></span> Baca lebih lanjut
+                </a>
+            </div>
+        </div>
+    </section>
 
-        <div class = "row gx-md-5">
-            <div class = "col-md-6 my-3">
-                <div class = "card rounded-25 text-center">
-                    <img class = "card-img-top rounded-top-25" src = "images/blog-1-img.jpg">
-                    <div class = "card-body py-5">
-                        <h3 class = "card-title h3">Donasi Sampah</h3>
-                        <p class = "card-text py-3 p3">Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis libero reprehenderit, enim iure debitis doloremque nulla perspiciatis natus impedit obcaecati molestias sunt voluptate sed ipsa?</p>
-                        <button type = "button" class = "btn btn-primary-green h5 mt-4"><span class="bi-arrow-right"></span> Baca lebih lanjut</button>
-                    </div>
+    <section id = "sec-what-we-offer" class = "py-5">
+        <div class = "container my-4">
+            <div class = "row mb-5">
+                <div class = "col text-center">
+                    <h1 class = "mb-4 h1">Apa yang kami tawarkan?</h1>
+                    <p class = "pt-2 w-75 mx-auto p2"></p>
                 </div>
             </div>
 
-            <div class = "col-md-6 my-3">
-                <div class = "card rounded-25 text-center">
-                    <img class = "card-img-top rounded-top-25" src = "images/blog-2-img.jpg">
-                    <div class = "card-body py-5">
-                        <h3 class = "card-title h3">Penjualan Sampah</h3>
-                        <p class = "card-text py-3 p3">Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis libero reprehenderit, enim iure debitis doloremque nulla perspiciatis natus impedit obcaecati molestias sunt voluptate sed ipsa?</p>
-                        <button type = "button" class = "btn btn-primary-green h5 mt-4"><span class="bi-arrow-right"></span> Baca lebih lanjut</button>
+            <div class = "row gx-md-5">
+                <div class = "col-md-4 my-3 d-flex align-items-stretch">
+                    <div class = "card rounded-25 text-center">
+                        <img class = "card-img-top rounded-top-25" src = "images/blog-1-img.jpg">
+                        <div class = "card-body py-5">
+                            <h3 class = "card-title h3">Donasi Sampah</h3>
+                            <p class = "card-text py-3 p3">
+                                Anda dapat mendonasikan sampah plastik
+                                yang ada di rumah Anda dan mendapatkan poin sebagai imbalan
+                                yang nantinya dapat ditukarkan menjadi uang ataupun barang.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class = "col-md-4 my-3 d-flex align-items-stretch">
+                    <div class = "card rounded-25 text-center">
+                        <img class = "card-img-top rounded-top-25" src = "images/img-handshake.jpg">
+                        <div class = "card-body py-5">
+                            <h3 class = "card-title h3">Penjualan Sampah</h3>
+                            <p class = "card-text py-3 p3">
+                                Anda dapat menjalin kerjasama dengan kami
+                                dan menjualkan sampah plastik Anda dengan harga yang
+                                bersaing. Jadilah partner apabila Anda memiliki usaha
+                                seperti pelapak sampah, bank sampah, dan lain-lain.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class = "col-md-4 my-3 d-flex align-items-stretch">
+                    <div class = "card rounded-25 text-center">
+                        <img class = "card-img-top rounded-top-25" src = "images/img-penjualan-hasil-olahan.jpg">
+                        <div class = "card-body py-5">
+                            <h3 class = "card-title h3">Pembelian Hasil Olahan Sampah</h3>
+                            <p class = "card-text py-3 p3">
+                                Anda dapat membeli bulir hasil olahan
+                                sampah plastik kami yang berkualitas tinggi dengan harga
+                                bersaing.
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+    </section>
 
-        <div class = "row gx-md-5">
-            <div class = "col-md-6 my-3">
-                <div class = "card rounded-25 text-center">
-                    <img class = "card-img-top rounded-top-25" src = "images/blog-1-img.jpg">
-                    <div class = "card-body py-5">
-                        <h3 class = "card-title h3">Donasi Sampah</h3>
-                        <p class = "card-text py-3 p3">Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis libero reprehenderit, enim iure debitis doloremque nulla perspiciatis natus impedit obcaecati molestias sunt voluptate sed ipsa?</p>
-                        <button type = "button" class = "btn btn-primary-green h5 mt-4"><span class="bi-arrow-right"></span> Baca lebih lanjut</button>
-                    </div>
+    <div th:if="${listTestimoni.size()!=0}">
+        <section id = "sec-testimoni" class = "py-5 container-primary-green text-white">
+        <div class = "container my-5">
+
+            <div class = "row">
+                <div class = "col-12 text-center">
+                    <h3 class = "mb-5 h1">Testimoni</h3>
                 </div>
             </div>
 
-            <div class = "col-md-6 my-3">
-                <div class = "card rounded-25 text-center">
-                    <img class = "card-img-top rounded-top-25" src = "images/blog-2-img.jpg">
-                    <div class = "card-body py-5">
-                        <h3 class = "card-title h3">Penjualan Sampah</h3>
-                        <p class = "card-text py-3 p3">Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis libero reprehenderit, enim iure debitis doloremque nulla perspiciatis natus impedit obcaecati molestias sunt voluptate sed ipsa?</p>
-                        <button type = "button" class = "btn btn-primary-green h5 mt-4"><span class="bi-arrow-right"></span> Baca lebih lanjut</button>
+            <div class = "row">
+                <div id = "carouselInd" class = "carousel slide" data-bs-ride = "carousel">
+
+                    <div class = "carousel-indicators">
+                        <button type = "button" data-bs-target = "#carouselInd" data-bs-slide-to = "0" class = "active bg-white" th:if="*{listTestimoni.size() >= 1}"></button>
+                        <button type = "button" data-bs-target = "#carouselInd" data-bs-slide-to = "1" class = "bg-white" th:if="*{listTestimoni.size() >= 2}"></button>
+                        <button type = "button" data-bs-target = "#carouselInd" data-bs-slide-to = "2" class = "bg-white" th:if="*{listTestimoni.size() >= 3}"></button>
+                        <button type = "button" data-bs-target = "#carouselInd" data-bs-slide-to = "3" class = "bg-white" th:if="*{listTestimoni.size() >= 4}"></button>
+                        <button type = "button" data-bs-target = "#carouselInd" data-bs-slide-to = "4" class = "bg-white" th:if="*{listTestimoni.size() >= 5}"></button>
+                    </div>
+
+                    <div class = "carousel-inner">
+                        <div class = "carousel-item active" th:if="*{listTestimoni.size() >= 1}">
+                            <div class = "col-12 row mx-auto ">
+                                <div class = "row text-center text-lg-start">
+                                    <p class = "p2" th:text="*{listTestimoni[0].review}"></p>
+                                    <h5 class = "h5 text-lg-end" th:text="*{listTestimoni[0].namaPembuatTestimoni}"></h5>
+                                    <p class = "p2 text-lg-end" th:text="*{listTestimoni[0].role}"></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class = "carousel-item" th:if="*{listTestimoni.size() >= 2}">
+                            <div class = "col-12 row mx-auto ">
+                                <div class = "row text-center text-lg-start">
+                                    <p class = "p2" th:text="*{listTestimoni[1].review}"></p>
+                                    <h5 class = "h5 text-lg-end" th:text="*{listTestimoni[1].namaPembuatTestimoni}"></h5>
+                                    <p class = "p2 text-lg-end" th:text="*{listTestimoni[1].role}"></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class = "carousel-item" th:if="*{listTestimoni.size() >= 3}">
+                            <div class = "col-12 row mx-auto ">
+                                <div class = "row text-center text-lg-start">
+                                    <p class = "p2" th:text="*{listTestimoni[2].review}"></p>
+                                    <h5 class = "h5 text-lg-end" th:text="*{listTestimoni[2].namaPembuatTestimoni}"></h5>
+                                    <p class = "p2 text-lg-end" th:text="*{listTestimoni[2].role}"></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class = "carousel-item" th:if="*{listTestimoni.size() >= 4}">
+                            <div class = "col-12 row mx-auto ">
+                                <div class = "row text-center text-lg-start">
+                                    <p class = "p2" th:text="*{listTestimoni[3].review}"></p>
+                                    <h5 class = "h5 text-lg-end" th:text="*{listTestimoni[3].namaPembuatTestimoni}"></h5>
+                                    <p class = "p2 text-lg-end" th:text="*{listTestimoni[3].role}"></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class = "carousel-item" th:if="*{listTestimoni.size() >= 5}">
+                            <div class = "col-12 row mx-auto ">
+                                <div class = "row text-center text-lg-start">
+                                    <p class = "p2" th:text="*{listTestimoni[4].review}"></p>
+                                    <h5 class = "h5 text-lg-end" th:text="*{listTestimoni[4].namaPembuatTestimoni}"></h5>
+                                    <p class = "p2 text-lg-end" th:text="*{listTestimoni[4].role}"></p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-
+    </section>
     </div>
-</section>
 
-<footer th:replace="fragments/fragment :: footer"></footer>
+    <section id = "sec-artikel" class = "py-5">
+        <div class = "container my-2">
+            <div class = "row">
+                <div class = "col text-start">
+                    <h1 class = "h1">Artikel</h1>
+                </div>
+                <div class = "col text-end">
+                    <a type="button" class="mt-auto mx-2 btn btn-primary-green" th:href="@{/artikel/viewall}">
+                        Lihat semua artikel
+                    </a>
+                </div>
+            </div>
+
+            <div class = "row gx-md-5" th:if="${listArtikel.size!=0}">
+
+
+                <div class = "col-md-4 my-3 d-flex align-items-stretch" th:each="artikel, iterationStatus : ${listArtikel}">
+                    <div class = "card rounded-25 text-center">
+                        <img class = "card-img-top rounded-top-25" th:src="'/images/'+${artikel.idArtikel}+'/'+${artikel.imageTitle}"
+                             alt="Artikel Image">
+                        <div class = "card-body py-5">
+                            <div class="card-title h3" th:text="${artikel.title}"></div>
+                            <p class="card-text py-3 p3" th:utext="${artikel.subtitle}"></p>
+                            <a type="button" class="btn btn-primary-green h5 mt-4"
+                               th:href="@{/artikel/view/} + ${artikel.idArtikel}">Baca Artikel</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div th:unless="*{listArtikel.size()!=0}">
+                <h4 class="h4 p-2 text-center">Artikel Tidak Tersedia</h4>
+            </div>
+
+
+        </div>
+    </section>
+
+    <footer th:replace="fragments/fragment :: footer"></footer>
+</div>
+
+<!-- INTERNAL VIEW -->
+<div sec:authorize="!hasAuthority('DONATUR') && !hasAuthority('PARTNER') && !hasAuthority('CUSTOMER') && isAuthenticated()">
+
+    <section id = "sec-internal" class = "py-5 container-primary-green text-white">
+        <div class = "container my-4">
+            <div class = "row mb-5">
+                <div class = "col text-center">
+                    <h1 class = "mb-4 h1">Apa yang ingin Anda lakukan hari ini?</h1>
+                </div>
+            </div>
+
+            <div class = "row gx-md-5">
+                <div class = "col-md-3 my-3 d-flex align-items-stretch">
+                    <div class = "card rounded-25 text-center">
+                        <img class = "card-img-top rounded-top-25" src = "images/img-donasi.jpg">
+                        <div class = "card-body d-flex flex-column py-5 text-raisin-black">
+                            <h4 class = "card-title h4">Donasi Sampah</h4>
+                            <br>
+                            <a type="button" class="mt-auto mx-2 btn btn-primary-green" th:href="@{/donasi/viewall}">
+                                Go to page
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class = "col-md-3 my-3 d-flex align-items-stretch">
+                    <div class = "card rounded-25 text-center">
+                        <img class = "card-img-top rounded-top-25" src = "images/img-handshake.jpg">
+                        <div class = "card-body d-flex flex-column py-5 text-raisin-black">
+                            <h4 class = "card-title h4">Pembelian Sampah</h4>
+                            <br>
+                            <a type="button" class="mt-auto mx-2 btn btn-primary-green" th:href="@{/penawaran/sampah/viewall}">
+                                Go to page
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class = "col-md-3 my-3 d-flex align-items-stretch">
+                    <div class = "card rounded-25 text-center">
+                        <img class = "card-img-top rounded-top-25" src = "images/img-penjualan-hasil-olahan.jpg">
+                        <div class = "card-body d-flex flex-column py-5 text-raisin-black">
+                            <h4 class = "card-title h4">Penjualan Hasil Olahan Sampah</h4>
+                            <br>
+                            <a type="button" class="mt-auto mx-2 btn btn-primary-green" th:href="@{/penawaran-hasil-olahan/viewall/-1}">
+                                Go to page
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class = "col-md-3 my-3 d-flex align-items-stretch">
+                    <div class = "card rounded-25 text-center">
+                        <img class = "card-img-top rounded-top-25" src = "images/blog-1-img.jpg">
+                        <div class = "card-body d-flex flex-column py-5 text-raisin-black">
+                            <h4 class = "card-title h4">Penukaran Poin</h4>
+                            <br>
+                            <a type="button" class="mt-auto mx-2 btn btn-primary-green" th:href="@{/donasi/penukaran-poin}">
+                                Go to page
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class = "row gx-md-5">
+                <div class = "col-md-3 my-3 d-flex align-items-stretch">
+                    <div class = "card rounded-25 text-center">
+                        <img class = "card-img-top rounded-top-25" src = "images/blog-2-img.jpg">
+                        <div class = "card-body d-flex flex-column py-5 text-raisin-black">
+                            <h4 class = "card-title h4">Laporan Pengolahan Sampah</h4>
+                            <br>
+                            <a type="button" class="mt-auto mx-2 btn btn-primary-green" th:href="@{/pengolahan-sampah}">
+                                Go to page
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class = "col-md-3 my-3 d-flex align-items-stretch">
+                    <div class = "card rounded-25 text-center">
+                        <img class = "card-img-top rounded-top-25" src = "images/blog-1-img.jpg">
+                        <div class = "card-body d-flex flex-column py-5 text-raisin-black">
+                            <h4 class = "card-title h4">Laporan Warehouse</h4>
+                            <br>
+                            <a type="button" class="mt-auto mx-2 btn btn-primary-green" th:href="@{/warehouse/laporan}">
+                                Go to page
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class = "col-md-3 my-3 d-flex align-items-stretch">
+                    <div class = "card rounded-25 text-center">
+                        <img class = "card-img-top rounded-top-25" src = "images/blog-2-img.jpg">
+                        <div class = "card-body d-flex flex-column py-5 text-raisin-black">
+                            <h4 class = "card-title h4">Laporan Transaksi</h4>
+                            <br>
+                            <a type="button" class="mt-auto mx-2 btn btn-primary-green" th:href="@{/transaksi/viewall/semua}">
+                                Go to page
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class = "col-md-3 my-3 d-flex align-items-stretch">
+                    <div class = "card rounded-25 text-center">
+                        <img class = "card-img-top rounded-top-25" src = "images/blog-1-img.jpg">
+                        <div class = "card-body d-flex flex-column py-5 text-raisin-black">
+                            <h4 class = "card-title h4">Manajemen User</h4>
+                            <br>
+                            <a type="button" class="mt-auto mx-2 btn btn-primary-green" th:href="@{/manajemen-user/viewall}">
+                                Go to page
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!--=============== SCROLLREVEAL ===============-->
+<script th:src="@{/js/scrollreveal.min.js}"></script>
+
+<!--=============== MAIN JS ===============-->
+<script th:src="@{/js/main.js}"></script>
+
+<!--=============== SCROLL UP BUTTON ===============-->
+<script th:src="@{/js/topFunctionBtn.js}"></script>
 
 <script src = "/bootstrap/js/bootstrap.js"></script>
 <script src="/script.js"></script>

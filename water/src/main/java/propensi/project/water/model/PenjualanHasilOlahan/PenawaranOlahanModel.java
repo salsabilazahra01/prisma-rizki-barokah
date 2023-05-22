@@ -90,6 +90,9 @@ public class PenawaranOlahanModel implements Serializable {
     @Column(name = "harga", columnDefinition = "int default 0")
     private Integer harga;
 
+    @Column(name = "bukti_kirim")
+    private String buktiKirim;
+
     // relasi dengan customer
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "username_customer", referencedColumnName = "username")
@@ -104,4 +107,10 @@ public class PenawaranOlahanModel implements Serializable {
     //relasi dengan item penawaran olahan
     @OneToMany(mappedBy = "idPenawaranOlahan", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<ItemPenawaranOlahanModel> listItemPenawaranOlahan;
+
+    @Transient
+    public String getBuktiKirimOlahanPath() {
+        if (buktiKirim == null || idPenawaranOlahan == null) return null;
+        return "/images/" + idPenawaranOlahan + '-' + buktiKirim + '/' + buktiKirim;
+    }
 }

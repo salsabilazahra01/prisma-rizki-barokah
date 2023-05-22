@@ -7,16 +7,21 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import propensi.project.water.model.PenjualanHasilOlahan.ItemPenawaranOlahanModel;
 import propensi.project.water.model.PenjualanHasilOlahan.PenawaranOlahanModel;
+import propensi.project.water.model.PoinReward.TukarPoinModel;
+import propensi.project.water.model.Transaksi.ProsesLainModel;
 import propensi.project.water.model.Transaksi.ProsesPenawaranOlahanModel;
 import propensi.project.water.model.User.CustomerModel;
 import propensi.project.water.model.Warehouse.WarehouseModel;
 import propensi.project.water.service.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.*;
 
 @Slf4j
@@ -115,7 +120,8 @@ public class PenawaranHasilOlahanController {
     private String addPenawaranOlahanSubmit(@ModelAttribute PenawaranOlahanModel penawaranOlahan,
                                             Model model,
                                             RedirectAttributes redirectAttrs,
-                                            HttpServletRequest request) {
+                                            HttpServletRequest request,
+                                            @RequestParam(name="fileTransaksi", required = false) MultipartFile fileTransaksi) throws IOException {
 
         List<ItemPenawaranOlahanModel> listItem = penawaranOlahan.getListItemPenawaranOlahan();
 
@@ -145,11 +151,12 @@ public class PenawaranHasilOlahanController {
             return "redirect:/penawaran-hasil-olahan/add";
         }
 
-        penawaranOlahanService.add(penawaranOlahan, customer);
+        PenawaranOlahanModel savedPenawaranOlahan = penawaranOlahanService.add(penawaranOlahan, customer);
 
         //integrate if manual
         if(customer == null){
-            integrateWarehouseTransaksi(penawaranOlahan, false);
+            integrateTransaksi(fileTransaksi, savedPenawaranOlahan, false);
+            integrateWarehouse(savedPenawaranOlahan, false);
         }
 
         redirectAttrs.addFlashAttribute("success",
@@ -309,7 +316,9 @@ public class PenawaranHasilOlahanController {
     @PostMapping(value = "/update-status")
     private String updateStatusPenawaranOlahan(@ModelAttribute PenawaranOlahanModel penawaranOlahan,
                                                RedirectAttributes redirectAttrs,
-                                               Model model){
+                                               Model model,
+                                               @RequestParam(name="filePengiriman", required = false) MultipartFile filePengiriman,
+                                               @RequestParam(name="fileTransaksi", required = false) MultipartFile fileTransaksi) throws IOException {
 
 
         PenawaranOlahanModel penawaranOlahanEx = penawaranOlahanService.getPenawaranOlahanById(penawaranOlahan.getIdPenawaranOlahan());
@@ -329,8 +338,17 @@ public class PenawaranHasilOlahanController {
                 penawaranOlahanEx.setHarga(totalHarga);
                 penawaranOlahanEx.setListItemPenawaranOlahan(listItem);
             }
+            else if(status == 1){
+                integrateTransaksi(fileTransaksi, penawaranOlahanEx, true);
+            }
+            else if(status == 2){
+                if(filePengiriman != null){
+                    String fileName = setBuktiKirim(filePengiriman, penawaranOlahanEx);
+                    penawaranOlahanEx.setBuktiKirim(fileName);
+                }
+            }
             else if(status == 3){
-                integrateWarehouseTransaksi(penawaranOlahanEx, true);
+                integrateWarehouse(penawaranOlahanEx, true);
             }
             penawaranOlahanEx.setStatus(penawaranOlahanEx.getStatus()+1);
         } else {
@@ -360,26 +378,44 @@ public class PenawaranHasilOlahanController {
         return totalBerat;
     }
 
-    private void integrateWarehouseTransaksi(PenawaranOlahanModel penawaranOlahan, Boolean isUpdate){
+    private void integrateTransaksi(MultipartFile fileTransfer, PenawaranOlahanModel penawaranOlahan, Boolean isUpdate)
+            throws IOException {
+
+        List<ItemPenawaranOlahanModel> listItem = penawaranOlahan.getListItemPenawaranOlahan();
+
+        //update harga
+        int totalHarga = 0;
+        for(ItemPenawaranOlahanModel item: listItem){
+            totalHarga += item.getHarga();
+        }
+        penawaranOlahan.setHarga(totalHarga);
+
+        //update transaksi
+        String fileName = StringUtils.cleanPath(fileTransfer.getOriginalFilename());
+        ProsesPenawaranOlahanModel transaksi = transaksiService.addTransaksiOlahan(penawaranOlahan, fileName, true);
+
+        //set bukti file
+        setBuktiTransaksi(fileTransfer, transaksi);
+
+        penawaranOlahan.setTransaksiOlahan(transaksi);
+
+        if(isUpdate){
+            penawaranOlahanService.updateStatus(penawaranOlahan);
+        } else {
+            penawaranOlahanService.add(penawaranOlahan, null);
+        }
+    }
+
+    private void integrateWarehouse(PenawaranOlahanModel penawaranOlahan, Boolean isUpdate){
 
         List<ItemPenawaranOlahanModel> listItem = penawaranOlahan.getListItemPenawaranOlahan();
 
         //update warehouse
-        int totalHarga = 0;
         for(ItemPenawaranOlahanModel item: listItem){
-            totalHarga += item.getHarga();
             WarehouseModel itemWarehouse = warehouseService.getItemById(item.getIdItem().getIdItem());
             itemWarehouse.setKuantitasOlahan(itemWarehouse.getKuantitasOlahan()-item.getKuantitas());
             warehouseService.updateItem(itemWarehouse);
         }
-
-        //update harga
-        penawaranOlahan.setHarga(totalHarga);
-
-        //update transaksi
-        transaksiService.addTransaksiOlahan(penawaranOlahan, true);
-        ProsesPenawaranOlahanModel transaksi = transaksiService.getTransaksiByPenawaranOlahan(penawaranOlahan);
-        penawaranOlahan.setTransaksiOlahan(transaksi);
 
         if(isUpdate){
             penawaranOlahanService.updateStatus(penawaranOlahan);
@@ -474,5 +510,30 @@ public class PenawaranHasilOlahanController {
         return orderedQty;
     }
 
+    private String setBuktiKirim(MultipartFile file, PenawaranOlahanModel penawaranOlahan) throws IOException {
+
+        //file bukti
+        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+
+        //save file bukti
+        String uploadDir = "./src/main/resources/static/images/" +
+                penawaranOlahan.getIdPenawaranOlahan() + "-" + fileName;
+        FileUploadUtil.saveFile(uploadDir, fileName, file);
+
+        return fileName;
+    }
+
+    private String setBuktiTransaksi(MultipartFile file, ProsesPenawaranOlahanModel transaksi) throws IOException {
+
+        //file bukti
+        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+
+        //save file bukti
+        String uploadDir = "./src/main/resources/static/images/" +
+                transaksi.getIdTransaksi() + "-" + fileName;
+        FileUploadUtil.saveFile(uploadDir, fileName, file);
+
+        return fileName;
+    }
 
 }

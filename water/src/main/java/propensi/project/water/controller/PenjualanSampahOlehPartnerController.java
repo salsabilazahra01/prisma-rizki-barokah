@@ -8,10 +8,13 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import propensi.project.water.model.PembelianSampah.ItemPenawaranSampahModel;
 import propensi.project.water.model.PembelianSampah.PenawaranSampahModel;
+import propensi.project.water.model.Transaksi.ProsesPenawaranOlahanModel;
 import propensi.project.water.model.Transaksi.ProsesPenawaranSampahModel;
 import propensi.project.water.model.User.PartnerModel;
 import propensi.project.water.model.User.Role;
@@ -22,6 +25,7 @@ import propensi.project.water.service.TransaksiService;
 import propensi.project.water.service.UserService;
 import propensi.project.water.service.WarehouseService;
 
+import java.io.IOException;
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -73,7 +77,8 @@ public class PenjualanSampahOlehPartnerController {
     @PostMapping(value="/add", params={"save"})
     private String addPenawaranSampahSubmit(
             @ModelAttribute PenawaranSampahModel penawaranSampah,
-            RedirectAttributes redirectAttributes) {
+            RedirectAttributes redirectAttributes,
+            @RequestParam(name="fileTransaksi", required = false) MultipartFile fileTransaksi) throws IOException {
         if (penawaranSampah.getListItemPenawaranSampah()==null) {
             penawaranSampah.setListItemPenawaranSampah(new ArrayList<>());
         } else{
@@ -93,6 +98,7 @@ public class PenjualanSampahOlehPartnerController {
         penawaranSampah.setTanggalDibuat(LocalDateTime.now());
         penawaranSampah.setStatus(0);
         penjualanSampahService.addPenawaranSampah(penawaranSampah);
+
         if(penawaranSampah.getPartner() == null){
             penawaranSampah.setStatus(3);
             penjualanSampahService.saveStatus(penawaranSampah);
@@ -326,7 +332,9 @@ public class PenjualanSampahOlehPartnerController {
     @PostMapping(value="/selesai", params={"save"})
     private String selesaiPenawaranSampahSubmit(
             @ModelAttribute PenawaranSampahModel penawaranSampah,
-            RedirectAttributes redirectAttributes) {
+            RedirectAttributes redirectAttributes,
+            @RequestParam(name="fileTransaksi", required = false) MultipartFile fileTransaksi) throws IOException {
+
         Integer status = penawaranSampah.getStatus();
         Integer harga = 0;
         Integer berat = 0;
@@ -338,8 +346,8 @@ public class PenjualanSampahOlehPartnerController {
             WarehouseModel item = itemPenawaranSampah.getIdItem();
             item.setKuantitasSampah(item.getKuantitasSampah()+itemPenawaranSampah.getKuantitas());
             warehouseService.updateKuantitas(item);
-
         }
+
         List<ItemPenawaranSampahModel> listItemPenawaranSampah = penawaranSampah.getListItemPenawaranSampah();
         if(isDuplicate(listItemPenawaranSampah)) {
             redirectAttributes.addFlashAttribute("failed",
@@ -355,10 +363,21 @@ public class PenjualanSampahOlehPartnerController {
         penawaranSampah.setStatus(status+1);
         penjualanSampahService.saveStatus(penawaranSampah);
 
+        //set file name
+        String fileName = StringUtils.cleanPath(fileTransaksi.getOriginalFilename());
+
         //update transaksi
-        penjualanSampahService.addTransaksiSampah(penawaranSampahAsli, false);
+        if(penawaranSampah.getPartner() == null){
+            penjualanSampahService.addTransaksiSampah(penawaranSampahAsli, true, fileName);
+        } else {
+            penjualanSampahService.addTransaksiSampah(penawaranSampahAsli, false, fileName);
+        }
         ProsesPenawaranSampahModel transaksi = penjualanSampahService.getTransaksiByPenawaranSampah(penawaranSampahAsli);
-        penawaranSampah.setTransaksiSampah(transaksi);
+        penawaranSampahAsli.setTransaksiSampah(transaksi);
+        penjualanSampahService.updatePenawaranSampah(penawaranSampahAsli);
+
+        //set bukti file
+        setBuktiTransaksi(fileTransaksi, transaksi);
 
         redirectAttributes.addFlashAttribute("success", "Berhasil menyelesaikan penawaran sampah!");
         return "redirect:/penawaran/sampah/viewall";
@@ -406,6 +425,19 @@ public class PenjualanSampahOlehPartnerController {
             }
         }
         return false;
+    }
+
+    private String setBuktiTransaksi(MultipartFile file, ProsesPenawaranSampahModel transaksi) throws IOException {
+
+        //file bukti
+        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+
+        //save file bukti
+        String uploadDir = "./src/main/resources/static/images/" +
+                transaksi.getIdTransaksi() + "-" + fileName;
+        FileUploadUtil.saveFile(uploadDir, fileName, file);
+
+        return fileName;
     }
 
 }

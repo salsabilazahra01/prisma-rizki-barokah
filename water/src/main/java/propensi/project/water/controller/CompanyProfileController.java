@@ -19,11 +19,15 @@ import propensi.project.water.exceptions.donasi.RewardNotFoundException;
 import propensi.project.water.model.CompanyProfile.CompanyProfileModel;
 import propensi.project.water.model.CompanyProfile.TestimoniModel;
 import propensi.project.water.model.PenjualanHasilOlahan.PenawaranOlahanModel;
+import propensi.project.water.model.User.DonaturModel;
+import propensi.project.water.model.User.UserModel;
 import propensi.project.water.model.Warehouse.WarehouseModel;
 import propensi.project.water.repository.CompanyProfile.CompanyProfileDb;
 import propensi.project.water.service.CompanyProfileService;
 import propensi.project.water.service.TestimoniService;
+import propensi.project.water.service.UserService;
 
+import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +38,10 @@ import java.util.Set;
 @RequestMapping("/about-us")
 @AllArgsConstructor
 public class CompanyProfileController {
+
+    @Autowired
+    private UserService userService;
+
     @Autowired
     private CompanyProfileService companyProfileService;
 
@@ -41,21 +49,18 @@ public class CompanyProfileController {
     private TestimoniService testimoniService;
 
     @GetMapping("/view")
-    private String viewCompanyProfile(Model model) {
+    private String viewCompanyProfile(Model model, HttpServletRequest request) {
         CompanyProfileModel companyProfile = companyProfileService.getCompanyProfile("COMPROF");
         List<TestimoniModel> listTestimoni = companyProfile.getListTestimoni();
-//        while (listTestimoni.size() < 4) {
-//            int i = 1;
-//            TestimoniModel newTestimoni = new TestimoniModel();
-//            newTestimoni.setIdTestimoni(i);
-//            newTestimoni.setRole("DONATUR");
-//            newTestimoni.setReview("Ini review");
-//            newTestimoni.setNamaPembuatTestimoni("Ini pembuat testimoni");
-//            newTestimoni.setCompanyProfile(companyProfile);
-//            testimoniService.add(newTestimoni);
-//            listTestimoni.add(newTestimoni);
-//            i++;
-//        }
+
+        UserModel user = userService.getUserByUsername(request.getRemoteUser()) == null ?
+                null : userService.getUserByUsername(request.getRemoteUser());
+        if (user!=null) {
+            if (user.getRole().toString().equals("DONATUR")) {
+                DonaturModel donatur = (DonaturModel) user;
+                model.addAttribute("poin", donatur.getPoin());
+            }
+        }
 
         model.addAttribute("companyProfile", companyProfile);
         model.addAttribute("listTestimoni", listTestimoni);

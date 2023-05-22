@@ -29,7 +29,7 @@
                 <a th:class="${#strings.equals(activeLink, 'Home')}  ? 'nav-link nav-underline active' : 'nav-link'" th:href="@{/}">Home<span class="sr-only">(current)</span></a>
             </li>
             <li sec:authorize="!hasAuthority('PEKERJA') || !hasAuthority('TEKNISI')">
-                <a th:class="${#strings.equals(activeLink, 'Artikel')}  ? 'nav-link nav-underline active' : 'nav-link'" th:href="@{/}">Artikel<span class="sr-only">(current)</span></a>
+                <a th:class="${#strings.equals(activeLink, 'Artikel')}  ? 'nav-link nav-underline active' : 'nav-link'" th:href="@{/artikel/viewall}">Artikel<span class="sr-only">(current)</span></a>
             </li>
             <li sec:authorize="!hasAuthority('PEKERJA') || !hasAuthority('TEKNISI')">
                 <a th:class="${#strings.equals(activeLink, 'About Us')}  ? 'nav-link nav-underline active' : 'nav-link'" th:href="@{/about-us/view}">About Us<span class="sr-only">(current)</span></a>
@@ -61,7 +61,7 @@
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <li sec:authorize="hasAuthority('MANAJER') || hasAuthority('SUPERVISOR') || hasAuthority('ADMIN')"><a class="dropdown-item" th:href="@{/donasi/viewall}">Daftar Donasi Sampah</a></li>
-                    <li sec:authorize="hasAuthority('MANAJER') || hasAuthority('SUPERVISOR') || hasAuthority('ADMIN')"><a class="dropdown-item" th:href="@{/donasi/penukaran-poin}">Penukaran Poin</a></li>
+                    <li sec:authorize="hasAuthority('MANAJER') || hasAuthority('SUPERVISOR') || hasAuthority('ADMIN')"><a class="dropdown-item" th:href="@{/penukaran-poin/viewall/-1}">Penukaran Poin</a></li>
                     <li sec:authorize="hasAuthority('MANAJER') || hasAuthority('SUPERVISOR') || hasAuthority('ADMIN')"><a class="dropdown-item" th:href="@{/reward/viewall}">Reward</a></li>
                 </ul>
             </li>
@@ -78,7 +78,7 @@
             </li>
 
             <li sec:authorize="hasAuthority('DONATUR')">
-                <a th:class="${#strings.equals(activeLink, 'Donasi')}  ? 'nav-link nav-underline active' : 'nav-link'"  th:href="@{/donasi/penukaran-poin}">Penukaran Poin</a>
+                <a th:class="${#strings.equals(activeLink, 'Penukaran Poin')}  ? 'nav-link nav-underline active' : 'nav-link'"  th:href="@{/penukaran-poin/viewall/-1}">Penukaran Poin</a>
             </li>
             <li sec:authorize="hasAuthority('PARTNER')">
                 <a th:class="${#strings.equals(activeLink, 'Jual Sampah')}  ? 'nav-link nav-underline active' : 'nav-link'" th:href="@{/penawaran/sampah/add}">Jual Sampah<span class="sr-only">(current)</span></a>
@@ -148,7 +148,7 @@
                 <p class="p3">Pabrik : Kavling Cipete Permai Kav N28-29, Desa Sukalaksana – Curug, Kota Serang</p>
             </div>
             <div>
-                <p><span class="bi-envelope px-2"></span>e-mail<span class="bi-telephone px-2"></span>telepon-number</p>
+                <p><span class="bi-envelope px-2"></span>AkmalulIbad1213@gmail.com<span class="bi-telephone px-2"></span>0812122256</p>
             </div>
             <div>
                 <p><span class="bi-c-circle"></span>CV Prisma Rizki Barokah</p>
@@ -157,6 +157,37 @@
     </div>
 </div>
 
+<!-- https://www.c-sharpcorner.com/UploadFile/5089e0/how-to-get-current-user-details-in-javascript/ -->
+<div sec:authorize="hasAuthority('DONATUR')">
+    <script type="text/javascript">
+        function showCustomer(str) {
+            if (str == "") {
+                document.getElementById("poin").innerHTML = "";
+                return;
+            }
+            const xhttp = new XMLHttpRequest();
+            xhttp.onload = function() {
+                document.getElementById("poin").innerHTML = this.responseText;
+            }
+        }
+    </script>
+<!--    <script type="text/javascript">-->
+<!--        var poin-->
+<!--        function UserInfo(data)-->
+<!--        {-->
+<!--            poin = data.poin;-->
+<!--        }-->
+<!--        $(function ()-->
+<!--        {-->
+<!--            UserInfoDetail();-->
+<!--        })-->
+<!--        function UserInfoDetail() {-->
+<!--            document.getElementById('poin').innerHTML = poin;-->
+<!--        }-->
+<!--        println("INI POIN:"+poin);-->
+<!--    </script>-->
+<!--    <script type="text/javascript" src="http://smart-ip.net/geoip-json?callback=UserInfo"></script>-->
+</div>
     <script src = "/bootstrap/js/bootstrap.js"></script>
     <script src="/script.js"></script>
 </body>

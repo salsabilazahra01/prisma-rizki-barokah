@@ -16,10 +16,10 @@
     <!-- button & id -->
     <div class="row my-3">
       <p class="c3">
-        <button type="button" class="btn-small btn-outline-raisin-black h6 me-4" th:href="@{/manajemen-user/viewall}">
+        <a type="button" class="btn-small btn-outline-raisin-black h6 me-4" th:href="@{/manajemen-user/viewall}">
           <i class="bi-chevron-left"></i>
           Back
-        </button>
+        </a>
         <text th:text="${user.username}" class="c3"></text>
       </p>
     </div>
@@ -133,8 +133,6 @@
   </div>
 
 </div>
-
-<footer th:replace="fragments/fragment :: footer"></footer>
 
 <script src = "/bootstrap/js/bootstrap.js"></script>
 <script src="/script.js"></script>

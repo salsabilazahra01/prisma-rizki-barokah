@@ -1,5 +1,7 @@
 package propensi.project.water.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import propensi.project.water.model.User.UserModel;
 
@@ -20,4 +22,6 @@ public interface MengelolaKaryawanService {
     void updateUser(UserModel user);
 
     void deleteUser(UserModel user);
+
+    Page<UserModel> retrievePage(String role, Pageable paging);
 }

@@ -21,11 +21,13 @@ import propensi.project.water.exceptions.donasi.RewardDuplicateJenisException;
 import propensi.project.water.exceptions.donasi.RewardNotFoundException;
 import propensi.project.water.model.Donasi.ItemDonasiModel;
 import propensi.project.water.model.PoinReward.RewardModel;
+import propensi.project.water.model.PoinReward.RewardTukarPoinModel;
 import propensi.project.water.model.PoinReward.TukarPoinModel;
 import propensi.project.water.model.Warehouse.WarehouseModel;
 import propensi.project.water.service.RewardService;
 import propensi.project.water.service.TukarPoinService;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -51,6 +53,9 @@ public class RewardController {
         int firstItem = (currentPage-1) * size + 1;
         int lastItem = firstItem + pageReward.getContent().size() - 1;
 
+        List<RewardModel> usedRewards = getUsedRewards(pageReward);
+
+        model.addAttribute("usedRewards", usedRewards);
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("firstItem", firstItem);
         model.addAttribute("lastItem", lastItem);
@@ -59,6 +64,26 @@ public class RewardController {
         model.addAttribute("pageSize", size);
         model.addAttribute("rewards", pageReward.getContent());
         return "/reward/viewall-reward";
+    }
+
+    private List<RewardModel> getUsedRewards(Page<RewardModel> pageReward){
+
+        //list tukar poin yang masih diproses
+        List<TukarPoinModel> listTukarPoin = tukarPoinService.findAll();
+        listTukarPoin.removeIf(e -> e.getStatus() > 2);
+
+        //reward yang ada di listtukarpoin
+        List<RewardModel> rewards = new ArrayList<>();
+        for(TukarPoinModel tukarPoin : listTukarPoin){
+            for(RewardTukarPoinModel reward : tukarPoin.getListReward()){
+                if(!rewards.contains(reward)){
+                    rewards.add(reward.getIdReward());
+                    System.out.println("Reward " + reward.getIdReward());
+                }
+            }
+        }
+
+        return rewards;
     }
 
     // Create form
@@ -121,13 +146,13 @@ public class RewardController {
             rewardService.update(reward, rewardModel);
 
             List<TukarPoinModel> listPenukaran = tukarPoinService.findAll();
-            for (int i = 0; i < listPenukaran.size(); i++) {
-                if (listPenukaran.get(i).getReward().getIdReward().equals(id)) {
-                    if (!listPenukaran.get(i).getStatus()) {
-                        return "redirect:/error/404";
-                    }
-                }
-            }
+//            for (int i = 0; i < listPenukaran.size(); i++) {
+//                if (listPenukaran.get(i).getReward().getIdReward().equals(id)) {
+//                    if (!listPenukaran.get(i).getStatus()) {
+//                        return "redirect:/error/404";
+//                    }
+//                }
+//            }
 
             return "redirect:/reward/viewall";
         } catch (RewardDuplicateJenisException duplicate) {
@@ -146,14 +171,14 @@ public class RewardController {
         try {
             val reward = rewardService.findById(id);
 
-            List<TukarPoinModel> listPenukaran = tukarPoinService.findAll();
-            for (int i = 0; i < listPenukaran.size(); i++) {
-                if (listPenukaran.get(i).getReward().getIdReward().equals(id)) {
-                    if (listPenukaran.get(i).getStatus().equals(false)) {
-                        return "redirect:/viewall";
-                    }
-                }
-            }
+//            List<TukarPoinModel> listPenukaran = tukarPoinService.findAll();
+//            for (int i = 0; i < listPenukaran.size(); i++) {
+//                if (listPenukaran.get(i).getReward().getIdReward().equals(id)) {
+//                    if (listPenukaran.get(i).getStatus().equals(false)) {
+//                        return "redirect:/viewall";
+//                    }
+//                }
+//            }
 
             rewardService.delete(reward);
             redirectAttrs.addFlashAttribute("success","Reward berhasil dihapus");
@@ -169,4 +194,6 @@ public class RewardController {
             return "redirect:/error/500";
         }
     }
+
+
 }

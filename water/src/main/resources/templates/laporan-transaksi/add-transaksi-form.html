@@ -23,7 +23,7 @@
         </div>
 
         <!-- form -->
-        <form th:action="@{/transaksi/add}" th:object="${transaksi}" method="POST">
+        <form th:action="@{/transaksi/add}" th:object="${transaksi}" method="POST" enctype="multipart/form-data">
         <input type="hidden" th:field="*{proses}"/>
         <div class="container my-2">
         <div class = "card rounded-25">
@@ -83,7 +83,13 @@
                                     Masukkan nominal transaksi
                                 </div>
                             </div>
-
+                            <div class="form-group">
+                                <label class="h5 text-raisin-black">Bukti Transaksi<span class="text-danger"> *</span></label>
+                                <input required class="form-control p2" type="file" name="file" accept="image/png, image/jpeg">
+                                <div class="invalid-feedback">
+                                    Masukkan bukti transaksi
+                                </div>
+                            </div>
                             <div class="form-group">
                                 <label class="h5 text-raisin-black">Keterangan</label>
                                 <textarea class="form-control" th:field="*{keterangan}" rows="3"></textarea>
@@ -130,8 +136,6 @@
     </form>
     </div>
 </div>
-
-<footer th:replace="fragments/fragment :: footer"></footer>
 
 <script src = "/bootstrap/js/bootstrap.js"></script>
 <script src="/script.js"></script>

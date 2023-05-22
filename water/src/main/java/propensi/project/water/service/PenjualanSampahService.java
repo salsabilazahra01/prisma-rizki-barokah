@@ -29,6 +29,6 @@ public interface PenjualanSampahService {
     public void saveStatus(PenawaranSampahModel penawaranSampah);
     public void saveStatusDiTolak(PenawaranSampahModel penawaranSampah);
     public void simpanInspeksiPenawaranSampah(PenawaranSampahModel penawaranSampah);
-    public void addTransaksiSampah(PenawaranSampahModel penawaranSampah, Boolean isManual);
+    public void addTransaksiSampah(PenawaranSampahModel penawaranSampah, Boolean isManual, String bukti);
     public ProsesPenawaranSampahModel getTransaksiByPenawaranSampah(PenawaranSampahModel penawaranSampah);
 }

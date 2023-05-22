@@ -58,7 +58,8 @@
                 <div class="col-7">
                     <div class="card rounded-25 shadow-sm m-2 p-2">
                         <div class="card-body">
-                            <form th:action="@{/penawaran/sampah/selesai}" th:object="${penawaranSampah}" method="POST">
+                            <form th:action="@{/penawaran/sampah/selesai}" th:object="${penawaranSampah}" method="POST"
+                                  enctype="multipart/form-data">
                                 <input type="hidden" th:field="*{idPenawaranSampah}"/>
                                 <input type="hidden" th:field="*{namaPic}"/>
                                 <input type="hidden" th:field="*{kontakPic}"/>
@@ -111,6 +112,13 @@
                                             <i class="bi bi-plus text-end"></i>
                                         </button>
                                     </div>
+
+                                    <!-- title -->
+                                    <div class="row mt-4">
+                                        <label class="h5">Bukti Transfer Pembelian Sampah</label>
+                                    </div>
+                                    <input class="form-control p2" type="file" name="fileTransaksi" accept="image/png, image/jpeg">
+
                                     <!-- Button trigger modal -->
                                     <button type="button" class="mt-5 col-12 btn btn-primary-green"
                                             data-bs-toggle="modal"
@@ -155,11 +163,10 @@
 
             </div>
         </div>
+
     </div>
 
 </div>
-
-<footer th:replace="fragments/fragment :: footer"></footer>
 
 <script src="/bootstrap/js/bootstrap.js"></script>
 <script src="/script.js"></script>

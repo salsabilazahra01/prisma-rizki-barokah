@@ -13,6 +13,7 @@ import propensi.project.water.service.DonaturService;
 import propensi.project.water.service.PartnerService;
 import propensi.project.water.service.UserService;
 
+import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 
 @Controller
@@ -36,7 +37,7 @@ public class UserController {
     private CustomerService customerService;
 
     @GetMapping("/profile")
-    public String viewProfile(Model model, Principal principal) {
+    public String viewProfile(Model model, Principal principal, HttpServletRequest request) {
         UserModel userModel = userService.getUserByUsername(principal.getName());
 
         model.addAttribute("auth", userModel);
@@ -51,6 +52,15 @@ public class UserController {
         } else if (userModel.getRole().equals(Role.PARTNER)) {
             PartnerModel partnerModel = this.partnerService.getPartnerByUsername(userModel.getUsername());
             model.addAttribute("added", partnerModel);
+        }
+
+        UserModel user = userService.getUserByUsername(request.getRemoteUser()) == null ?
+                null : userService.getUserByUsername(request.getRemoteUser());
+        if (user!=null) {
+            if (user.getRole().toString().equals("DONATUR")) {
+                DonaturModel donatur = (DonaturModel) user;
+                model.addAttribute("poin", donatur.getPoin());
+            }
         }
 
         return "user/profile";
@@ -75,16 +85,26 @@ public class UserController {
             model.addAttribute("added", partnerModel);
         }
 
+        if (userModel!=null) {
+            if (userModel.getRole().toString().equals("DONATUR")) {
+                DonaturModel donatur = (DonaturModel) userModel;
+                model.addAttribute("poin", donatur.getPoin());
+            }
+        }
+
         return "user/edit";
     }
 
     @PostMapping("/profile/edit")
-    public String editProfile(Principal principal, @ModelAttribute UpdateProfileDTO updateProfileDTO) {
+    public String editProfile(Principal principal,
+                              @ModelAttribute UpdateProfileDTO updateProfileDTO,
+                              HttpServletRequest request,
+                              Model model) {
+
         UserModel userModel = userService.getUserByUsername(principal.getName());
 
         userModel.setEmail(updateProfileDTO.getEmail());
         userModel.setNama(updateProfileDTO.getFname());
-
 
         this.userService.saveUser(userModel);
 
@@ -119,6 +139,12 @@ public class UserController {
             this.partnerService.save(partnerModel);
         }
 
+        if (userModel!=null) {
+            if (userModel.getRole().toString().equals("DONATUR")) {
+                DonaturModel donatur = (DonaturModel) userModel;
+                model.addAttribute("poin", donatur.getPoin());
+            }
+        }
         return "redirect:/user/profile";
     }
 

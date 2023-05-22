@@ -3,7 +3,7 @@
 <head th:replace="fragments/fragment :: head"></head>
 
 <body>
-<nav sec:authorize="hasAuthority('ADMIN') || hasAuthority('MANAJER')" th:replace="fragments/fragment :: navbar('Manajemen User', '')"></nav>
+<nav sec:authorize="hasAuthority('ADMIN') || hasAuthority('MANAJER')" th:replace="fragments/fragment :: navbar('About Us', '')"></nav>
 
 <div class="d-flex justify-content-center">
     <div class = "container my-5">
@@ -29,13 +29,6 @@
 
         <!-- form -->
         <form th:action="@{/about-us/update}" th:object="${companyProfile}" method="POST">
-<!--            <input type="hidden" th:field="*{idCompanyProfile}"/>-->
-<!--            <input type="hidden" th:field="*{namaPerusahaan}"/>-->
-<!--            <input type="hidden" th:field="*{deskripsiPerusahaan}"/>-->
-<!--            <input type="hidden" th:field="*{visiMisiPerusahaan}"/>-->
-<!--            <input type="hidden" th:field="*{kontakPerusahaan}"/>-->
-<!--            <input type="hidden" th:field="*{alamatPerusahaan}"/>-->
-<!--            <input type="hidden" th:field="*{listTestimoni}"/>-->
             <div class="container my-2">
                 <div class = "card rounded-25">
                     <div class="card-body">
@@ -85,14 +78,6 @@
                                         <input type="number" id="nm1" class="form-control form-control-lg" name="hp" th:field="*{hpPerusahaan}" required/>
                                     </div>
                                 </fieldset>
-
-<!--                                <div class="form-group">-->
-<!--                                    <label class="h5 text-raisin-black">Kontak Perusahaan<span class="text-danger"> *</span></label>-->
-<!--                                    <input required type="text" autocomplete="off" class="form-control p2" th:field="*{kontakPerusahaan}">-->
-<!--                                    <div class="invalid-feedback">-->
-<!--                                        Masukkan kontak perusahaan-->
-<!--                                    </div>-->
-<!--                                </div>-->
 
                                 <div class="form-group">
                                     <label class="h5 text-raisin-black">Alamat Perusahaan<span class="text-danger"> *</span></label>
@@ -200,8 +185,6 @@
         </form>
     </div>
 </div>
-
-<footer th:replace="fragments/fragment :: footer"></footer>
 
 <script src = "/bootstrap/js/bootstrap.js"></script>
 <script src="/script.js"></script>

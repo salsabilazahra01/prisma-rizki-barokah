@@ -60,10 +60,12 @@ public class WebSecurityConfig {
                 .antMatchers("/penawaran-hasil-olahan/update/*", "/penawaran-hasil-olahan/delete/*").hasAnyAuthority("CUSTOMER")
                 .antMatchers("/about-us/view").permitAll()
                 .antMatchers("/about-us/update").hasAnyAuthority("ADMIN", "MANAJER")
+                .antMatchers("/artikel/viewall").permitAll()
+                .antMatchers("/artikel/add", "/artikel/update/*", "/artikel/delete/*").hasAnyAuthority("ADMIN", "MANAJER")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
-                .loginPage("/login").permitAll().successForwardUrl("/")
+                .loginPage("/login").permitAll()
                 .and()
                 .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .logoutSuccessUrl("/login").permitAll();

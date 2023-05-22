@@ -41,4 +41,11 @@ public class DonaturServiceImpl implements DonaturService {
     public DonaturModel getDonaturByUsername(String username) {
         return donaturDb.findByUsername(username);
     }
+
+    @Override
+    public DonaturModel updatePoin(DonaturModel updatedDonatur) {
+        DonaturModel donatur = getDonaturByUsername(updatedDonatur.getUsername());
+        donatur.setPoin(updatedDonatur.getPoin());
+        return donaturDb.save(donatur);
+    }
 }
