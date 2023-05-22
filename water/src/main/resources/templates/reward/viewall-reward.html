@@ -28,6 +28,7 @@
                 <th>ID Jenis Reward</th>
                 <th>Jenis Reward</th>
                 <th>Poin Ekuivalen</th>
+                <th>Harga Reward</th>
                 <th colspan="2"></th>
               </tr>
             </thead>
@@ -37,6 +38,7 @@
                 <td>[[${reward.idReward}]]</td>
                 <td>[[${reward.jenisReward()}]]</td>
                 <td>[[${reward.poin}]]</td>
+                <td>[[${reward.harga}]]</td>
                 <td>
                   <a th:href="@{/reward/{id}/edit(id=${reward.idReward})}"
                     class="btn-small btn-primary-green h6">
@@ -46,8 +48,6 @@
                 <td>
                   <div th:replace="fragments/fragment-reward :: modalDelete(${reward.idReward}, ${reward.jenisReward()})"></div>
                 </td>
-
-
 
               </tr>
               <tr th:unless="${rewards.size}">

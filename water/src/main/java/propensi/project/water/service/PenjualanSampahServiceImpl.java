@@ -108,6 +108,7 @@ public class PenjualanSampahServiceImpl implements PenjualanSampahService {
         penawaranSampahLama.setBerat(penawaranSampah.getBerat());
         penawaranSampahLama.getListItemPenawaranSampah().clear();
         penawaranSampahLama.getListItemPenawaranSampah().addAll(penawaranSampah.getListItemPenawaranSampah());
+        penawaranSampahLama.setTransaksiSampah(penawaranSampah.getTransaksiSampah());
         penawaranSampahDb.save(penawaranSampahLama);
     }
 
@@ -139,14 +140,15 @@ public class PenjualanSampahServiceImpl implements PenjualanSampahService {
     }
 
     @Override
-    public void addTransaksiSampah(PenawaranSampahModel penawaranSampah, Boolean isManual){
+    public void addTransaksiSampah(PenawaranSampahModel penawaranSampah, Boolean isManual, String bukti){
         ProsesPenawaranSampahModel transaksi = new ProsesPenawaranSampahModel();
-        transaksi.setJenisTransaksi(Boolean.FALSE);
-        transaksi.setProses(1);
+        transaksi.setJenisTransaksi(Boolean.TRUE);
+        transaksi.setProses(0);
         transaksi.setPenawaranSampah(penawaranSampah);
         transaksi.setNominal(penawaranSampah.getHarga());
         transaksi.setTanggalDibuat(LocalDateTime.now());
         transaksi.setTanggalTransaksi(LocalDateTime.now());
+        transaksi.setBukti(bukti);
 
         if(!isManual){
             transaksi.setKeterangan(penawaranSampah.getKeterangan());

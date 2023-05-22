@@ -38,9 +38,10 @@
                         </div>
                         <div class="my-5" th:switch="${transaksi.proses}">
                             <p class="p2">Pihak Terkait</p>
-                            <h3 class="h4" th:case="0" th:text="'[PARTNER] ' + ${transaksi.penawaranSampah.partner.nama}"></h3>
+                            <h3 class="h4" th:case="0" th:text="'[PARTNER] ' + ${transaksi.penawaranSampah.namaPic}"></h3>
                             <h3 class="h4" th:case="1" th:text="'[CUSTOMER] ' + ${transaksi.penawaranOlahan.namaCustomer}"></h3>
                             <h3 class="h4" th:case="2" th:text="${transaksi.person}"></h3>
+                            <h3 class="h4" th:case="3" th:text="'[DONATUR] ' + ${transaksi.tukarPoin.namaDonatur}"></h3>
                         </div>
                         <div class="mt-5 mb-3">
                             <p class="p2">Jenis</p>
@@ -50,14 +51,23 @@
                     <div class="col-4 px-5">
                         <div class="mb-5 mt-3" th:switch="${transaksi.proses}">
                             <p class="p2">Sumber</p>
-                            <h3 class="h4" th:case="0" th:text="${transaksi.penawaranSampah.idPenawaranSampah}"></h3>
+                            <a class="h4" th:case="0" th:text="${transaksi.penawaranSampah.idPenawaranSampah}"
+                                th:href="@{/penawaran/sampah/view/} + ${transaksi.penawaranSampah.idPenawaranSampah}"></a>
                             <a class="h4" th:case="1" th:text="${transaksi.penawaranOlahan.idPenawaranOlahan}"
                                th:href="@{/penawaran-hasil-olahan/view/} + ${transaksi.penawaranOlahan.idPenawaranOlahan}"></a>
                             <h3 class="h4" th:case="2" th:text="${transaksi.namaProses}"></h3>
+                            <a class="h4" th:case="3" th:text="${transaksi.tukarPoin.idTukarPoin}"
+                               th:href="@{/penukaran-poin/view/} + ${transaksi.tukarPoin.idTukarPoin}"></a>
                         </div>
                         <div class="mt-5 mb-3">
                             <p class="p2">Keterangan</p>
                             <h3 class="h4" th:text="${transaksi.keterangan == '' || transaksi.keterangan == NULL} ? '-' : ${transaksi.keterangan}"></h3>
+                        </div>
+                        <div class="mt-5 mb-3">
+                            <p class="p2">Bukti</p>
+                            <div class="zoomin">
+                                <img th:src="${transaksi.buktiImagePath}" title="Image" />
+                            </div>
                         </div>
                     </div>
                     <div class="col-4 px-5">
@@ -104,8 +114,6 @@
     </div>
 
 </div>
-
-<footer th:replace="fragments/fragment :: footer"></footer>
 
 <script src = "/bootstrap/js/bootstrap.js"></script>
 <script src="/script.js"></script>

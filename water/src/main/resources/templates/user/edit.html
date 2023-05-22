@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://thymeleaf.org">
+<html lang="en" xmlns:th="http://thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head th:replace="fragments/fragment :: head"></head>
 
 <body>
 
-<nav th:replace="fragments/fragment :: navbar('Home', '')"></nav>
+<nav sec:authorize="hasAuthority('DONATUR')" th:replace="fragments/fragment :: navbar('', ${poin})"></nav>
+<nav sec:authorize="!hasAuthority('DONATUR') || !isAuthenticated()" th:replace="fragments/fragment :: navbar('', '')"></nav>
 
 <div class="container">
     <div class="col-12 mt-5">
@@ -27,10 +28,11 @@
                     </div>
 
                     <div class="form-group  mt-3">
-                        <label for="email" class="text-label-form-profile">Email / Nomor Telepon<span class="text-danger">*</span></label>
-                        <input name="email" th:value="${auth.email}" id="email" class="form-control rounded-3" required />
-                        <small id="emailhelp" class="form-text text-muted">pilih salah satu</small>
+                        <label for="email" class="text-label-form-profile">Email</label>
+                        <input name="email" th:value="${auth.email}" id="email" type="email" class="form-control rounded-3" required />
+<!--                        <small id="emailhelp" class="form-text text-muted">pilih salah satu</small>-->
                     </div>
+
                     <div th:if="${pic}" class="form-group  mt-3">
                         <label for="namaPic" class="text-label-form-profile">Nama PIC<span class="text-danger">*</span></label>
                         <input name="namaPic" th:value="${added.namaPic}" id="namaPic" class="form-control rounded-3" required />
@@ -85,7 +87,7 @@
             <div class="col-12 mt-2 d-flex justify-content-center">
 
                 <!-- Button trigger modal -->
-                <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                <button type="button" class="btn btn-outline-raisin-black" data-bs-toggle="modal" data-bs-target="#exampleModal">
                     Cancel
                 </button>
 
@@ -94,28 +96,25 @@
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                <h5 class="modal-title" id="exampleModalLabel">Konfirmasi Cancel</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 Apakah anda yakin ingin membuang perubahan ?
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tidak</button>
-                                <a class="btn btn-primary text-white" th:href="@{/user/profile}">Ya</a>
+                                <button type="button" class="btn btn-outline-raisin-black" data-bs-dismiss="modal">Tidak</button>
+                                <a class="btn btn-primary-green text-white" th:href="@{/user/profile}">Ya</a>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <button type="submit" class="button-save-profile px-3 py-2">Save Changes</button>
+                <button type="submit" class="btn btn-primary-green px-3 py-2">Save Changes</button>
             </div>
         </form>
     </div>
 </div>
-
-<footer th:replace="fragments/fragment :: footer"></footer>
-
 
 <script src="/bootstrap/js/bootstrap.js"></script>
 <script src="/script.js"></script>

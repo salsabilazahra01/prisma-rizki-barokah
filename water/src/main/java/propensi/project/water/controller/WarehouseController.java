@@ -39,15 +39,15 @@ public class WarehouseController {
         WarehouseModel cariModel = warehouseService.getItemByNamaItem(namaItem);
         if(namaItemLama.equals(namaItem)){
             warehouseService.updateItem(item);
-            redirectAttrs.addFlashAttribute("successUpdate",
-                    String.format("Item %s sudah berhasil diperbarui", namaItem ));
+            redirectAttrs.addFlashAttribute("success",
+                    String.format("Item %s berhasil diperbarui", namaItem ));
         }else{
             if(cariModel == null){
                 warehouseService.updateItem(item);
-                redirectAttrs.addFlashAttribute("successUpdate",
-                        String.format("Item %s sudah berhasil diperbarui", namaItem ));
+                redirectAttrs.addFlashAttribute("success",
+                        String.format("Item %s berhasil diperbarui", namaItem ));
             }else{
-                redirectAttrs.addFlashAttribute("failedUpdate",
+                redirectAttrs.addFlashAttribute("failed",
                         String.format("Item %s tidak dapat diperbarui. Item sudah terdaftar dalam warehouse", namaItem ));
             }
         }
@@ -68,10 +68,10 @@ public class WarehouseController {
         WarehouseModel cariModel = warehouseService.getItemByNamaItem(namaItem);
         if(cariModel == null){
             warehouseService.addItem(item);
-            redirectAttrs.addFlashAttribute("successAdd",
-                    String.format("Item %s sudah berhasil dibuat", namaItem ));
+            redirectAttrs.addFlashAttribute("success",
+                    String.format("Item %s berhasil dibuat", namaItem ));
         }else{
-            redirectAttrs.addFlashAttribute("failedAdd",
+            redirectAttrs.addFlashAttribute("failed",
                     String.format("Item %s tidak dapat dibuat. Item sudah terdaftar dalam warehouse", namaItem ));
         }
         return "redirect:/warehouse/laporan";
@@ -82,10 +82,10 @@ public class WarehouseController {
         String namaItem = item.getNamaItem();
         if(item.getKuantitasSampah().equals(0) && item.getKuantitasOlahan().equals(0)){
             warehouseService.deleteItem(item);
-            redirectAttrs.addFlashAttribute("successDelete",
-                    String.format("Item %s sudah berhasil dihapus dari database", namaItem ));
+            redirectAttrs.addFlashAttribute("success",
+                    String.format("Item %s berhasil dihapus dari database", namaItem ));
         }else{
-            redirectAttrs.addFlashAttribute("failedDelete",
+            redirectAttrs.addFlashAttribute("failed",
                     String.format("Item %s tidak dapat dihapus dari database. Kuantitas sampah dan hasil olahan item harus 0 sebelum dihapus.", namaItem ));
         }
         return "redirect:/warehouse/laporan";

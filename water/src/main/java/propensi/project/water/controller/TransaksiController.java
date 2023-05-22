@@ -7,14 +7,31 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import propensi.project.water.model.Transaksi.ProsesLainModel;
-import propensi.project.water.model.Transaksi.TransaksiModel;
+import org.supercsv.io.CsvBeanWriter;
+import org.supercsv.io.CsvListWriter;
+import org.supercsv.io.ICsvBeanWriter;
+import org.supercsv.io.ICsvListWriter;
+import org.supercsv.prefs.CsvPreference;
+import propensi.project.water.model.PoinReward.TukarPoinModel;
+import propensi.project.water.model.Transaksi.*;
 import propensi.project.water.service.TransaksiService;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Controller
@@ -25,7 +42,7 @@ public class TransaksiController {
     private TransaksiService transaksiService;
 
     @GetMapping("/add")
-    public String addTransaksiForm(Model model){
+    public String addTransaksiProsesLainForm(Model model){
         ProsesLainModel transaksiManual = new ProsesLainModel();
         transaksiManual.setProses(2);
         model.addAttribute("transaksi", transaksiManual);
@@ -33,13 +50,29 @@ public class TransaksiController {
     }
 
     @PostMapping(value = "/add")
-    public String addTransaksiSubmit(@ModelAttribute ProsesLainModel transaksiManual,
+    public String addTransaksiProsesLainSubmit(@ModelAttribute ProsesLainModel transaksiManual,
+                                     @RequestParam("file") MultipartFile file,
                                      RedirectAttributes redirectAttrs
-    ){
-        transaksiManual.setTanggalDibuat(LocalDateTime.now());
-        transaksiService.addTransaksiManual(transaksiManual);
-        redirectAttrs.addFlashAttribute("success","Transaksi baru berhasil ditambahkan");
-        return "redirect:/transaksi/viewall/semua";
+    ) throws IOException {
+
+            System.out.println("INI FILE 3 " + file);
+            transaksiManual.setTanggalDibuat(LocalDateTime.now());
+
+            //file bukti
+            String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+            transaksiManual.setBukti(fileName);
+
+            ProsesLainModel savedTransaksi = transaksiService.addTransaksiManual(transaksiManual);
+
+            //save file bukti
+            String uploadDir = "./src/main/resources/static/images/" + savedTransaksi.getIdTransaksi() + "-" + savedTransaksi.getBukti();
+            FileUploadUtil.saveFile(uploadDir, fileName, file);
+
+            transaksiService.addTransaksiManual(transaksiManual);
+
+            redirectAttrs.addFlashAttribute("success","Transaksi baru berhasil ditambahkan");
+            return "redirect:/transaksi/viewall/semua";
+
     }
 
     @GetMapping(value="/viewall/{jenis}")
@@ -117,16 +150,8 @@ public class TransaksiController {
                                  @PathVariable String idTransaksi) {
 
         var transaksi = transaksiService.retrieveTransaksiById(idTransaksi);
-
-        if(transaksi.getProses() == 0){
-            transaksi = transaksiService.getTransaksiPenawaranSampah(idTransaksi);
-        } else if (transaksi.getProses() == 1){
-            transaksi = transaksiService.getTransaksiPenawaranOlahan(idTransaksi);
-        } else {
-            transaksi = transaksiService.getTransaksiLain(idTransaksi);
-        }
-
         model.addAttribute("transaksi", transaksi);
+
         return "laporan-transaksi/view-transaksi";
     }
 
@@ -137,6 +162,9 @@ public class TransaksiController {
         TransaksiModel transaksi = transaksiService.retrieveTransaksiById(idTransaksi);
         transaksiService.delete(transaksi);
 
+        String uploadDir = "./src/main/resources/static/images/"+ transaksi.getIdTransaksi() + "-";
+        transaksiService.deleteFolder(new File(uploadDir + transaksi.getBukti()));
+
         redirectAttrs.addFlashAttribute("success",
                 String.format("Transaksi dengan ID %s berhasil dihapus", idTransaksi));
 
@@ -144,33 +172,43 @@ public class TransaksiController {
     }
 
     @GetMapping("/update/{idTransaksi}")
-    private String updateTransaksi(
+    private String updateTransaksiForm(
             @PathVariable String idTransaksi,
             Model model
     ) {
 
         var transaksi = transaksiService.retrieveTransaksiById(idTransaksi);
-
-        if(transaksi.getProses() == 0){
-            transaksi = transaksiService.getTransaksiPenawaranSampah(idTransaksi);
-        } else if (transaksi.getProses() == 1){
-            transaksi = transaksiService.getTransaksiPenawaranOlahan(idTransaksi);
-        } else {
-            transaksi = transaksiService.getTransaksiLain(idTransaksi);
-        }
-
         model.addAttribute("transaksi", transaksi);
+
         return "laporan-transaksi/update-transaksi";
     }
 
     @PostMapping("/update/sampah-olahan")
-    private String updateTransaksiSubmitSampahOlahan(
-            @ModelAttribute TransaksiModel transaksi,
-            RedirectAttributes redirectAttributes,
-            Model model
-    ) {
+    private String updateTransaksiSubmitSampahDanOlahan(@ModelAttribute TransaksiModel transaksi,
+                                                        RedirectAttributes redirectAttributes,
+                                                        Model model,
+                                                        @RequestParam(value = "file", required = false) MultipartFile file
+    ) throws IOException {
 
-        var updatedTransaksi = transaksiService.updateTransaksiSampahOlahan(transaksi);
+        //get transaksi lama
+        String idTransaksi = transaksi.getIdTransaksi();
+        String buktiTransaksiLama = transaksiService.retrieveTransaksiById(idTransaksi).getBukti();
+
+        TransaksiModel updatedTransaksi;
+        if(file == null){
+            transaksi.setBukti(buktiTransaksiLama);
+            updatedTransaksi = transaksiService.updateTransaksiSampahOlahan(transaksi);
+        }else{
+            String fileName =  StringUtils.cleanPath(file.getOriginalFilename());
+            transaksi.setBukti(fileName);
+            updatedTransaksi = transaksiService.updateTransaksiSampahOlahan(transaksi);
+
+            String uploadDir = "./src/main/resources/static/images/"+ updatedTransaksi.getIdTransaksi() + "-";
+            transaksiService.deleteFolder(new File(uploadDir + buktiTransaksiLama));
+
+            FileUploadUtil.saveFile(uploadDir + updatedTransaksi.getBukti(), fileName, file);
+        }
+
         model.addAttribute("transaksi", updatedTransaksi);
         redirectAttributes.addFlashAttribute("success","Transaksi berhasil diubah");
 
@@ -178,13 +216,30 @@ public class TransaksiController {
     }
 
     @PostMapping("/update/proses-lain")
-    private String updateTransaksiSubmitProsesLain(
-            @ModelAttribute ProsesLainModel transaksi,
-            RedirectAttributes redirectAttributes,
-            Model model
-    ) {
+    private String updateTransaksiSubmitProsesLain(@ModelAttribute ProsesLainModel transaksi,
+                                                   RedirectAttributes redirectAttributes,
+                                                   Model model,
+                                                   @RequestParam(value = "file", required = false) MultipartFile file
+    ) throws IOException {
 
-        var updatedTransaksi = transaksiService.updateTransaksiProsesLain(transaksi);
+        //get transaksi lama
+        String idTransaksi = transaksi.getIdTransaksi();
+        String buktiTransaksiLama = transaksiService.retrieveTransaksiById(idTransaksi).getBukti();
+
+        TransaksiModel updatedTransaksi;
+        if(file == null){
+            transaksi.setBukti(buktiTransaksiLama);
+            updatedTransaksi = transaksiService.updateTransaksiProsesLain(transaksi);
+        }else{
+            String fileName =  StringUtils.cleanPath(file.getOriginalFilename());
+            transaksi.setBukti(fileName);
+            updatedTransaksi = transaksiService.updateTransaksiProsesLain(transaksi);
+
+            String uploadDir = "./src/main/resources/static/images/"+ updatedTransaksi.getIdTransaksi() + "-";
+            transaksiService.deleteFolder(new File(uploadDir + buktiTransaksiLama));
+
+            FileUploadUtil.saveFile(uploadDir + updatedTransaksi.getBukti(), fileName, file);
+        }
 
         model.addAttribute("transaksi", updatedTransaksi);
         redirectAttributes.addFlashAttribute("success",
@@ -193,4 +248,44 @@ public class TransaksiController {
         return "redirect:/transaksi/view/" + transaksi.getIdTransaksi();
     }
 
+    @PostMapping("/download")
+    public void exportToCSV(HttpServletResponse response, HttpServletRequest request) throws IOException {
+
+        Map<String, String> generateResult = new HashMap<>();
+        generateResult.put("pembelianSampah", request.getParameter("pembeliansampah"));
+        generateResult.put("penjualanOlahan", request.getParameter("penjualanolahan"));
+        generateResult.put("sumberLainPendapatan", request.getParameter("sumberlainpendapatan"));
+        generateResult.put("sumberLainPengeluaran", request.getParameter("sumberlainpengeluaran"));
+        generateResult.put("periodeAwal", request.getParameter("periodeawal"));
+        generateResult.put("periodeAkhir", request.getParameter("periodeakhir"));
+
+        response.setContentType("text/csv");
+        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
+        String currentDateTime = dateFormatter.format(new Date());
+
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=transaksi_" + currentDateTime + ".csv";
+        response.setHeader(headerKey, headerValue);
+
+        List<TransaksiModel> listTransaksi = transaksiService.getListDownload(generateResult);
+
+        ICsvListWriter csvWriter = new CsvListWriter(response.getWriter(), CsvPreference.STANDARD_PREFERENCE);
+
+        String[] csvHeader = {"ID Transaksi", "Jenis Transaksi", "Nominal", "Tanggal Transaksi", "Keterangan", "Sumber"};
+        csvWriter.writeHeader(csvHeader);
+
+        for (TransaksiModel transaksi : listTransaksi) {
+            csvWriter.write(
+                    transaksi.getIdTransaksi(),
+                    transaksi.getJenisString(),
+                    transaksi.getNominal().toString(),
+                    transaksi.getTanggalTransaksi().toString(),
+                    transaksi.getKeterangan(),
+                    transaksi.getProsesString()
+            );
+        }
+
+        csvWriter.close();
+
+    }
 }

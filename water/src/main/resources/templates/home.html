@@ -66,7 +66,9 @@
             </div>
             <div class = "col-lg-6 p-5 text-white text-center text-lg-start">
                 <p class = "p2 my-5 lead" th:text="${companyProfile.deskripsiPerusahaan}"></p>
-                <button type = "button" class = "btn btn-about-us h5 text-white mt-4"><span class="bi-arrow-right"></span> Baca lebih lanjut</button>
+                <a type = "button" class = "btn btn-about-us h5 text-white mt-4" th:href="@{/about-us/view}">
+                    <span class="bi-arrow-right"></span> Baca lebih lanjut
+                </a>
             </div>
         </div>
     </section>

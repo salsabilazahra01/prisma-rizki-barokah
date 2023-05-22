@@ -3,8 +3,8 @@
 <head th:replace="fragments/fragment :: head"></head>
 
 <body>
-<nav th:replace="fragments/fragment :: navbar('Artikel', '')"></nav>
-<nav sec:authorize="!isAuthenticated()" th:replace="fragments/fragment :: navbar('Artikel', '')"></nav>
+<nav sec:authorize="hasAuthority('DONATUR')" th:replace="fragments/fragment :: navbar('Artikel', ${poin})"></nav>
+<nav sec:authorize="!hasAuthority('DONATUR') || !isAuthenticated()" th:replace="fragments/fragment :: navbar('Artikel', '')"></nav>
 
 <div class="card card-wr text-center mt-4">
     <div class="card-body">
