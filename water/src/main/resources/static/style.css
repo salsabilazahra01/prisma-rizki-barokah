@@ -451,3 +451,41 @@ input[type="radio"]:checked{
     line-height: 17px;
     color: #252525;
 }
+
+.w-35 {
+    width: 35% !important;
+}
+
+/* Float four columns side by side */
+.column {
+    float: left;
+    width: 25%;
+    padding: 0 10px;
+}
+
+/* Responsive columns - one column layout (vertical) on small screens */
+@media screen and (max-width: 600px) {
+    .column {
+        width: 100%;
+        display: block;
+        margin-bottom: 20px;
+    }
+}
+
+judul, .judul {
+    font-size: calc(1.375rem + 1.5vw);
+    font-weight: 700;
+}
+@media (min-width: 1200px) {
+    judul, .judul {
+        font-size: 3rem;
+    }
+}
+
+.text-right{
+    text-align: right;
+}
+
+.modal-alert-bg{
+    background-color: #FAA0A0;
+}
