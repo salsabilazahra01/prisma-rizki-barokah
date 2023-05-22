@@ -58,6 +58,8 @@ public class WebSecurityConfig {
                 .antMatchers("/donasi/").hasAnyAuthority("DONATUR", "ADMIN", "MANAJER", "SUPERVISOR")
                 .antMatchers("/reward/*").hasAnyAuthority("ADMIN", "SUPERVISOR", "MANAJER")
                 .antMatchers("/penawaran-hasil-olahan/update/*", "/penawaran-hasil-olahan/delete/*").hasAnyAuthority("CUSTOMER")
+                .antMatchers("/about-us/view").permitAll()
+                .antMatchers("/about-us/update").hasAnyAuthority("ADMIN", "MANAJER")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
