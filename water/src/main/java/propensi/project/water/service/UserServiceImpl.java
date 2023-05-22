@@ -94,4 +94,9 @@ public class UserServiceImpl implements UserService {
     public Boolean matchPassword(String password, String passwordConfirmer) {
         return password.equals(passwordConfirmer);
     }
+
+    @Override
+    public void saveUser(UserModel userModel) {
+        this.userDb.save(userModel);
+    }
 }

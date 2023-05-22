@@ -13,4 +13,6 @@ public interface DonaturService {
     public DonaturModel getDonaturByUsername(String username);
 
     public String encrypt(String password);
+
+    void save(DonaturModel donaturModel);
 }

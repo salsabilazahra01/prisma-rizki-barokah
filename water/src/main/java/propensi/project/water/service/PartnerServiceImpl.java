@@ -22,6 +22,11 @@ public class PartnerServiceImpl implements PartnerService {
     }
 
     @Override
+    public void save(PartnerModel partnerModel) {
+        this.partnerDb.save(partnerModel);
+    }
+
+    @Override
     public void addPartner(PartnerModel partner) {
         partner.setPassword(encrypt(partner.getPassword()));
         partnerDb.save(partner);
