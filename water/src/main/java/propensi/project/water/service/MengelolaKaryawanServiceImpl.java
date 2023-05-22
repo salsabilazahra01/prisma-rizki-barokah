@@ -5,7 +5,10 @@ package propensi.project.water.service;
 import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import propensi.project.water.model.Donasi.DonasiModel;
 import propensi.project.water.model.User.UserModel;
 import propensi.project.water.repository.User.UserDb;
 
@@ -52,6 +55,20 @@ public class MengelolaKaryawanServiceImpl implements MengelolaKaryawanService{
 
         // else if username & email & hp is unique
         return false;
+    }
+
+    @Override
+    public Page<UserModel> retrievePage(String role, Pageable paging){
+        if (role.equals("semua")){
+            return userDb.findAllByUsernameIsNotNullOrderByUsername(paging);
+        }
+        else if (role.equals("karyawan")) {
+            Page<UserModel> userlist = userDb.findAllInternal(paging);
+            return userDb.findAllInternal(paging);
+        }
+        else {
+            return userDb.findAllEksternal(paging);
+        }
     }
 
     @Override
@@ -158,4 +175,5 @@ public class MengelolaKaryawanServiceImpl implements MengelolaKaryawanService{
     public void deleteUser(UserModel user) {
         userDb.delete(user);
     }
+
 }

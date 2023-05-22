@@ -26,13 +26,13 @@
             </p>
             <div class="col-6 float-right ui-corner-right text-right">
                 <a sec:authorize="hasAuthority('SUPERVISOR') || hasAuthority('MANAJER') || hasAuthority('ADMIN')"
-                   type="button" class="btn btn-primary-green float-right"
+                   type="button" class="btn-small btn-primary-green float-right"
                    th:href="@{/artikel/update/} + ${artikel.idArtikel}">
                     <i class="bi bi-pencil-fill"></i>
                     Edit Artikel
                 </a>
                 <button sec:authorize="hasAuthority('SUPERVISOR') || hasAuthority('MANAJER') || hasAuthority('ADMIN')"
-                        type="button" class=" btn  btn-red-danger float-right" data-bs-toggle="modal"
+                        type="button" class="btn-small  btn-red-danger float-right" data-bs-toggle="modal"
                         data-bs-target="#deleteArtikel">
                     <i class="bi bi-trash"></i>
                     Hapus Artikel
@@ -79,7 +79,7 @@
         <br><br>
         <div class="container">
             <div class="col-md-4 px-0 w-100">
-                <div class="card-text text-truncate p" th:utext="${artikel.content}"></div>
+                <div class="card-text p" th:utext="${artikel.content}"></div>
             </div>
         </div>
 

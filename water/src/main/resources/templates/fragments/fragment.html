@@ -157,6 +157,37 @@
     </div>
 </div>
 
+<!-- https://www.c-sharpcorner.com/UploadFile/5089e0/how-to-get-current-user-details-in-javascript/ -->
+<div sec:authorize="hasAuthority('DONATUR')">
+    <script type="text/javascript">
+        function showCustomer(str) {
+            if (str == "") {
+                document.getElementById("poin").innerHTML = "";
+                return;
+            }
+            const xhttp = new XMLHttpRequest();
+            xhttp.onload = function() {
+                document.getElementById("poin").innerHTML = this.responseText;
+            }
+        }
+    </script>
+<!--    <script type="text/javascript">-->
+<!--        var poin-->
+<!--        function UserInfo(data)-->
+<!--        {-->
+<!--            poin = data.poin;-->
+<!--        }-->
+<!--        $(function ()-->
+<!--        {-->
+<!--            UserInfoDetail();-->
+<!--        })-->
+<!--        function UserInfoDetail() {-->
+<!--            document.getElementById('poin').innerHTML = poin;-->
+<!--        }-->
+<!--        println("INI POIN:"+poin);-->
+<!--    </script>-->
+<!--    <script type="text/javascript" src="http://smart-ip.net/geoip-json?callback=UserInfo"></script>-->
+</div>
     <script src = "/bootstrap/js/bootstrap.js"></script>
     <script src="/script.js"></script>
 </body>

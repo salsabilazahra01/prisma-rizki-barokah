@@ -19,7 +19,7 @@
     box-sizing: border-box;
 }
 
-.h1, .h2, .h3, .h4, .h5, .h6 {
+.h1, .h2, .h3, .h4, .h5, .h6, .h-error, .h-home {
     font-weight: 700;
 }
 
@@ -30,6 +30,10 @@
 .c1, .c2, .c3, .c4 {
     font-weight: 300;
     font-style: italic;
+}
+
+.h-error, .h-home{
+    font-size: 72px;
 }
 
 .h1{
@@ -398,6 +402,194 @@ input[type="radio"]:checked{
     margin: 0;
 }
 
+/* ERROR PAGE */
+
+.err {
+    padding: 3rem 0 2rem;
+    max-height: 100%;
+    /*min-height: 100vh;*/
+    display: grid;
+}
+
+.main{
+    overflow: hidden; /* For the animations ScrollReveal */
+}
+.error__container {
+    display: grid;
+    align-content: center;
+    row-gap: 2.5rem;
+}
+
+.error__data {
+    text-align: center;
+}
+
+.error__img img {
+    width: 600px;
+    animation: floaty 1.8s infinite alternate;
+}
+
+.error__img {
+    justify-self: center;
+}
+.error__shadow {
+    width: 260px;
+    height: 24px;
+    background-color: var(--grey-white);
+    margin: 0 auto;
+    border-radius: 50%;
+    filter: blur(7px);
+    animation: shadow 1.8s infinite alternate;
+}
+
+@media screen and (min-width: 1024px) {
+    .error__container {
+        grid-template-columns: repeat(2, 1fr);
+        align-items: center;
+        column-gap: 2rem;
+    }
+    .error__data {
+        text-align: initial;
+    }
+    .error__img img {
+        width: 600px;
+    }
+    .error__shadow {
+        width: 500px;
+        height: 40px;
+    }
+}
+
+/* HOME PAGE */
+.animated-text1 {
+    animation-duration: 4s;
+    animation-name: slidein;
+    animation-iteration-count: 1;
+}
+
+.animated-text2 {
+    animation-delay: 1s;
+    animation-duration: 4s;
+    animation-name: slidein;
+    animation-iteration-count: 1;
+}
+
+@keyframes slidein {
+    0% {
+        margin-left: 0%;
+    }
+    50% {
+        margin-left: 100px;
+    }
+    100% {
+        margin-left: 0%;
+    }
+}
+
+.home {
+    padding: 3rem 0 2rem;
+    max-height: 100%;
+    /*min-height: 100vh;*/
+    display: grid;
+}
+
+.home__container {
+    display: grid;
+    align-content: center;
+    row-gap: 2.5rem;
+}
+
+.home__data {
+    text-align: center;
+}
+
+.home__img img {
+    width: 400px;
+    animation: floaty 1.8s infinite alternate;
+}
+
+.home__img, .home2__img {
+    justify-self: center;
+}
+.home__shadow {
+    width: 260px;
+    height: 24px;
+    background-color: var(--grey-white);
+    margin: 0 auto;
+    border-radius: 50%;
+    filter: blur(7px);
+    animation: shadow 1.8s infinite alternate;
+}
+
+@media screen and (min-width: 1024px) {
+    .home__container {
+        grid-template-columns: auto 800px;
+        align-items: center;
+        column-gap: 2rem;
+    }
+    .home__data {
+        text-align: initial;
+    }
+    .home__img img {
+        width: 400px;
+    }
+    .home2__img img {
+        width: 100px;
+    }
+    .home__shadow {
+        width: 425px;
+        height: 40px;
+    }
+}
+
+/* SCROLL UP BUTTON */
+
+.scrollUpBtn {
+    align-items: center;
+    display: none;
+    position: fixed;
+    width: 60px;
+    height: 60px;
+    bottom: 20px;
+    right: 30px;
+    z-index: 99;
+    font-size: 24px;
+    border: none;
+    outline: none;
+    background-color: var(--yellow-sun);
+    color: var(--raisin-black);
+    cursor: pointer;
+    padding: 0px;
+    border-radius: 100%;
+}
+
+.scrollUpBtn:hover {
+    background-color: var(--yellow-sun-hover);
+}
+
+
+/* SCROLL DOWN BUTTON */
+
+.scrollDownBtn {
+    /*display: none;*/
+    /*position: fixed;*/
+    width: 60px;
+    height: 60px;
+    font-size: 24px;
+    bottom: 20px;
+    right: 30px;
+    z-index: 99;
+    border: none;
+    outline: none;
+    background-color: transparent;
+    color: var(--raisin-black);
+    cursor: pointer;
+    padding: 15px;
+    border-radius: 100%;
+}
+
+
+
 .button-save-profile{
     color: white;
     border: none;
@@ -488,4 +680,12 @@ judul, .judul {
 
 .modal-alert-bg{
     background-color: #FAA0A0;
+}
+
+.bg-primary-green{
+    background-color: var(--primary-green)!important;
+}
+
+.bg-slimy-green{
+    background-color: var(--slimy-green)!important;
 }
