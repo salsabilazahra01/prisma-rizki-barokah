@@ -2,6 +2,8 @@ package propensi.project.water.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,16 +22,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.servlet.ModelAndView;
 
+import propensi.project.water.model.CompanyProfile.TestimoniModel;
 import propensi.project.water.model.User.DonaturModel;
 import propensi.project.water.model.User.ManajerModel;
 import propensi.project.water.model.User.UserModel;
+import propensi.project.water.model.CompanyProfile.CompanyProfileModel;
 import propensi.project.water.model.User.Role;
-import propensi.project.water.service.DonaturService;
+import propensi.project.water.service.*;
 import propensi.project.water.setting.Settings;
 import propensi.project.water.setting.xml.Attributes;
 import propensi.project.water.setting.xml.ServiceResponse;
-import propensi.project.water.service.ManajerService;
-import propensi.project.water.service.UserService;
 
 @Slf4j
 @Controller
@@ -45,6 +47,12 @@ public class HomeController {
 
     @Autowired
     private DonaturService donaturService;
+
+    @Autowired
+    private CompanyProfileService companyProfileService;
+
+    @Autowired
+    private TestimoniService testimoniService;
 
     private WebClient webClient = WebClient.builder().build();
 
@@ -63,6 +71,48 @@ public class HomeController {
                 userService.addUser(manajer);
             }
         }
+
+        if (companyProfileService.checkDb()) {
+            System.out.println("test");
+            CompanyProfileModel companyProfile = new CompanyProfileModel();
+            companyProfile.setIdCompanyProfile("COMPROF");
+            companyProfile.setNamaPerusahaan("WATER");
+            companyProfile.setDeskripsiPerusahaan("Ini deskripsi");
+            companyProfile.setVisiPerusahaan("Ini visi");
+            companyProfile.setMisiPerusahaan("Ini misi");
+            companyProfile.setEmailPerusahaan("iniemail@gmail.com");
+            companyProfile.setHpPerusahaan(1234567);
+            companyProfile.setAlamatPerusahaan("Ini alamat");
+            companyProfile.setListTestimoni(new ArrayList<>());
+            companyProfileService.add(companyProfile);
+
+//            List<TestimoniModel> listTestimoni = companyProfile.getListTestimoni();
+//            if (listTestimoni.size() < 4) {
+//                for (int i = 0; i < 4; i++) {
+//                    TestimoniModel newTestimoni = new TestimoniModel();
+//                    newTestimoni.setIdTestimoni(i);
+//                    newTestimoni.setRole("DONATUR " + Integer.toString(i));
+//                    newTestimoni.setReview("Ini review ke-" + Integer.toString(i));
+//                    newTestimoni.setNamaPembuatTestimoni("Pembuat testimoni ke-" + Integer.toString(i));
+//                    newTestimoni.setCompanyProfile(companyProfile);
+//                    testimoniService.add(newTestimoni);
+//                    listTestimoni.add(newTestimoni);
+//                }
+//            }
+//            int i = 1;
+//            while (i < 5) {
+//                TestimoniModel newTestimoni = new TestimoniModel();
+//                newTestimoni.setIdTestimoni(i);
+//                newTestimoni.setRole("DONATUR");
+//                newTestimoni.setReview("Ini review");
+//                newTestimoni.setNamaPembuatTestimoni("Ini pembuat testimoni");
+//                newTestimoni.setCompanyProfile(companyProfile);
+//                testimoniService.add(newTestimoni);
+//                listTestimoni.add(newTestimoni);
+//                i++;
+//            }
+        }
+
         DonaturModel donaturModel = donaturService.getDonaturByUsername(request.getRemoteUser()) == null ?
                 null : donaturService.getDonaturByUsername(request.getRemoteUser());
         if(donaturModel != null){
@@ -87,6 +137,21 @@ public class HomeController {
             }
         }
 
+        if (companyProfileService.checkDb()) {
+            CompanyProfileModel companyProfile = new CompanyProfileModel();
+            companyProfile.setIdCompanyProfile("COMPROF");
+            companyProfile.setNamaPerusahaan("WATER");
+            companyProfile.setDeskripsiPerusahaan("Ini deskripsi");
+            companyProfile.setVisiPerusahaan("Ini visi");
+            companyProfile.setMisiPerusahaan("Ini misi");
+            companyProfile.setEmailPerusahaan("iniemail@gmail.com");
+            companyProfile.setHpPerusahaan(1234567);
+            companyProfile.setAlamatPerusahaan("Ini alamat");
+            companyProfile.setListTestimoni(new ArrayList<>());
+
+            companyProfileService.add(companyProfile);
+        }
+
         return "home";
     }
 
@@ -104,6 +169,21 @@ public class HomeController {
 
                 userService.addUser(manajer);
             }
+        }
+
+        if (companyProfileService.checkDb()) {
+            CompanyProfileModel companyProfile = new CompanyProfileModel();
+            companyProfile.setIdCompanyProfile("COMPROF");
+            companyProfile.setNamaPerusahaan("WATER");
+            companyProfile.setDeskripsiPerusahaan("Ini deskripsi");
+            companyProfile.setVisiPerusahaan("Ini visi");
+            companyProfile.setMisiPerusahaan("Ini misi");
+            companyProfile.setEmailPerusahaan("iniemail@gmail.com");
+            companyProfile.setHpPerusahaan(1234567);
+            companyProfile.setAlamatPerusahaan("Ini alamat");
+            companyProfile.setListTestimoni(new ArrayList<>());
+
+            companyProfileService.add(companyProfile);
         }
 
         return "login";
