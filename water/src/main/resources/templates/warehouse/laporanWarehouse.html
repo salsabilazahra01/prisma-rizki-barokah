@@ -3,72 +3,43 @@
 <head th:replace="fragments/fragment :: head"></head>
 
 <body>
-<nav th:replace="fragments/fragment :: navbar('Laporan Warehouse', '')"></nav>
+<nav th:replace="fragments/fragment :: navbar('Laporan', '')"></nav>
 
 <div class="container-fluid my-5">
+
+    <!-- alert -->
     <section class="viewall-wr">
-        <div class="alert alert-success"  role="alert " th:if="${successUpdate}" >
+        <div class="alert alert-success alert-dismissible fade show" role="alert" th:if="${success}">
             <h4 class="alert-heading">Berhasil!</h4>
-            <p th:text="${successUpdate}"></p>
+            <p th:text="${success}"></p>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
-        <div class="alert alert-success "  role="alert " th:if="${successAdd}">
-            <h4 class="alert-heading">Berhasil!</h4>
-            <p th:text="${successAdd}"></p>
-        </div>
-        <div class="alert alert-success"  role="alert " th:if="${successDelete}">
-            <h4 class="alert-heading">Berhasil!</h4>
-            <p th:text="${successDelete}"></p>
-        </div>
-        <div class="alert alert-danger"  role="alert " th:if="${failedDelete}">
+        <div class="alert alert-danger alert-dismissible fade show" role="alert" th:if="${failed}">
             <h4 class="alert-heading">Gagal!</h4>
-            <p th:text="${failedDelete}"></p>
-        </div>
-        <div class="alert alert-danger"  role="alert " th:if="${failedAdd}">
-            <h4 class="alert-heading">Gagal!</h4>
-            <p th:text="${failedAdd}"></p>
-        </div>
-        <div class="alert alert-danger"  role="alert " th:if="${failedUpdate}">
-            <h4 class="alert-heading">Gagal!</h4>
-            <p th:text="${failedUpdate}"></p>
+            <p th:text="${failed}"></p>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     </section>
+
+    <!-- title & button add -->
     <section id="title" class="p-5-title">
-        <div class="p-5-title text-center text-lg-start align-middle">
-            <h1 class="h2 lg-5">Warehouse</h1>
+        <div class="row px-4">
+            <div class="col-6 p-5-title text-center text-lg-start align-middle">
+                <h1 class="h2 lg-5">Warehouse</h1>
+            </div>
+            <div class="col-6 text-end px-4">
+                <button sec:authorize="hasAuthority('ADMIN') || hasAuthority('SUPERVISOR') || hasAuthority('MANAJER')" class="btn-small btn-outline-primary-green float-end float-md-end h6 text-end" data-bs-toggle="modal"
+                        data-bs-target="#exampleModal3" th:href="@{/warehouse/addNew}">
+                    <span class="bi-plus"></span>
+                    Tambah Item Baru
+                </button>
+            </div>
         </div>
-        <!--    <div class="alert alert-success m-2 p-1 text-center" role="alert" th:text="${success}" th:if="${success}"></div>-->
-    <!--    <section class="viewall-wr">-->
-    <!--        <div class="alert alert-success"  role="alert " th:if="${successUpdate}" >-->
-    <!--            <h4 class="alert-heading">Berhasil!</h4>-->
-    <!--            <p th:text="${successUpdate}"></p>-->
-    <!--        </div>-->
-    <!--        <div class="alert alert-success "  role="alert " th:if="${successAdd}">-->
-    <!--            <h4 class="alert-heading">Berhasil!</h4>-->
-    <!--            <p th:text="${successAdd}"></p>-->
-    <!--        </div>-->
-    <!--        <div class="alert alert-success"  role="alert " th:if="${successDelete}">-->
-    <!--            <h4 class="alert-heading">Berhasil!</h4>-->
-    <!--            <p th:text="${successDelete}"></p>-->
-    <!--        </div>-->
-    <!--        <div class="alert alert-danger"  role="alert " th:if="${failedDelete}">-->
-    <!--            <h4 class="alert-heading">Gagal!</h4>-->
-    <!--            <p th:text="${failedDelete}"></p>-->
-    <!--        </div>-->
-    <!--        <div class="alert alert-danger"  role="alert " th:if="${failedAdd}">-->
-    <!--            <h4 class="alert-heading">Gagal!</h4>-->
-    <!--            <p th:text="${failedAdd}"></p>-->
-    <!--        </div>-->
-    <!--        <div class="alert alert-danger"  role="alert " th:if="${failedUpdate}">-->
-    <!--            <h4 class="alert-heading">Gagal!</h4>-->
-    <!--            <p th:text="${failedUpdate}"></p>-->
-    <!--        </div>-->
-    <!--    </section>-->
     </section>
 
     <section id="viewall-warehouse" class="viewall-wr my-5">
-    <div class="row">
-        <div class="col-6">
-
+        <div class="row">
+        <div class="col-12">
             <nav>
                 <div class="nav nav-tabs" id="nav-tab" role="tablist">
                     <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Sampah</button>
@@ -77,21 +48,14 @@
             </nav>
         </div>
 
-        <!-- Section add Item-->
-        <div class="col-6 ">
-            <button sec:authorize="hasAuthority('SUPERVISOR') || hasAuthority('MANAJER')" class="btn btn-small btn-primary-green float-end float-md-end" data-bs-toggle="modal"
-                    data-bs-target="#exampleModal3" th:href="@{/warehouse/addNew}">
-                <span class="bi bi-plus fs-6"></span>
-                Tambah Item Baru
-            </button>
-        </div>
-
         <!-- Modal ADD Item -->
         <div class="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
              id="exampleModal3" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-lg">
                 <div class="modal-content">
                     <div class="modal-body text-left m-1 p-5">
+
+                        <!-- title tambah -->
                         <div class="row">
                             <div class="col-1">
                                 <button type="button" class="btn-close align-content-start"
@@ -102,6 +66,8 @@
 
                         <form class="m-1 p-2" th:action="@{/warehouse/add}"
                               th:object="${itemBaru}" method="POST">
+
+                            <!-- jenis item -->
                             <div class="row">
                                 <div class="col-12">
                                     <label for="idJenis" class="h5 text-left">Jenis Item</label>
@@ -109,18 +75,21 @@
                                         <option id="idJenis" th:each="jenis, itr : ${listJenisItem}" th:value="${listJenisItem[__${itr.index}__].getIdJenis()}" th:text="${jenis.namaJenis}" th:name="|jenisItem|">
                                         </option>
                                     </select>
-
                                 </div>
                             </div>
+
                             <br>
+
                             <div class="row">
+
+                                <!-- nama item -->
                                 <div class="col-6">
                                     <label for="namaItem" class="h5 text-left">Nama Item</label>
                                     <input required id="namaItem" class="form-control" type="text" th:value="${namaItem}" th:name="|namaItem|"/>
-
                                 </div>
-                                <div class="col-6">
 
+                                <!-- harga beli item -->
+                                <div class="col-6">
                                     <label for="inputHargaBeli2" class="h5">Harga Beli Item</label>
                                     <div class="input-group">
                                         <div class="input-group-prepend">
@@ -134,37 +103,41 @@
                                     <div id="inputHargaBeliKeterangan2" class="form-text">
                                         Masukan harga dalam Rupiah per Kilogram. Contoh : 15000
                                     </div>
-
                                 </div>
+
                             </div>
 
                             <br>
 
                             <input class="form-control"   type="hidden" th:value="0" th:name="|kuantitasSampah|"/>
                             <input class="form-control" type="hidden" th:value="0"th:name="|kuantitasOlahan|"/>
+
+                            <!-- button tambah -->
                             <div class="m-2 p-2 text-center">
                                 <button class="btn btn-small btn-primary-green " type="submit"
-                                        name="save">Add Item
+                                        name="save">Tambah Item
                                 </button>
                             </div>
 
                         </form>
 
-
                     </div>
                 </div>
             </div>
         </div>
+        <!-- end modal add item -->
 
     </div>
 
-    <div class="tab-content" id="nav-tabContent">
+        <div class="tab-content" id="nav-tabContent">
         <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
 
             <!--Sampah Section-->
             <div class="card rounded-25 m-2" th:each="jenis, iterationStatus : ${listJenisItem}">
                 <div class="card-body p-0">
                     <div class="row mx-0">
+
+                        <!-- nama & total -->
                         <div class="card-wr rounded-left-25 col-3 justify-content-center align-content-center">
                             <div class="text-center">
                                 <div class="p-3 h4 text-white" th:text="${jenis.namaJenis}"></div>
@@ -174,9 +147,10 @@
                                 <div th:if="*{jenis.listNamaItem.size() == 0}">
                                     <span class="h6 text-white text-white" th:text="'Total: 0 Kg' "></span>
                                 </div>
-
                             </div>
                         </div>
+
+                        <!-- list item -->
                         <div class="p-2 col-9 text-center align-content-lg-center center-block">
                             <div class="m-2 p-2" th:unless="*{jenis.listNamaItem.size() != 0}">
                                 <h4 class="text-center h5 p-3 " th:text= "'Tidak ada item pada warehouse'"></h4>
@@ -195,11 +169,12 @@
                                     <tbody>
                                     <tr th:each="item, itrStat : ${jenis.listNamaItem}">
                                         <td th:text="${item.namaItem}"></td>
-                                        <td th:text="${item.kuantitasSampah}">
-                                        <td th:text="Rp+ ${item.hargaBeli}">
+                                        <td th:text="${#numbers.formatInteger(item.kuantitasSampah, 0, 'POINT')}">
+                                        <td th:text="'Rp ' + ${#numbers.formatDecimal(item.hargaBeli, 0, 'POINT', 2, 'COMMA')}">
                                         <td>
                                             <!-- Button trigger modal update Sampah-->
-                                            <button sec:authorize="hasAuthority('SUPERVISOR') || hasAuthority('MANAJER')"  class="btn btn-small btn-primary-green" data-bs-toggle="modal"
+                                            <button sec:authorize="hasAuthority('ADMIN') || hasAuthority('SUPERVISOR') || hasAuthority('MANAJER')"
+                                                    class="btn btn-small btn-primary-green" data-bs-toggle="modal"
                                                     data-bs-target="#updateSampah" th:attrappend="data-bs-target=${item.idItem}">
                                                 Update
                                             </button>
@@ -211,6 +186,8 @@
                                             <div class="modal-dialog modal-dialog-centered modal-lg">
                                                 <div class="modal-content">
                                                     <div class="modal-body text-left m-1 p-5">
+
+                                                        <!-- title update -->
                                                         <div class="row">
                                                             <div class="col-1">
                                                                 <button type="button" class="btn-close align-content-start"
@@ -222,6 +199,8 @@
                                                         <form class="m-1 p-2" th:action="@{/warehouse/update}"
                                                               th:object="${jenis.listNamaItem[__${itrStat.index}__]}" method="POST">
                                                             <div class="row">
+
+                                                                <!-- nama item -->
                                                                 <div class="col-8">
                                                                     <label for="inputNama" class="h5 text-left">Nama Item</label>
                                                                     <input type="text" class="form-control" id="inputNama"
@@ -229,6 +208,8 @@
                                                                            th:value="${jenis.listNamaItem[__${itrStat.index}__].getNamaItem()}"
                                                                            th:name="|namaItem|">
                                                                 </div>
+
+                                                                <!-- kuantitas item -->
                                                                 <div class="col-4">
                                                                     <label for="inputKuantitas" class="h5">Kuantitas Item</label>
                                                                     <div class="input-group">
@@ -247,13 +228,15 @@
                                                                 </div>
                                                             </div>
                                                             <br>
+
                                                             <div class="row">
+
+                                                                <!-- harga beli -->
                                                                 <div class="col-8">
                                                                     <label for="inputHargaBeli" class="h5">Harga Beli Item</label>
                                                                     <div class="input-group">
                                                                         <div class="input-group-prepend">
-                                                                <span class="input-group-text"
-                                                                      id="inputHargaBeliKet">Rp</span>
+                                                                            <span class="input-group-text" id="inputHargaBeliKet">Rp</span>
                                                                         </div>
                                                                         <input type="number" min="0" class="form-control"
                                                                                id="inputHargaBeli"
@@ -264,6 +247,8 @@
                                                                         Masukan harga dalam Rupiah per Kilogram. Contoh : 15000
                                                                     </div>
                                                                 </div>
+
+                                                                <!-- jenis item -->
                                                                 <div class="col-3">
                                                                     <label for="inputNama" class="h5">Jenis Item</label>
                                                                     <input type="text" class="form-control" id="jenisItem"
@@ -282,32 +267,25 @@
                                                             <input type="hidden" th:value="${item.idItem}"
                                                                    th:name="|idItem|">
 
-                                                            <div class="m-2 p-2 text-center">
+                                                            <div class="m-2 p-2 pt-4 text-center">
                                                                 <button class="btn btn-small btn-primary-green " type="submit"
-                                                                        name="save">Save changes
+                                                                        name="save">Simpan perubahan
                                                                 </button>
                                                             </div>
-
                                                         </form>
-
 
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
+                                        <!-- end modal update sampah -->
 
-
+                                        <!-- Button trigger modal delete Sampah-->
                                         <td>
-                                            <!-- Button trigger modal delete Sampah-->
-                                            <div th:if="*{item.kuantitasSampah == 0} AND *{item.kuantitasOlahan == 0}">
-                                                <button sec:authorize="hasAuthority('SUPERVISOR') || hasAuthority('MANAJER')" class="btn btn-small btn-red-danger" data-bs-toggle="modal"
-                                                        data-bs-target="#deleteModal" th:attrappend="data-bs-target=${item.idItem}">
-                                                    Delete
-                                                </button>
-                                            </div>
-                                            <div th:unless="*{item.kuantitasSampah == 0} AND *{item.kuantitasOlahan == 0}">
-                                                <button sec:authorize="hasAuthority('SUPERVISOR') || hasAuthority('MANAJER')" class="btn btn-small btn-disabled" data-bs-toggle="modal"
-                                                        data-bs-target="#deleteModal" th:attrappend="data-bs-target=${item.idItem}" disabled>
+                                            <div>
+                                                <button sec:authorize="hasAuthority('ADMIN') || hasAuthority('SUPERVISOR') || hasAuthority('MANAJER')" data-bs-toggle="modal"
+                                                        th:class="*{item.kuantitasSampah != 0} OR *{item.kuantitasOlahan != 0} ? 'btn btn-small btn-disabled' : 'btn btn-small btn-red-danger'"
+                                                        data-bs-target="#deleteModal" th:attrappend="data-bs-target=${item.idItem}" th:disabled="*{item.kuantitasSampah != 0} OR *{item.kuantitasOlahan != 0}">
                                                     Delete
                                                 </button>
                                             </div>
@@ -316,7 +294,7 @@
                                         <!-- Modal Delete Item-->
                                         <div class="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
                                              id="deleteModal" th:attrappend="id=${item.idItem}" aria-hidden="true">
-                                            <div class="modal-dialog modal-dialog-centered modal-lg">
+                                            <div class="modal-dialog modal-dialog-centered">
                                                 <div class="modal-content">
                                                     <div class="modal-header text-center">
                                                         <h6 class="modal-title h6 px-3" id="exampleModalLabel">Hapus Jenis Item</h6>
@@ -345,59 +323,18 @@
                                                                    th:name="|kuantitasOlahan|">
 
                                                             <div class="m-2 p-2 text-center">
-                                                                <a class="btn btn-small btn-outline-cancel" data-bs-dismiss="modal">Cancel</a>
+                                                                <a class="btn btn-small btn-outline-cancel" data-bs-dismiss="modal">Batal</a>
                                                                 <button class="btn btn-small btn-red-danger " type="submit"
-                                                                        name="save">Delete Item
+                                                                        name="save">Ya, Hapus
                                                                 </button>
                                                             </div>
                                                         </form>
                                                     </div>
-
-                                                    <!--                                                    <div class="modal-body text-left m-1 p-3">-->
-<!--                                                        <div class="row">-->
-<!--                                                            <div class="col-1">-->
-<!--                                                                <button type="button" class="btn-close align-content-start"-->
-<!--                                                                        data-bs-dismiss="modal" aria-label="Close"></button>-->
-<!--                                                            </div>-->
-<!--                                                            <div class="text-center h6">Delete Item</div>-->
-<!--                                                        </div>-->
-<!--                                                        <br><br>-->
-
-<!--                                                        <div class="row">-->
-<!--                                                            <p class="p3 text-center" >-->
-<!--                                                                Anda hendak menghapus item-->
-<!--                                                                <strong th:text="${item.namaItem}" />-->
-<!--                                                                dari data warehouse. Setelah Anda klik Hapus, Anda tidak dapat membatalkan tindakan ini.-->
-<!--                                                            </p>-->
-<!--                                                            <br>-->
-<!--                                                            <div class="p3 text-center"> Apakah Anda ingin menghapus item ini?</div>-->
-<!--                                                        </div>-->
-
-<!--                                                        <form class="m-1 p-2" th:action="@{/warehouse/delete}"-->
-<!--                                                              th:object="${jenis.listNamaItem[__${itrStat.index}__]}" method="POST">-->
-<!--                                                            <input type="hidden" th:value="${item.idItem}"-->
-<!--                                                                   th:name="|idItem|">-->
-<!--                                                            <input type="hidden" th:value="${item.namaItem}"-->
-<!--                                                                   th:name="|namaItem|">-->
-<!--                                                            <input type="hidden" th:value="${item.kuantitasSampah}"-->
-<!--                                                                   th:name="|kuantitasSampah|">-->
-<!--                                                            <input type="hidden" th:value="${item.kuantitasOlahan}"-->
-<!--                                                                   th:name="|kuantitasOlahan|">-->
-
-<!--                                                            <div class="m-2 p-2 text-center">-->
-<!--                                                                <a class="btn btn-small btn-outline-cancel" data-bs-dismiss="modal">Cancel</a>-->
-<!--                                                                <button class="btn btn-small btn-red-danger " type="submit"-->
-<!--                                                                        name="save">Delete Item-->
-<!--                                                                </button>-->
-<!--                                                            </div>-->
-
-<!--                                                        </form>-->
-
-
-<!--                                                    </div>-->
                                                 </div>
                                             </div>
                                         </div>
+                                        <!-- end modal delete item -->
+
                                     </tr>
                                     </tbody>
                                 </table>
@@ -414,6 +351,8 @@
             <div class="card rounded-25 m-2" th:each="jenis, iterationStatus : ${listJenisItem}">
                 <div class="card-body p-0">
                     <div class="row mx-0">
+
+                        <!-- title & total -->
                         <div class="card-wr rounded-left-25 col-3 justify-content-center align-content-center">
                             <div class="text-center">
                                 <div class="p-3 h4 text-white" th:text="${jenis.namaJenis}"></div>
@@ -425,6 +364,8 @@
                                 </div>
                             </div>
                         </div>
+
+                        <!-- list item -->
                         <div class="p-2 col-9 text-center align-content-lg-center center-block">
                             <div class="m-2 p-2" th:unless="*{jenis.listNamaItem.size() != 0}">
                                 <h4 class="text-center h5 p-3 " th:text= "'Tidak ada item pada warehouse'"></h4>
@@ -442,10 +383,10 @@
                                     <tbody>
                                     <tr th:each="item, itrStat : ${jenis.listNamaItem}">
                                         <td th:text="${item.namaItem}"></td>
-                                        <td th:text="${item.kuantitasOlahan}">
+                                        <td th:text="${#numbers.formatInteger(item.kuantitasOlahan, 0, 'POINT')}">
                                         <td>
                                             <!-- Button trigger modal update Hasil Olahan Sampah -->
-                                            <button sec:authorize="hasAuthority('SUPERVISOR') || hasAuthority('MANAJER')" class="btn btn-small btn-primary-green" data-bs-toggle="modal"
+                                            <button sec:authorize="hasAuthority('ADMIN') || hasAuthority('SUPERVISOR') || hasAuthority('MANAJER')" class="btn btn-small btn-primary-green" data-bs-toggle="modal"
                                                     data-bs-target="#exampleModal2" th:attrappend="data-bs-target=${item.idItem}">
                                                 Update
                                             </button>
@@ -524,47 +465,38 @@
                                                 </div>
                                             </div>
                                         </div>
+
+                                        <!-- Button trigger modal delete Hasil Olahan Sampah-->
                                         <td>
-                                            <!-- Button trigger modal delete Hasil Olahan Sampah-->
-                                            <div th:if="*{item.kuantitasSampah == 0} AND *{item.kuantitasOlahan == 0}">
-                                                <button sec:authorize="hasAuthority('SUPERVISOR') || hasAuthority('MANAJER')"  class="btn btn-small btn-red-danger" data-bs-toggle="modal"
-                                                        data-bs-target="#deleteModal2" th:attrappend="data-bs-target=${item.idItem}">
-                                                    Delete
-                                                </button>
-                                            </div>
-                                            <div th:unless="*{item.kuantitasSampah == 0} AND *{item.kuantitasOlahan == 0}">
-                                                <button sec:authorize="hasAuthority('SUPERVISOR') || hasAuthority('MANAJER')" class="btn btn-small btn-disabled" data-bs-toggle="modal"
-                                                        data-bs-target="#deleteModal2" th:attrappend="data-bs-target=${item.idItem}" disabled>
+                                            <div>
+                                                <button sec:authorize="hasAuthority('ADMIN') || hasAuthority('SUPERVISOR') || hasAuthority('MANAJER')" data-bs-toggle="modal"
+                                                        th:class="*{item.kuantitasSampah != 0} OR *{item.kuantitasOlahan != 0} ? 'btn btn-small btn-disabled' : 'btn btn-small btn-red-danger'"
+                                                        data-bs-target="#deleteModal2" th:attrappend="data-bs-target=${item.idItem}" th:disabled="*{item.kuantitasSampah != 0} OR *{item.kuantitasOlahan != 0}">
                                                     Delete
                                                 </button>
                                             </div>
                                         </td>
 
                                         <!-- Modal Delete Item-->
-                                        <div class="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                                        <div class="modal" tabindex="-1" role="dialog" aria-labelledby="deleteModal2Label"
                                              id="deleteModal2" th:attrappend="id=${item.idItem}" aria-hidden="true">
-                                            <div class="modal-dialog modal-dialog-centered modal-lg">
+                                            <div class="modal-dialog modal-dialog-centered">
                                                 <div class="modal-content">
-                                                    <div class="modal-body text-left m-1 p-5">
+                                                    <div class="modal-header text-center">
+                                                        <h6 class="modal-title h6 px-3" id="deleteModal2Label">Hapus Jenis Item</h6>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body p3">
                                                         <div class="row">
-                                                            <div class="col-1">
-                                                                <button type="button" class="btn-close align-content-start"
-                                                                        data-bs-dismiss="modal" aria-label="Close"></button>
-                                                            </div>
-                                                            <div class="text-center h3 m-2 p-1 col-10">Delete Item</div>
-                                                        </div>
-                                                        <br><br>
-
-                                                        <div class="row">
-                                                            <p class="p2 text-center" >
+                                                            <p class="p3 px-3" >
                                                                 Anda hendak menghapus item
                                                                 <strong th:text="${item.namaItem}" />
                                                                 dari data warehouse. Setelah Anda klik Hapus, Anda tidak dapat membatalkan tindakan ini.
                                                             </p>
-                                                            <br>
-                                                            <div class="p2 text-center"> Apakah Anda ingin menghapus item ini?</div>
+                                                            <div class="p3"> Apakah Anda ingin menghapus item ini?</div>
                                                         </div>
-
+                                                    </div>
+                                                    <div class="modal-footer justify-content-center">
                                                         <form class="m-1 p-2" th:action="@{/warehouse/delete}"
                                                               th:object="${jenis.listNamaItem[__${itrStat.index}__]}" method="POST">
                                                             <input type="hidden" th:value="${item.idItem}"
@@ -588,6 +520,8 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <!-- end modal delete item -->
+
                                     </tr>
                                     </tbody>
                                 </table>
@@ -596,6 +530,8 @@
                     </div>
                 </div>
             </div>
+            <!-- end hasil olahan sampah section -->
+
         </div>
 
     </div>

@@ -3,7 +3,7 @@
 <head th:replace="fragments/fragment :: head"></head>
 
 <body>
-<nav sec:authorize="hasAuthority('ADMIN') || hasAuthority('MANAJER')" th:replace="fragments/fragment :: navbar('Manajemen User', '')"></nav>
+<nav sec:authorize="hasAuthority('ADMIN') || hasAuthority('MANAJER')" th:replace="fragments/fragment :: navbar('About Us', '')"></nav>
 
 <div class="d-flex justify-content-center">
     <div class = "container my-5">
@@ -185,8 +185,6 @@
         </form>
     </div>
 </div>
-
-<footer th:replace="fragments/fragment :: footer"></footer>
 
 <script src = "/bootstrap/js/bootstrap.js"></script>
 <script src="/script.js"></script>

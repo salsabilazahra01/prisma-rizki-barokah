@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://thymeleaf.org">
+<html lang="en" xmlns:th="http://thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head th:replace="fragments/fragment :: head"></head>
 
 <body>
 
-<nav th:replace="fragments/fragment :: navbar('Home', '')"></nav>
+<nav sec:authorize="hasAuthority('DONATUR')" th:replace="fragments/fragment :: navbar('', ${poin})"></nav>
+<nav sec:authorize="!hasAuthority('DONATUR') || !isAuthenticated()" th:replace="fragments/fragment :: navbar('', '')"></nav>
 
 <div class="container">
     <div class="col-12 mt-5">
@@ -43,7 +44,7 @@
                 </div>
                 <div class="col-12 mt-3">
                     <span class=text-label-profile>Email</span>
-                    <h4 class=text-info-profile th:text="${auth.email}"></h4>
+                    <h4 class=text-info-profile th:text="${auth.email == null} ? '-' : ${auth.email}"></h4>
                 </div>
 
                 <div th:if="${added}" class="col-12 mt-3">
@@ -57,9 +58,6 @@
         </div>
     </div>
 </div>
-
-<footer th:replace="fragments/fragment :: footer"></footer>
-
 
 <script src="/bootstrap/js/bootstrap.js"></script>
 <script src="/script.js"></script>

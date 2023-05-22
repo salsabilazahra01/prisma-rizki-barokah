@@ -21,7 +21,7 @@ public class RewardDTO {
     int poin;       // Ammount of points needed
     int jumlah;     // Qty Barang or ammount of money
     String satuan;  // Satuan Barang or Rp.
-
+    Integer harga;
 
     // JENIS|NAMA|JUMLAH|SATUAN
     private static final String FORMAT_JENIS = "%s|%s|%s|%d";
@@ -35,10 +35,9 @@ public class RewardDTO {
                 .satuan(jenis[2])
                 .jumlah(Integer.parseInt(jenis[3]))
                 .poin(model.getPoin())
+                .harga(model.getHarga())
                 .build();
     }
-
-
 
     private static String formatJenis(RewardDTO dto) {
         return formatJenis(dto.getJenis(), dto.getNama(), dto.getSatuan(), dto.getJumlah());
@@ -52,12 +51,14 @@ public class RewardDTO {
         return RewardModel.builder()
                 .jenisReward(formatJenis(this))
                 .poin(this.getPoin())
+                .harga(this.getHarga())
                 .build();
     }
 
     public RewardModel toModel(RewardModel model) {
         model.setJenisReward(formatJenis(this));
         model.setPoin(this.getPoin());
+        model.setHarga(this.getHarga());
         return model;
     }
 
@@ -65,12 +66,14 @@ public class RewardDTO {
         return RewardModel.builder()
                 .jenisReward(formatJenis(dto))
                 .poin(dto.getPoin())
+                .harga(dto.getHarga())
                 .build();
     }
 
     public static RewardModel toModel(RewardDTO dto, RewardModel model) {
         model.setJenisReward(formatJenis(dto));
         model.setPoin(dto.getPoin());
+        model.setHarga(dto.getHarga());
         return model;
     }
 }

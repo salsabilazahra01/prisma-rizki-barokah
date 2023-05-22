@@ -8,9 +8,13 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import propensi.project.water.model.User.DonaturModel;
+import propensi.project.water.model.User.UserModel;
 import propensi.project.water.model.artikel.ArtikelModel;
 import propensi.project.water.service.ArtikelService;
+import propensi.project.water.service.UserService;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.security.Principal;
@@ -22,10 +26,22 @@ import java.util.List;
 public class ArtikelController {
 
     @Autowired
+    private UserService userService;
+    @Autowired
     private ArtikelService artikelService;
 
     @GetMapping("/viewall")
-    public String viewAllArtikel(Model model, RedirectAttributes redirectAttrs) {
+    public String viewAllArtikel(Model model, RedirectAttributes redirectAttrs, HttpServletRequest request) {
+
+        UserModel user = userService.getUserByUsername(request.getRemoteUser()) == null ?
+                null : userService.getUserByUsername(request.getRemoteUser());
+        if (user!=null) {
+            if (user.getRole().toString().equals("DONATUR")) {
+                DonaturModel donatur = (DonaturModel) user;
+                model.addAttribute("poin", donatur.getPoin());
+            }
+        }
+
         List<ArtikelModel> listArtikel = artikelService.getListArtikel();
         model.addAttribute("listArtikel", listArtikel);
         return "artikel/artikel-viewall";
@@ -64,8 +80,18 @@ public class ArtikelController {
     @GetMapping("/view/{idArtikel}")
     private String viewArtikel(Model model,
                                @PathVariable(name = "idArtikel") String idArtikel,
-                               Principal principal
+                               Principal principal,
+                               HttpServletRequest request
     ) {
+
+        UserModel user = userService.getUserByUsername(request.getRemoteUser()) == null ?
+                null : userService.getUserByUsername(request.getRemoteUser());
+        if (user!=null) {
+            if (user.getRole().toString().equals("DONATUR")) {
+                DonaturModel donatur = (DonaturModel) user;
+                model.addAttribute("poin", donatur.getPoin());
+            }
+        }
 
         ArtikelModel artikel = artikelService.findByIdArtikel(idArtikel);
         model.addAttribute("artikel", artikel);

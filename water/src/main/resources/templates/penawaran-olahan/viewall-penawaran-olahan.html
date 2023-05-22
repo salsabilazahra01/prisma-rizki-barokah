@@ -31,9 +31,9 @@
                 </div>
 
                 <!--section bar-->
-                    <div class="my-3" th:if="${status == -1}">
-                        <nav th:replace="fragments/fragment-penawaran-olahan :: navbar('Semua')"></nav>
-                    </div>
+                <div class="my-3" th:if="${status == -1}">
+                    <nav th:replace="fragments/fragment-penawaran-olahan :: navbar('Semua')"></nav>
+                </div>
                 <div class="my-3" th:if="${status == 0}">
                     <nav th:replace="fragments/fragment-penawaran-olahan :: navbar('Konfirmasi Perusahaan')"></nav>
                 </div>

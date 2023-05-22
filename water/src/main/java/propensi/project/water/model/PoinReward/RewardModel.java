@@ -12,6 +12,7 @@ import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.GenericGenerator;
 
 import propensi.project.water.dto.RewardDTO;
+import propensi.project.water.model.PembelianSampah.ItemPenawaranSampahModel;
 import propensi.project.water.model.StringPrefixedSequenceIdGenerator;
 
 import javax.persistence.*;
@@ -46,7 +47,11 @@ public class RewardModel implements Serializable {
 
     @NotNull
     @Column(name = "poin", nullable = false)
-    private int poin;
+    private Integer poin;
+
+    @NotNull
+    @Column(name = "harga", nullable = false)
+    private Integer harga;
 
 
     public String jenisReward() {
@@ -61,7 +66,7 @@ public class RewardModel implements Serializable {
         return dto.getJenis();
     }
 
-    // relasi dengan tukar poin
-    @OneToMany(mappedBy = "reward", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<TukarPoinModel> listTukarPoin;
+    //relasi dengan item reward
+    @OneToMany(mappedBy = "idTukarPoin", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<RewardTukarPoinModel> listTukarPoin;
 }

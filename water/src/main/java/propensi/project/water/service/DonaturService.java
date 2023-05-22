@@ -14,5 +14,7 @@ public interface DonaturService {
 
     public String encrypt(String password);
 
+    DonaturModel updatePoin(DonaturModel donatur);
+
     void save(DonaturModel donaturModel);
 }

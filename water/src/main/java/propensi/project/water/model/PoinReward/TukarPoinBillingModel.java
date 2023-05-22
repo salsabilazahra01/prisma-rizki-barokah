@@ -23,7 +23,6 @@ public class TukarPoinBillingModel implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
     @NotNull
     @Column(nullable = false)
     private String namaRekening;

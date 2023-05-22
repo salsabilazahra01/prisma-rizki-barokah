@@ -27,7 +27,7 @@
 
         <!-- start form-->
         <form th:action="${transaksi.proses == 2} ? @{/transaksi/update/proses-lain} : @{/transaksi/update/sampah-olahan}"
-              th:object="${transaksi}" class="needs-validation" novalidate method="POST">
+              th:object="${transaksi}" class="needs-validation" enctype="multipart/form-data" novalidate method="POST">
 
             <!-- card form -->
             <div class="card rounded-25 shadow-sm m-2 p-2">
@@ -49,6 +49,7 @@
                                 <input th:case="0" type="text" name="person" class="form-control text-dark" th:field="*{penawaranSampah.partner.nama}" readonly/>
                                 <input th:case="1" type="text" name="person" class="form-control text-dark" th:field="*{penawaranOlahan.customer.nama}" readonly/>
                                 <input th:case="2" type="text" name="person" class="form-control has-validation" id="pihak" required="required" th:field="*{person}"/>
+                                <input th:case="3" type="text" name="person" class="form-control text-dark" th:field="*{tukarPoin.donatur.nama}" readonly/>
                                 <div class="invalid-feedback">
                                     Masukkan pihak terkait
                                 </div>
@@ -82,6 +83,7 @@
                                 <input th:case="0" type="text" name="namaProses" class="form-control text-dark" th:field="*{penawaranSampah.idPenawaranSampah}" readonly/>
                                 <input th:case="1" type="text" name="namaProses" class="form-control text-dark" th:field="*{penawaranOlahan.idPenawaranOlahan}" readonly/>
                                 <input th:case="2" type="text" name="namaProses" class="form-control" id="namaProses" required="required" th:field="*{namaProses}"/>
+                                <input th:case="3" type="text" name="namaProses" class="form-control text-dark" th:field="*{tukarPoin.idTukarPoin}" readonly/>
                                 <div class="invalid-feedback">
                                     Masukkan sumber transaksi
                                 </div>
@@ -122,6 +124,21 @@
                                 </div>
                                 <input th:unless="${transaksi.proses == 2}" type="text" name="nominal" class="form-control text-dark" th:field="*{nominal}" readonly/>
                             </div>
+
+                            <!-- bukti -->
+                            <div class="mt-5 mb-3">
+                                <p class="h5 text-raisin-black">Bukti Transaksi<span class="text-danger"> *</span></p>
+                                <input class="form-control p2" type="file" name="file" accept="image/png, image/jpeg">
+                                <div id="titleimage" class="form-text">
+                                    Masukan Foto Dengan Format png atau jpeg. Max= 500Kb
+                                </div>
+                                <div class="zoomin pt-2">
+                                    <figcaption>Bukti saat ini</figcaption>
+                                    <img th:src="${transaksi.buktiImagePath}" title="Image"/>
+                                </div>
+                            </div>
+
+                            <br>
 
                         </div>
 
@@ -164,9 +181,6 @@
         </form>
     </div>
 </div>
-
-<footer th:replace="fragments/fragment :: footer"></footer>
-
 
 <script src = "/bootstrap/js/bootstrap.js"></script>
 <script src="/script.js"></script>

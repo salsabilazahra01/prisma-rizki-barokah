@@ -3,7 +3,8 @@
 <head th:replace="fragments/fragment :: head"></head>
 
 <body>
-<nav th:replace="fragments/fragment :: navbar('About Us', '')"></nav>
+<nav sec:authorize="hasAuthority('DONATUR')" th:replace="fragments/fragment :: navbar('About Us', ${poin})"></nav>
+<nav sec:authorize="!hasAuthority('DONATUR') || !isAuthenticated()" th:replace="fragments/fragment :: navbar('About Us', '')"></nav>
 
 <section id="sec-tentang-kami" class = "p-5 text-raisin-black">
     <div class="alert alert-success" role="alert" th:text="${success}" th:if="${success}"></div>

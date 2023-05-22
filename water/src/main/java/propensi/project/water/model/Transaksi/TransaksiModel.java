@@ -61,4 +61,34 @@ public class TransaksiModel implements Serializable{
     @Column(name= "tanggal_dibuat", nullable = false, updatable = false)
     @CreationTimestamp
     private LocalDateTime tanggalDibuat;
+
+    @NotNull
+    @Column(name = "bukti", nullable = false)
+    private String bukti;
+
+    @Transient
+    public String getBuktiImagePath() {
+        if (bukti == null || idTransaksi == null) return null;
+        return "/images/" + idTransaksi + '-' + bukti + '/' + bukti;
+    }
+
+    public String getJenisString(){
+        if(jenisTransaksi){
+            return "Pengeluaran";
+        } else {
+            return "Pendapatan";
+        }
+    }
+
+    public String getProsesString() {
+        if(proses == 0){
+            return "Pembelian Sampah";
+        } else if(proses == 1){
+            return "Penjualan Hasil Olahan";
+        } else if(proses == 2){
+            return "Sumber Lain";
+        } else {
+            return "Reward Penukaran Poin";
+        }
+    }
 }

@@ -61,7 +61,7 @@
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <li sec:authorize="hasAuthority('MANAJER') || hasAuthority('SUPERVISOR') || hasAuthority('ADMIN')"><a class="dropdown-item" th:href="@{/donasi/viewall}">Daftar Donasi Sampah</a></li>
-                    <li sec:authorize="hasAuthority('MANAJER') || hasAuthority('SUPERVISOR') || hasAuthority('ADMIN')"><a class="dropdown-item" th:href="@{/donasi/penukaran-poin}">Penukaran Poin</a></li>
+                    <li sec:authorize="hasAuthority('MANAJER') || hasAuthority('SUPERVISOR') || hasAuthority('ADMIN')"><a class="dropdown-item" th:href="@{/penukaran-poin/viewall/-1}">Penukaran Poin</a></li>
                     <li sec:authorize="hasAuthority('MANAJER') || hasAuthority('SUPERVISOR') || hasAuthority('ADMIN')"><a class="dropdown-item" th:href="@{/reward/viewall}">Reward</a></li>
                 </ul>
             </li>
@@ -78,7 +78,7 @@
             </li>
 
             <li sec:authorize="hasAuthority('DONATUR')">
-                <a th:class="${#strings.equals(activeLink, 'Donasi')}  ? 'nav-link nav-underline active' : 'nav-link'"  th:href="@{/donasi/penukaran-poin}">Penukaran Poin</a>
+                <a th:class="${#strings.equals(activeLink, 'Penukaran Poin')}  ? 'nav-link nav-underline active' : 'nav-link'"  th:href="@{/penukaran-poin/viewall/-1}">Penukaran Poin</a>
             </li>
             <li sec:authorize="hasAuthority('PARTNER')">
                 <a th:class="${#strings.equals(activeLink, 'Jual Sampah')}  ? 'nav-link nav-underline active' : 'nav-link'" th:href="@{/penawaran/sampah/add}">Jual Sampah<span class="sr-only">(current)</span></a>
@@ -148,7 +148,7 @@
                 <p class="p3">Pabrik : Kavling Cipete Permai Kav N28-29, Desa Sukalaksana – Curug, Kota Serang</p>
             </div>
             <div>
-                <p><span class="bi-envelope px-2"></span>e-mail<span class="bi-telephone px-2"></span>telepon-number</p>
+                <p><span class="bi-envelope px-2"></span>AkmalulIbad1213@gmail.com<span class="bi-telephone px-2"></span>0812122256</p>
             </div>
             <div>
                 <p><span class="bi-c-circle"></span>CV Prisma Rizki Barokah</p>
