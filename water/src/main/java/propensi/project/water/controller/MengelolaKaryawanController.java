@@ -4,10 +4,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import propensi.project.water.model.Donasi.DonasiModel;
+import propensi.project.water.model.User.DonaturModel;
 import propensi.project.water.model.User.UserModel;
 import propensi.project.water.service.MengelolaKaryawanService;
 
@@ -27,16 +32,41 @@ public class MengelolaKaryawanController {
     @GetMapping({"/viewall", "/viewall/{role}"})
     private String retrieveListUser(
             Model model,
-            @PathVariable(required = false, name="role") String role
+            @PathVariable(required = false, name="role") String role,
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "5") int size
     ){
-        List<UserModel> listUser = mengelolaKaryawanService.retrieveListUser(role);
+        try {
+            Pageable paging = PageRequest.of(page - 1, size);
 
-        if (role==null){
-            role = "semua";
+            Page<UserModel> pageUser;
+            // case: role user=semua
+            if (role == null) {
+                role="semua";
+                pageUser = mengelolaKaryawanService.retrievePage(role, paging);
+            } else {
+                pageUser = mengelolaKaryawanService.retrievePage(role, paging);
+            }
+
+            List<UserModel> listUser = pageUser.getContent();
+
+            Integer firstItem = (pageUser.getNumber() + 1)*size-size+1;
+            Integer lastItem = firstItem + listUser.size() -1;
+
+            model.addAttribute("currentPage", pageUser.getNumber() + 1);
+            model.addAttribute("firstItem", firstItem);
+            model.addAttribute("lastItem", lastItem);
+            model.addAttribute("totalItems", pageUser.getTotalElements());
+            model.addAttribute("totalPages", pageUser.getTotalPages());
+            model.addAttribute("pageSize", size);
+            model.addAttribute("role", role);
+            model.addAttribute("listUser", listUser);
         }
 
-        model.addAttribute("role", role);
-        model.addAttribute("listUser", listUser);
+        catch (Exception e) {
+            model.addAttribute("message", e.getMessage());
+        }
+
 
         return "mengelola-karyawan/viewall-user";
     }

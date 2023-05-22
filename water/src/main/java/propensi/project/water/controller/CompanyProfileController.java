@@ -44,18 +44,6 @@ public class CompanyProfileController {
     private String viewCompanyProfile(Model model) {
         CompanyProfileModel companyProfile = companyProfileService.getCompanyProfile("COMPROF");
         List<TestimoniModel> listTestimoni = companyProfile.getListTestimoni();
-//        while (listTestimoni.size() < 4) {
-//            int i = 1;
-//            TestimoniModel newTestimoni = new TestimoniModel();
-//            newTestimoni.setIdTestimoni(i);
-//            newTestimoni.setRole("DONATUR");
-//            newTestimoni.setReview("Ini review");
-//            newTestimoni.setNamaPembuatTestimoni("Ini pembuat testimoni");
-//            newTestimoni.setCompanyProfile(companyProfile);
-//            testimoniService.add(newTestimoni);
-//            listTestimoni.add(newTestimoni);
-//            i++;
-//        }
 
         model.addAttribute("companyProfile", companyProfile);
         model.addAttribute("listTestimoni", listTestimoni);

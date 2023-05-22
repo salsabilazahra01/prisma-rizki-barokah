@@ -29,6 +29,12 @@
   </div>
 </nav>
 
+<a th:fragment="paging(role, pageNum, label, tooltip)" class="page-link"
+   th:href="@{'/manajemen-user/viewall/' + ${role} + '?' + 'page=' + ${pageNum} + '&size=' + ${pageSize}}"
+   th:title="${tooltip}" rel="tooltip">
+  [[${label}]]
+</a>
+
 <script src = "bootstrap/js/bootstrap.js"></script>
 <script src="script.js"></script>
 
