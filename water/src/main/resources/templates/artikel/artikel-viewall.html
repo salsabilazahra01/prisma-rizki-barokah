@@ -6,27 +6,24 @@
 <nav sec:authorize="hasAuthority('DONATUR')" th:replace="fragments/fragment :: navbar('Artikel', ${poin})"></nav>
 <nav sec:authorize="!hasAuthority('DONATUR') || !isAuthenticated()" th:replace="fragments/fragment :: navbar('Artikel', '')"></nav>
 
-<div class="card card-wr text-center mt-4">
-    <div class="card-body">
-        <div class="justify-content-center">
-            <strong class="h1 text-white">ARTIKEL</strong>
-        </div>
-    </div>
-</div>
 <div class="container mt-lg-5">
     <div class="alert alert-success" role="alert" th:text="${success}" th:if="${success}"></div>
     <div class="alert alert-danger" role="alert" th:text="${failed}" th:if="${failed}"></div>
-    <div class="row">
-        <div class="col-12 ">
+
+    <div class="row mt-3">
+        <div class="col text-start">
+            <h1 class="h1">Artikel</h1>
+        </div>
+
+        <div class="col text-end">
             <a sec:authorize="hasAuthority('SUPERVISOR') || hasAuthority('MANAJER') || hasAuthority('ADMIN')"
-               class="btn btn-small btn-primary-green float-end float-md-end"
+               class="btn-small btn-primary-green"
                th:href="@{/artikel/add/}">
                 <span class="bi bi-plus fs-6"></span>
                 Tambah Artikel Baru
             </a>
         </div>
     </div>
-
 
     <!--list artikel-->
     <div class="section" id="listArtikel">
@@ -36,22 +33,20 @@
             <!--Card Artikel-->
             <div class="col-lg-4 mb-3 d-flex align-items-stretch" th:each="artikel, iterationStatus : ${listArtikel}">
                 <div class="w-100 ">
-                    <div class="card rounded-25 h-100">
+                    <div class="card rounded-25 h-100 ">
                         <!--                                <span class="card-img-top" th:src="${artikel.imageTitle}" >-->
                         <img class="card-img-top rounded-top-25" th:src="'/images/'+${artikel.idArtikel}+'/'+${artikel.imageTitle}"
                              alt="Artikel Image">
 
                         <div class="card-body">
-                            <div class="p-date" th:text="${#temporals.format(artikel.createdAt, 'dd MMMM yyyy HH:mm', new java.util.Locale('id'))}"></div>
-                            <div class="card-title h5" th:text="${artikel.title}"></div>
+                            <div class="card-title h4" th:text="${artikel.title}">•</div>
                             <p class="card-text " th:utext="${artikel.subtitle}"></p>
+                            <div class="p-date c3" th:text="${#temporals.format(artikel.createdAt, 'dd MMMM yyyy HH:mm', new java.util.Locale('id'))}"></div>
                         </div>
                         <div class="footer ui-corner-right d-flex justify-content-end">
                             <a type="button" class="m-2 btn-small btn-primary-green ml-auto"
                                th:href="@{/artikel/view/} + ${artikel.idArtikel}">Lihat Artikel</a>
                         </div>
-
-
                     </div>
                 </div>
 

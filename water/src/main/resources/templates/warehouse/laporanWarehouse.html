@@ -176,7 +176,7 @@
                                                 <button sec:authorize="hasAuthority('ADMIN') || hasAuthority('SUPERVISOR') || hasAuthority('MANAJER')"
                                                         class="btn btn-small btn-primary-green" data-bs-toggle="modal"
                                                         data-bs-target="#updateSampah" th:attrappend="data-bs-target=${item.idItem}">
-                                                    Update
+                                                    Perbarui
                                                 </button>
                                             </td>
 
@@ -286,7 +286,7 @@
                                                     <button sec:authorize="hasAuthority('ADMIN') || hasAuthority('SUPERVISOR') || hasAuthority('MANAJER')" data-bs-toggle="modal"
                                                             th:class="*{item.kuantitasSampah != 0} OR *{item.kuantitasOlahan != 0} ? 'btn btn-small btn-disabled' : 'btn btn-small btn-red-danger'"
                                                             data-bs-target="#deleteModal" th:attrappend="data-bs-target=${item.idItem}" th:disabled="*{item.kuantitasSampah != 0} OR *{item.kuantitasOlahan != 0}">
-                                                        Delete
+                                                        Hapus
                                                     </button>
                                                 </div>
                                             </td>
@@ -454,7 +454,7 @@
 
                                                                 <div class="m-2 p-2 text-center">
                                                                     <button class="btn btn-small btn-primary-green " type="submit"
-                                                                            name="save">Save changes
+                                                                            name="save">Simpan Perubahan
                                                                     </button>
                                                                 </div>
 
@@ -472,7 +472,7 @@
                                                     <button sec:authorize="hasAuthority('ADMIN') || hasAuthority('SUPERVISOR') || hasAuthority('MANAJER')" data-bs-toggle="modal"
                                                             th:class="*{item.kuantitasSampah != 0} OR *{item.kuantitasOlahan != 0} ? 'btn btn-small btn-disabled' : 'btn btn-small btn-red-danger'"
                                                             data-bs-target="#deleteModal2" th:attrappend="data-bs-target=${item.idItem}" th:disabled="*{item.kuantitasSampah != 0} OR *{item.kuantitasOlahan != 0}">
-                                                        Delete
+                                                        Hapus
                                                     </button>
                                                 </div>
                                             </td>

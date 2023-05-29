@@ -19,12 +19,6 @@ import java.io.Serializable;
 @Table(name = "user")
 @Inheritance(strategy = InheritanceType.JOINED)
 public class UserModel implements Serializable {
-//    @Id
-//    @GeneratedValue(generator = "system-uuid")
-//    @GenericGenerator(name = "system-uuid", strategy = "uuid")
-//    @Size(max = 50)
-////    @Column(name = "uuid", nullable = false, unique = true)
-//    private String uuid;
 
     @Id
     @NotNull

@@ -13,6 +13,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import propensi.project.water.model.PembelianSampah.PenawaranSampahModel;
 import propensi.project.water.model.PoinReward.RewardModel;
 import propensi.project.water.model.PoinReward.RewardTukarPoinModel;
 import propensi.project.water.model.PoinReward.TukarPoinModel;
@@ -45,10 +46,10 @@ public class TukarPoinController {
 
     @GetMapping(value="/viewall/{status}")
     private String viewAllTukarPoin(Model model,
-                                          @PathVariable(name="status") String status,
-                                          @RequestParam(defaultValue = "1") int page,
-                                          @RequestParam(defaultValue = "5") int size,
-                                          HttpServletRequest request) {
+                                    @PathVariable(name="status") String status,
+                                    @RequestParam(defaultValue = "1") int page,
+                                    @RequestParam(defaultValue = "5") int size,
+                                    HttpServletRequest request) {
 
         try{
             Integer statusInt = Integer.parseInt(status);
@@ -116,7 +117,9 @@ public class TukarPoinController {
     private String addTukarPoinSubmit(@ModelAttribute TukarPoinModel tukarPoin,
                                       Model model,
                                       RedirectAttributes redirectAttrs,
-                                      HttpServletRequest request) {
+                                      HttpServletRequest request,
+                                      @RequestParam(name="file", required = false) MultipartFile fileRekening)
+            throws IOException {
 
         List<RewardTukarPoinModel> listReward = tukarPoin.getListReward();
 
@@ -144,14 +147,22 @@ public class TukarPoinController {
             return "redirect:/penukaran-poin/add";
         }
 
-        tukarPoinService.add(tukarPoin);
+        //file foto rekening
+        String fileName = StringUtils.cleanPath(fileRekening.getOriginalFilename());
+        tukarPoin.setFotoRekening(fileName);
+
+        TukarPoinModel savedTukarPoin = tukarPoinService.add(tukarPoin);
+
+        //save file bukti
+        String uploadDir = "./src/main/resources/static/images/" + savedTukarPoin.getIdTukarPoin();
+        FileUploadUtil.saveFile(uploadDir, fileName, fileRekening);
 
         if(donatur != null){
             model.addAttribute("poin", donatur.getPoin());
         }
         redirectAttrs.addFlashAttribute("success",
                 String.format("Penukaran poin baru dengan id %s berhasil dibuat",
-                         tukarPoin.getIdTukarPoin()));
+                        tukarPoin.getIdTukarPoin()));
 
         model.addAttribute("tukarPoin", tukarPoin.getIdTukarPoin());
         return "redirect:/penukaran-poin/viewall/-1";
@@ -258,7 +269,7 @@ public class TukarPoinController {
                                          Model model, HttpServletRequest request,
                                          @RequestParam(name="filePengiriman", required = false) MultipartFile filePengiriman,
                                          @RequestParam(name="fileTransaksi", required = false) MultipartFile fileTransaksi)
-                                         throws IOException {
+            throws IOException {
 
         TukarPoinModel tukarPoinEx = tukarPoinService.findById(tukarPoin.getIdTukarPoin());
         List<RewardTukarPoinModel> listReward = tukarPoinService.getListRewardById(tukarPoin.getIdTukarPoin());
@@ -298,21 +309,21 @@ public class TukarPoinController {
 
     private void integrateTransaksi(TukarPoinModel tukarPoin, MultipartFile file) throws IOException {
         List<RewardTukarPoinModel> listReward = tukarPoinService.getListRewardById(tukarPoin.getIdTukarPoin());
-        
+
         //update warehouse
         int totalHarga = 0;
         for(RewardTukarPoinModel reward: listReward){
             totalHarga += reward.getIdReward().getHarga() * reward.getKuantitas();
         }
-        
+
         //file bukti
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 
         //add new transaksi
         ProsesTukarPoinModel transaksi = transaksiService.addTransaksiTukarPoin(fileName, tukarPoin, totalHarga);
-        
+
         //save file bukti
-        String uploadDir = "./src/main/resources/static/images/" + transaksi.getIdTransaksi() + "-" + transaksi.getBukti();
+        String uploadDir = "./src/main/resources/static/images/" + transaksi.getIdTransaksi();
         FileUploadUtil.saveFile(uploadDir, fileName, file);
 
         //update transaksi
@@ -416,8 +427,7 @@ public class TukarPoinController {
         String fileName = StringUtils.cleanPath(filePengiriman.getOriginalFilename());
 
         //save file bukti
-        String uploadDir = "./src/main/resources/static/images/" +
-                tukarPoinEx.getIdTukarPoin() + "-" + fileName;
+        String uploadDir = "./src/main/resources/static/images/" + tukarPoinEx.getIdTukarPoin();
         FileUploadUtil.saveFile(uploadDir, fileName, filePengiriman);
 
         return fileName;

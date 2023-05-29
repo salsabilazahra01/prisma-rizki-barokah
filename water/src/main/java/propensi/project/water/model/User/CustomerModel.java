@@ -37,13 +37,4 @@ public class CustomerModel extends UserModel {
     @Column(name = "namaRekening")
     private String namaRekening;
 
-    private String kelurahan;
-    private String kecamatan;
-    private String kota;
-    private String provinsi;
-    private String kodePos;
-
-    // relasi dengan penawaran olahan
-//    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-//    private List<PenawaranOlahanModel> listPenawaranOlahan;
 }

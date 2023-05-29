@@ -16,7 +16,7 @@
       <p class="c3">
         <a type="button" class="btn-small btn-outline-raisin-black h6 me-4" th:href="@{/manajemen-user/view/} + ${user.username}">
           <i class="bi-chevron-left"></i>
-          Back
+          Kembali
         </a>
         <text class="c3" th:text="${user.username}"></text>
       </p>
@@ -63,7 +63,7 @@
 
                   <div class="form-group">
                     <label class="h5 text-raisin-black">Nomor Telepon</label>
-                    <input type="text" class="form-control p2 has-validation" th:field="*{hp}">
+                    <input type="number" class="form-control p2 has-validation" th:field="*{hp}">
                     <div class="invalid-feedback">
                       Nomor telepon harus diisi
                     </div>
@@ -109,7 +109,7 @@
 
               <!-- Button trigger modal -->
               <a type="button" class="mx-2 btn-small btn-primary-green" data-bs-toggle="modal" data-bs-target="#savechanges">
-                Submit
+                Simpan
               </a>
 
               <!-- Modal -->
@@ -124,7 +124,7 @@
                       Apakah Anda yakin ingin menyimpan perubahan?
                     </div>
                     <div class="modal-footer justify-content-center">
-                      <button type="button" class="btn-small btn-outline-raisin-black" data-bs-dismiss="modal">Cancel</button>
+                      <button type="button" class="btn-small btn-outline-raisin-black" data-bs-dismiss="modal">Batal</button>
                       <button type="submit" id="submitbutton" class="btn-small btn-primary-green">Ya, simpan</button>
                     </div>
                   </div>

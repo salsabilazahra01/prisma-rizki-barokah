@@ -27,7 +27,7 @@
 
         <!-- start form-->
         <form th:action="@{/penukaran-poin/add}" th:object="${tukarPoin}" class="needs-validation"
-              id="formTukarPoin" novalidate method="POST">
+              id="formTukarPoin" novalidate method="POST" enctype="multipart/form-data">
 
             <!-- card form -->
             <div class="card rounded-25 shadow-sm m-2 p-4">
@@ -116,7 +116,14 @@
                                     Masukkan nama di rekening
                                 </div>
                             </div>
-
+                            <div class="my-4">
+                                <label class="h6">Foto buku rekening atau e-rekening<span class="text-danger"> *</span></label>
+                                <input required class="form-control" type="file" name="file" accept="image/png, image/jpeg">
+                                <small>Foto harus berisi nama pemilik dan nomor rekening</small>
+                                <div class="invalid-feedback">
+                                    Masukkan foto buku rekening atau e-rekening
+                                </div>
+                            </div>
                         </div>
 
                         <!--Section Jenis & Berat Hasil Olahan-->
@@ -174,7 +181,7 @@
 
                             <!-- Button trigger modal -->
                             <a type="button" class="mx-2 btn-small btn-primary-green" data-bs-toggle="modal" data-bs-target="#savechanges">
-                                Submit
+                                Simpan
                             </a>
 
                             <!-- Modal -->
@@ -190,7 +197,7 @@
                                         </div>
                                         <div class="modal-footer justify-content-center">
                                             <button type="button" class="btn-small btn-outline-raisin-black" data-bs-dismiss="modal">Batal</button>
-                                            <button type="submit" id="submitbutton" name="save" class="btn-small btn-primary-green">Ya, buat</button>
+                                            <button type="submit" id="submitbutton" name="save" class="btn-small btn-primary-green">Ya, simpan</button>
                                         </div>
                                     </div>
                                 </div>

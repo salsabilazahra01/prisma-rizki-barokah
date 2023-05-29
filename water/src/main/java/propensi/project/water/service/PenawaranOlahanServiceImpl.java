@@ -11,6 +11,7 @@ import propensi.project.water.repository.PenawaranOlahan.ItemPenawaranOlahanDb;
 import propensi.project.water.repository.PenawaranOlahan.PenawaranOlahanDb;
 
 import javax.transaction.Transactional;
+import java.io.File;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -76,6 +77,7 @@ public class PenawaranOlahanServiceImpl implements PenawaranOlahanService {
         penawaranOlahan.setBank(updatedPenawaran.getBank());
         penawaranOlahan.setNoRekening(updatedPenawaran.getNoRekening());
         penawaranOlahan.setNamaRekening(updatedPenawaran.getNamaRekening());
+        penawaranOlahan.setFotoRekening(updatedPenawaran.getFotoRekening());
 
         //pengiriman
         penawaranOlahan.setIsPickedUp(updatedPenawaran.getIsPickedUp());
@@ -93,7 +95,7 @@ public class PenawaranOlahanServiceImpl implements PenawaranOlahanService {
     }
 
     @Override
-    public PenawaranOlahanModel updateStatus(PenawaranOlahanModel updatedPenawaran) {
+    public PenawaranOlahanModel updateStatusOrFoto(PenawaranOlahanModel updatedPenawaran) {
         return penawaranOlahanDb.save(updatedPenawaran);
     }
 
@@ -134,6 +136,19 @@ public class PenawaranOlahanServiceImpl implements PenawaranOlahanService {
 
     public List<PenawaranOlahanModel> findAll(){
         return penawaranOlahanDb.findAll();
+    }
+
+    @Override
+    public void deleteFolder(File folder) {
+        if (folder.isDirectory()) {
+            File[] files = folder.listFiles();
+            if (files != null) {
+                for (File file : files) {
+                    deleteFolder(file);
+                }
+            }
+        }
+        folder.delete();
     }
 
 }

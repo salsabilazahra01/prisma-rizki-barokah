@@ -5,7 +5,7 @@
 
 <body class="d-flex flex-column min-vh-100">
 
-  <form th:action="@{/penukaran-poin/viewall/} + ${status}" id="searchForm">
+<form th:action="@{/penukaran-poin/viewall/} + ${status}" id="searchForm">
 
   <header>
     <nav sec:authorize="!hasAuthority('DONATUR')"  th:replace="fragments/fragment :: navbar('Penukaran Poin', '')"></nav>
@@ -55,29 +55,29 @@
           <!-- list -->
           <table class="table table-striped table-hover text-center align-middle">
             <thead>
-              <tr>
-                <th>ID Penukaran Poin</th>
-                <th>Tanggal, Waktu</th>
-                <th>Status</th>
-                <th></th>
-              </tr>
+            <tr>
+              <th>ID Penukaran Poin</th>
+              <th>Tanggal, Waktu</th>
+              <th>Status</th>
+              <th></th>
+            </tr>
             </thead>
             <tbody>
-              <!-- For each thymeleaf rewards -->
-              <tr th:if="${listTukarPoin.size()!=0}" th:each="tukar : ${listTukarPoin}">
-                <td>[[${tukar.idTukarPoin}]]</td>
-                <td>[[${tukar.tanggalDibuat}]]</td>
-                <td>[[${tukar.statusStr()}]]</td>
-                <td>
-                  <a th:href="@{/penukaran-poin/view/} + ${tukar.idTukarPoin}"
-                    class="btn-small btn-outline-secondary h6">
-                    <span class="bi-eye-fill"></span> Detail
-                  </a>
-                </td>
-              </tr>
-              <tr th:unless="${listTukarPoin.size()!=0}">
-                <th colspan="6" class="h4 p-4 text-center">This list is empty</th>
-              </tr>
+            <!-- For each thymeleaf rewards -->
+            <tr th:if="${listTukarPoin.size()!=0}" th:each="tukar : ${listTukarPoin}">
+              <td>[[${tukar.idTukarPoin}]]</td>
+              <td>[[${tukar.tanggalDibuat}]]</td>
+              <td>[[${tukar.statusStr()}]]</td>
+              <td>
+                <a th:href="@{/penukaran-poin/view/} + ${tukar.idTukarPoin}"
+                   class="btn-small btn-outline-secondary h6">
+                  <span class="bi-eye-fill"></span> Detail
+                </a>
+              </td>
+            </tr>
+            <tr th:unless="${listTukarPoin.size()!=0}">
+              <th colspan="6" class="h4 p-4 text-center">Belum terdapat penukaran poin</th>
+            </tr>
             </tbody>
           </table>
 
@@ -126,13 +126,13 @@
       </section>
     </article>
   </main>
-  </form>
+</form>
 
 
 <footer th:replace="fragments/fragment :: footer"></footer>
 
 <th:block th:include="fragments/scripts :: scripts"></th:block>
-  
+
 </body>
 
 </html>

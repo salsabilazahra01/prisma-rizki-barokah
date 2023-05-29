@@ -18,7 +18,7 @@
         <div class="row my-1">
             <p class="c3">
                 <a type = "button" class = "btn-small btn-outline-raisin-black h6 me-4" th:href="@{/penukaran-poin/viewall/-1}">
-                    <i class="bi-chevron-left"></i> Back
+                    <i class="bi-chevron-left"></i> Kembali
                 </a>
                 <text class="c3" th:text="${tukarPoin.idTukarPoin}"></text>
             </p>
@@ -27,12 +27,12 @@
         <!-- title -->
         <div class="row mb-3">
             <p class="align-content-center">
-                <h2 class="h2">Detail Penukaran Poin
+            <h2 class="h2">Detail Penukaran Poin
                 <a sec:authorize="hasAuthority('DONATUR')" th:if="${tukarPoin.status == 0}" type = "button"
                    class = "btn-small-fit btn-red-danger h6" data-bs-toggle="modal" data-bs-target="#deleteModal">
-                    <i class="bi bi-x-circle-fill"></i> Batalkan
+                    <i class="bi bi-x-circle-fill"></i>Batalkan
                 </a>
-                </h2>
+            </h2>
             </p>
         </div>
 
@@ -67,7 +67,10 @@
                         </div>
                         <div class="my-5" th:if="${!tukarPoin.isDelivered}">
                             <p class="p2">Bukti Pengiriman</p>
-                            <img th:src="${tukarPoin.buktiKirim == null} ? '-' : ${tukarPoin.buktiKirimPath}" style="width: 200; height: auto">
+                            <p class="h4" th:if="${tukarPoin.buktiKirim == null}">-</p>
+                            <div class="zoomin" th:if="${tukarPoin.buktiKirim != null}">
+                                <img th:src="${tukarPoin.buktiKirimPath}"  title="Image" />
+                            </div>
                         </div>
                         <div class="my-5">
                             <p class="p2">Alamat</p>
@@ -76,6 +79,12 @@
                         <div class="my-5">
                             <p class="p2">Rekening</p>
                             <h3 class="h4" th:text="${tukarPoin.bank} + ' ' + ${tukarPoin.noRekening} + ' a.n ' + ${tukarPoin.namaRekening}"></h3>
+                        </div>
+                        <div class="my-5">
+                            <p class="p2">Foto Buku Rekening atau E-Rekening</p>
+                            <div class="zoomin">
+                                <img th:src="${tukarPoin.fotoRekeningPath}" title="Image" />
+                            </div>
                         </div>
                         <div sec:authorize="!hasAuthority('DONATUR')" class="my-5">
                             <p class="p2">Laporan Transaksi</p>
@@ -252,7 +261,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                       <p class="h5 text-raisin-black">Bukti Pengiriman</p>
+                        <p class="h5 text-raisin-black">Bukti Pengiriman</p>
                         <label class="col-form-label p3 px-3">Apabila reward dikirim menggunakan jasa pengiriman,
                             masukkan bukti pengiriman reward. Bukti akan dikirim ke donatur</label>
                         <input class="form-control p2" type="file" name="filePengiriman" accept="image/png, image/jpeg">
@@ -295,7 +304,7 @@
                         <input id="buktiTransaksi2" required class="form-control p2" type="file" name="fileTransaksi" accept="image/png, image/jpeg">
                         <div class="invalid-feedback">
                             Masukkan bukti transaksi
-                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer justify-content-center">

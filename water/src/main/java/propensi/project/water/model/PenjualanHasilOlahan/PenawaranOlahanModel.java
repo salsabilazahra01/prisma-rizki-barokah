@@ -17,6 +17,9 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -66,6 +69,10 @@ public class PenawaranOlahanModel implements Serializable {
     @Column(name = "namaRekening", nullable = false)
     private String namaRekening;
 
+    @NotNull
+    @Column(name = "foto_rekening", nullable = false)
+    private String fotoRekening;
+
     @Column(name = "alamat_pic")
     private String alamatPic;
 
@@ -111,6 +118,18 @@ public class PenawaranOlahanModel implements Serializable {
     @Transient
     public String getBuktiKirimOlahanPath() {
         if (buktiKirim == null || idPenawaranOlahan == null) return null;
-        return "/images/" + idPenawaranOlahan + '-' + buktiKirim + '/' + buktiKirim;
+        return "/images/" + idPenawaranOlahan + '/' + buktiKirim;
+    }
+
+    @Transient
+    public String getFotoRekeningPath() throws UnsupportedEncodingException {
+        if (fotoRekening == null || idPenawaranOlahan == null) return null;
+        return "/images/" + idPenawaranOlahan + '/' + fotoRekening;
+
+//        String encodedPathFoto = fotoRekening.replace(" ", "%20");
+//        String folderName = "/images/" + idPenawaranOlahan + '/' + encodedPathFoto;
+//
+//        System.out.println("ini path " + folderName);
+//        return folderName;
     }
 }

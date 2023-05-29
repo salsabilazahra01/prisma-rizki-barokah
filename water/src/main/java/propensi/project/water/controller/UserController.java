@@ -45,7 +45,7 @@ public class UserController {
         if (userModel.getRole().equals(Role.DONATUR)) {
             DonaturModel donaturModel = this.donaturService.getDonaturByUsername(userModel.getUsername());
             model.addAttribute("added", donaturModel);
-            model.addAttribute("point", donaturModel.getPoin() == null ? 0 : donaturModel.getPoin());
+            model.addAttribute("poin", donaturModel.getPoin() == null ? 0 : donaturModel.getPoin());
         } else if (userModel.getRole().equals(Role.CUSTOMER)) {
             CustomerModel customerModel = this.customerService.getCustomerByUsername(userModel.getUsername());
             model.addAttribute("added", customerModel);
@@ -111,30 +111,15 @@ public class UserController {
         if (userModel.getRole().equals(Role.DONATUR)) {
             DonaturModel donaturModel = this.donaturService.getDonaturByUsername(userModel.getUsername());
             donaturModel.setAlamat(updateProfileDTO.getAlamat());
-            donaturModel.setKota(updateProfileDTO.getKota());
-            donaturModel.setKecamatan(updateProfileDTO.getKecamatan());
-            donaturModel.setKelurahan(updateProfileDTO.getKelurahan());
-            donaturModel.setProvinsi(updateProfileDTO.getProvinsi());
-            donaturModel.setKodePos(updateProfileDTO.getKodePos());
             this.donaturService.save(donaturModel);
         } else if (userModel.getRole().equals(Role.CUSTOMER)) {
             CustomerModel customerModel = this.customerService.getCustomerByUsername(userModel.getUsername());
             customerModel.setAlamat(updateProfileDTO.getAlamat());
-            customerModel.setKota(updateProfileDTO.getKota());
-            customerModel.setKecamatan(updateProfileDTO.getKecamatan());
-            customerModel.setKelurahan(updateProfileDTO.getKelurahan());
-            customerModel.setProvinsi(updateProfileDTO.getProvinsi());
-            customerModel.setKodePos(updateProfileDTO.getKodePos());
             customerModel.setNamaPic(updateProfileDTO.getNamaPic());
             this.customerService.save(customerModel);
         } else if (userModel.getRole().equals(Role.PARTNER)) {
             PartnerModel partnerModel = this.partnerService.getPartnerByUsername(userModel.getUsername());
             partnerModel.setAlamat(updateProfileDTO.getAlamat());
-            partnerModel.setKota(updateProfileDTO.getKota());
-            partnerModel.setKecamatan(updateProfileDTO.getKecamatan());
-            partnerModel.setKelurahan(updateProfileDTO.getKelurahan());
-            partnerModel.setProvinsi(updateProfileDTO.getProvinsi());
-            partnerModel.setKodePos(updateProfileDTO.getKodePos());
             partnerModel.setNamaPic(updateProfileDTO.getNamaPic());
             this.partnerService.save(partnerModel);
         }

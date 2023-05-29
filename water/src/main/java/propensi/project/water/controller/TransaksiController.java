@@ -27,7 +27,9 @@ import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -51,27 +53,26 @@ public class TransaksiController {
 
     @PostMapping(value = "/add")
     public String addTransaksiProsesLainSubmit(@ModelAttribute ProsesLainModel transaksiManual,
-                                     @RequestParam("file") MultipartFile file,
-                                     RedirectAttributes redirectAttrs
+                                               @RequestParam("file") MultipartFile file,
+                                               RedirectAttributes redirectAttrs
     ) throws IOException {
 
-            System.out.println("INI FILE 3 " + file);
-            transaksiManual.setTanggalDibuat(LocalDateTime.now());
+        transaksiManual.setTanggalDibuat(LocalDateTime.now());
 
-            //file bukti
-            String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-            transaksiManual.setBukti(fileName);
+        //file bukti
+        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+        transaksiManual.setBukti(fileName);
 
-            ProsesLainModel savedTransaksi = transaksiService.addTransaksiManual(transaksiManual);
+        ProsesLainModel savedTransaksi = transaksiService.addTransaksiManual(transaksiManual);
 
-            //save file bukti
-            String uploadDir = "./src/main/resources/static/images/" + savedTransaksi.getIdTransaksi() + "-" + savedTransaksi.getBukti();
-            FileUploadUtil.saveFile(uploadDir, fileName, file);
+        //save file bukti
+        String uploadDir = "./src/main/resources/static/images/" + savedTransaksi.getIdTransaksi();
+        FileUploadUtil.saveFile(uploadDir, fileName, file);
 
-            transaksiService.addTransaksiManual(transaksiManual);
+        transaksiService.addTransaksiManual(transaksiManual);
 
-            redirectAttrs.addFlashAttribute("success","Transaksi baru berhasil ditambahkan");
-            return "redirect:/transaksi/viewall/semua";
+        redirectAttrs.addFlashAttribute("success","Transaksi baru berhasil ditambahkan");
+        return "redirect:/transaksi/viewall/semua";
 
     }
 
@@ -153,6 +154,7 @@ public class TransaksiController {
         model.addAttribute("transaksi", transaksi);
 
         return "laporan-transaksi/view-transaksi";
+//        return "foto";
     }
 
     @GetMapping(value = "/delete/{idTransaksi}")
@@ -162,8 +164,8 @@ public class TransaksiController {
         TransaksiModel transaksi = transaksiService.retrieveTransaksiById(idTransaksi);
         transaksiService.delete(transaksi);
 
-        String uploadDir = "./src/main/resources/static/images/"+ transaksi.getIdTransaksi() + "-";
-        transaksiService.deleteFolder(new File(uploadDir + transaksi.getBukti()));
+        String uploadDir = "./src/main/resources/static/images/"+ transaksi.getIdTransaksi();
+        FileUploadUtil.deleteFolder(new File(uploadDir));
 
         redirectAttrs.addFlashAttribute("success",
                 String.format("Transaksi dengan ID %s berhasil dihapus", idTransaksi));
@@ -203,10 +205,10 @@ public class TransaksiController {
             transaksi.setBukti(fileName);
             updatedTransaksi = transaksiService.updateTransaksiSampahOlahan(transaksi);
 
-            String uploadDir = "./src/main/resources/static/images/"+ updatedTransaksi.getIdTransaksi() + "-";
-            transaksiService.deleteFolder(new File(uploadDir + buktiTransaksiLama));
+            String uploadDir = "./src/main/resources/static/images/"+ updatedTransaksi.getIdTransaksi();
+            FileUploadUtil.deleteFolder(new File(uploadDir));
 
-            FileUploadUtil.saveFile(uploadDir + updatedTransaksi.getBukti(), fileName, file);
+            FileUploadUtil.saveFile(uploadDir, fileName, file);
         }
 
         model.addAttribute("transaksi", updatedTransaksi);
@@ -235,10 +237,10 @@ public class TransaksiController {
             transaksi.setBukti(fileName);
             updatedTransaksi = transaksiService.updateTransaksiProsesLain(transaksi);
 
-            String uploadDir = "./src/main/resources/static/images/"+ updatedTransaksi.getIdTransaksi() + "-";
-            transaksiService.deleteFolder(new File(uploadDir + buktiTransaksiLama));
+            String uploadDir = "./src/main/resources/static/images/"+ updatedTransaksi.getIdTransaksi();
+            FileUploadUtil.deleteFolder(new File(uploadDir));
 
-            FileUploadUtil.saveFile(uploadDir + updatedTransaksi.getBukti(), fileName, file);
+            FileUploadUtil.saveFile(uploadDir, fileName, file);
         }
 
         model.addAttribute("transaksi", updatedTransaksi);
@@ -271,6 +273,16 @@ public class TransaksiController {
 
         ICsvListWriter csvWriter = new CsvListWriter(response.getWriter(), CsvPreference.STANDARD_PREFERENCE);
 
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+
+//        System.out.println(date);
+//        LocalDateTime periodeAwal = LocalDate.parse(generateResult.get("periodeAwal"), DateTimeFormatter.ISO_DATE);
+//        LocalDateTime periodeAkhir = LocalDate.parse(generateResult.get("periodeAkhir"), DateTimeFormatter.ISO_DATE);
+//        System.out.println(simpleDateFormat.format(periodeAwal));
+//        String periodeAwal = simpleDateFormat.format(request.getParameter("periodeawal"));
+//        String periodeAkhir = simpleDateFormat.format(request.getParameter("periodeakhir"));
+//        csvWriter.write("Periode: " + periodeAwal + " sampai " + periodeAkhir);
+
         String[] csvHeader = {"ID Transaksi", "Jenis Transaksi", "Nominal", "Tanggal Transaksi", "Keterangan", "Sumber"};
         csvWriter.writeHeader(csvHeader);
 
@@ -279,7 +291,7 @@ public class TransaksiController {
                     transaksi.getIdTransaksi(),
                     transaksi.getJenisString(),
                     transaksi.getNominal().toString(),
-                    transaksi.getTanggalTransaksi().toString(),
+                    transaksi.getTanggalTransaksi().format(formatter),
                     transaksi.getKeterangan(),
                     transaksi.getProsesString()
             );

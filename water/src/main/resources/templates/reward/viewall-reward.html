@@ -42,7 +42,7 @@
                 <td>
                   <a th:href="@{/reward/{id}/edit(id=${reward.idReward})}"
                     class="btn-small btn-primary-green h6">
-                    <span></span> Update
+                    <span></span> Edit
                   </a>
                 </td>
                 <td>
@@ -51,7 +51,7 @@
 
               </tr>
               <tr th:unless="${rewards.size}">
-                <th colspan="6" class="h4 p-4 text-center">This list is empty</th>
+                <th colspan="6" class="h4 p-4 text-center">Belum terdapat reward</th>
               </tr>
             </tbody>
           </table>

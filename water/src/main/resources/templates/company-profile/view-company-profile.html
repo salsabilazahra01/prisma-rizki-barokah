@@ -14,7 +14,8 @@
         </div>
 
         <div class="col text-end">
-            <a sec:authorize="hasAuthority('ADMIN') || hasAuthority('MANAJER')" type = "button" class = "btn btn-about-us h5 mt-4" th:href="@{/about-us/update}">
+            <a sec:authorize="hasAuthority('ADMIN') || hasAuthority('MANAJER')" type = "button"
+               class = "btn-small btn-outline-primary-green h5 mt-4" th:href="@{/about-us/update}">
                 <span class="bi-pencil"></span> Edit Company Profile
             </a>
         </div>
