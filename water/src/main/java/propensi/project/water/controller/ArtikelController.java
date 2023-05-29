@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.security.Principal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Slf4j
@@ -67,6 +68,7 @@ public class ArtikelController {
             return "redirect:/artikel/add";
         } else {
             artikel.setImageTitle(fileName);
+            artikel.setCreatedAt(LocalDateTime.now());
             ArtikelModel savedArtikel = artikelService.addArtikel(artikel);
             String uploadDir = "./src/main/resources/static/images/" + savedArtikel.getIdArtikel();
             FileUploadUtil.saveFile(uploadDir, fileName, file);
@@ -141,7 +143,8 @@ public class ArtikelController {
             artikelService.deleteFile(uploadDir, namaFileLama);
             FileUploadUtil.saveFile(uploadDir, fileName, file);
         }
-
+        artikel.setLastEdited(LocalDateTime.now());
+        artikel.setIsEdited(true);
         artikelService.updateArtikel(artikel);
         redirectAttributes.addFlashAttribute("success", "Berhasil memperbarui penawaran sampah!");
         return "redirect:/artikel/viewall";

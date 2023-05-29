@@ -61,6 +61,7 @@ public class WebSecurityConfig {
                 .antMatchers("/about-us/view").permitAll()
                 .antMatchers("/about-us/update").hasAnyAuthority("ADMIN", "MANAJER")
                 .antMatchers("/artikel/viewall").permitAll()
+                .antMatchers("/artikel/view/*").permitAll()
                 .antMatchers("/artikel/add", "/artikel/update/*", "/artikel/delete/*").hasAnyAuthority("ADMIN", "MANAJER")
                 .anyRequest().authenticated()
                 .and()

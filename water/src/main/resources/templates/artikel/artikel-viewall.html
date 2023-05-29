@@ -40,7 +40,9 @@
                         <!--                                <span class="card-img-top" th:src="${artikel.imageTitle}" >-->
                         <img class="card-img-top rounded-top-25" th:src="'/images/'+${artikel.idArtikel}+'/'+${artikel.imageTitle}"
                              alt="Artikel Image">
+
                         <div class="card-body">
+                            <div class="p-date" th:text="${#temporals.format(artikel.createdAt, 'dd MMMM yyyy HH:mm', new java.util.Locale('id'))}"></div>
                             <div class="card-title h5" th:text="${artikel.title}"></div>
                             <p class="card-text " th:utext="${artikel.subtitle}"></p>
                         </div>
@@ -48,6 +50,7 @@
                             <a type="button" class="m-2 btn-small btn-primary-green ml-auto"
                                th:href="@{/artikel/view/} + ${artikel.idArtikel}">Lihat Artikel</a>
                         </div>
+
 
                     </div>
                 </div>
