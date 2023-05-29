@@ -8,11 +8,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import org.springframework.format.annotation.DateTimeFormat;
 import propensi.project.water.model.StringPrefixedSequenceIdGenerator;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "artikel")
@@ -45,6 +47,22 @@ public class ArtikelModel implements Serializable {
     @NotNull
     @Column(name = "imageTitle", nullable = false)
     private String imageTitle;
+
+    @NotNull
+    @Column(name = "author", nullable = false)
+    private String author;
+
+    @Column(name = "isEdited", nullable = true)
+    private Boolean isEdited;
+
+    @NotNull
+    @Column(name = "createdAt", nullable = false)
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+    private LocalDateTime createdAt;
+
+    @Column(name = "lastEdited", nullable = true)
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+    private LocalDateTime lastEdited;
 
     @NotNull
     @Column(columnDefinition="LONGTEXT", name = "content", nullable = false)
