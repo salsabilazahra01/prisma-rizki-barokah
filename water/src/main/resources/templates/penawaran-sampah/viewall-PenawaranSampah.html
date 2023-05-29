@@ -29,7 +29,7 @@
               <a button
                  type="button" class="btn-small btn-outline-primary-green h6"
                  th:href="@{/penawaran/sampah/add}">
-                <span class="bi-plus"></span> Buat Penawaran Sampah Baru
+                <span class="bi-plus"></span> Tambah Pembelian Sampah Baru
               </a>
             </div>
           </div>
@@ -92,7 +92,7 @@
               </table>
             </div>
             <div th:unless="*{listPenawaranSampah.size()!=0}">
-              <h4 class="h4 p-2 text-center">This list is empty</h4>
+              <h4 class="h4 p-2 text-center">Belum terdapat penawaran sampah</h4>
             </div>
           </div>
         </form>
@@ -138,9 +138,9 @@
 
 
         </div>
+      </div>
     </div>
   </div>
-</div>
 </div>
 
 <footer th:replace="fragments/fragment :: footer"></footer>

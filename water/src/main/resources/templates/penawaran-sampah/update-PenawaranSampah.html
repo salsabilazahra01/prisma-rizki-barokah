@@ -26,7 +26,7 @@
         </div>
 
         <!-- form -->
-        <form th:action="@{/penawaran/sampah/update}" th:object="${penawaranSampah}" method="POST">
+        <form th:action="@{/penawaran/sampah/update}" th:object="${penawaranSampah}" method="POST" enctype="multipart/form-data">
             <input type="hidden" th:field="*{partner}"/>
             <div class="container my-2">
                 <div class="card rounded-25">
@@ -104,7 +104,15 @@
                                             Masukkan nomor rekening
                                         </div>
                                     </div>
-
+                                    <div class="form-group buku rekening">
+                                        <p class="h5 text-raisin-black">Foto buku rekening atau e-rekening<span class="text-danger"> *</span></p>
+                                        <input class="form-control p2" type="file" name="file" accept="image/png, image/jpeg">
+                                        <small>Foto harus berisi nama pemilik dan nomor rekening</small>
+                                        <div class="zoomin pt-2">
+                                            <figcaption>Foto saat ini</figcaption>
+                                            <img th:src="${penawaranSampah.fotoRekeningPath}" title="Image"/>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
@@ -188,7 +196,7 @@
                                 <!-- Button trigger modal -->
                                 <a type="button" class="mx-2 btn-small btn-primary-green" data-bs-toggle="modal"
                                    data-bs-target="#save">
-                                    Submit
+                                    Simpan
                                 </a>
 
                                 <!-- Modal -->
@@ -197,7 +205,7 @@
                                     <div class="modal-dialog modal-dialog-centered text-center justify-content-center">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h6 class="modal-title h6" id="exampleModalLabel">Submit Edit Penawaran
+                                                <h6 class="modal-title h6" id="exampleModalLabel">Simpan Perubahan Penawaran
                                                     Sampah</h6>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                         aria-label="Close"></button>
@@ -207,7 +215,7 @@
                                             </div>
                                             <div class="modal-footer justify-content-center">
                                                 <button type="button" class="btn-small btn-outline-raisin-black"
-                                                        data-bs-dismiss="modal">Cancel
+                                                        data-bs-dismiss="modal">Batal
                                                 </button>
                                                 <button type="submit" name="save" id="submitbutton"
                                                         class="btn-small btn-primary-green">Ya

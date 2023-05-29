@@ -11,6 +11,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import propensi.project.water.model.PembelianSampah.PenawaranSampahModel;
 import propensi.project.water.model.PenjualanHasilOlahan.ItemPenawaranOlahanModel;
 import propensi.project.water.model.PenjualanHasilOlahan.PenawaranOlahanModel;
 import propensi.project.water.model.PoinReward.TukarPoinModel;
@@ -21,6 +22,7 @@ import propensi.project.water.model.Warehouse.WarehouseModel;
 import propensi.project.water.service.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
@@ -121,7 +123,8 @@ public class PenawaranHasilOlahanController {
                                             Model model,
                                             RedirectAttributes redirectAttrs,
                                             HttpServletRequest request,
-                                            @RequestParam(name="fileTransaksi", required = false) MultipartFile fileTransaksi) throws IOException {
+                                            @RequestParam(name="fileTransaksi", required = false) MultipartFile fileTransaksi,
+                                            @RequestParam(name="file", required = false) MultipartFile fileRekening) throws IOException {
 
         List<ItemPenawaranOlahanModel> listItem = penawaranOlahan.getListItemPenawaranOlahan();
 
@@ -151,7 +154,15 @@ public class PenawaranHasilOlahanController {
             return "redirect:/penawaran-hasil-olahan/add";
         }
 
+
+        //file foto rekening
+        String fileName = StringUtils.cleanPath(fileRekening.getOriginalFilename());
+        penawaranOlahan.setFotoRekening(fileName);
         PenawaranOlahanModel savedPenawaranOlahan = penawaranOlahanService.add(penawaranOlahan, customer);
+
+        //save file bukti
+        String uploadDir = "./src/main/resources/static/images/" + savedPenawaranOlahan.getIdPenawaranOlahan();
+        FileUploadUtil.saveFile(uploadDir, fileName, fileRekening);
 
         //integrate if manual
         if(customer == null){
@@ -160,8 +171,8 @@ public class PenawaranHasilOlahanController {
         }
 
         redirectAttrs.addFlashAttribute("success",
-            String.format("Penawaran hasil olahan sampah baru dengan id %s berhasil dibuat",
-                    penawaranOlahan.getIdPenawaranOlahan()));
+                String.format("Penawaran hasil olahan sampah baru dengan id %s berhasil dibuat",
+                        penawaranOlahan.getIdPenawaranOlahan()));
 
         model.addAttribute("penawaranOlahan", penawaranOlahan.getIdPenawaranOlahan());
         return "redirect:/penawaran-hasil-olahan/viewall/-1";
@@ -181,8 +192,9 @@ public class PenawaranHasilOlahanController {
 
     @PostMapping(value="/update", params = {"save"})
     private String updatePenawaranOlahanSubmit(@ModelAttribute PenawaranOlahanModel penawaranOlahan,
+                                               @RequestParam(name="file", required = false) MultipartFile fileRekening,
                                                Model model,
-                                               RedirectAttributes redirectAttrs) {
+                                               RedirectAttributes redirectAttrs) throws IOException {
 
         List<ItemPenawaranOlahanModel> listItem = penawaranOlahan.getListItemPenawaranOlahan();
 
@@ -215,17 +227,34 @@ public class PenawaranHasilOlahanController {
         penawaranOlahanService.deleteAllItem(penawaranOlahanEx);
         penawaranOlahanService.update(penawaranOlahan, false);
 
+        //get foto rekening lama
+        String idPenawaranOlahan = penawaranOlahan.getIdPenawaranOlahan();
+        String fotoRekeningLama = penawaranOlahanService.getPenawaranOlahanById(idPenawaranOlahan).getFotoRekening();
+
+        if(fileRekening == null){
+            penawaranOlahan.setFotoRekening(fotoRekeningLama);
+            penawaranOlahanService.updateStatusOrFoto(penawaranOlahan);
+        }else{
+            String fileName =  StringUtils.cleanPath(fileRekening.getOriginalFilename());
+            penawaranOlahan.setFotoRekening(fileName);
+            PenawaranOlahanModel updatedPenawaranOlahan = penawaranOlahanService.updateStatusOrFoto(penawaranOlahan);
+
+            String uploadDir = "./src/main/resources/static/images/" + updatedPenawaranOlahan.getIdPenawaranOlahan();
+            FileUploadUtil.deleteFolder(new File(uploadDir));
+            FileUploadUtil.saveFile(uploadDir, fileName, fileRekening);
+        }
+
         redirectAttrs.addFlashAttribute("success",
                 String.format("id %s berhasil diperbaharui", penawaranOlahan.getIdPenawaranOlahan()));
 
         model.addAttribute("totalBerat", getTotalBerat(listItem));
         model.addAttribute("penawaranOlahan", penawaranOlahan);
-        return "penawaran-olahan/view-penawaran-olahan";
+        return "redirect:/penawaran-hasil-olahan/view/" + penawaranOlahan.getIdPenawaranOlahan();
     }
 
     @PostMapping(value="/add", params = {"addRowItem"})
     private String addRowAddForm(@ModelAttribute PenawaranOlahanModel penawaranOlahan,
-                                       Model model){
+                                 Model model){
 
         //create list item with item quantity > 0
         List<WarehouseModel> listItemEx = warehouseService.getListItem();
@@ -248,8 +277,8 @@ public class PenawaranHasilOlahanController {
 
     @PostMapping(value = "/add", params = {"deleteRowItem"})
     private String deleteRowAddForm(@ModelAttribute PenawaranOlahanModel penawaranOlahan,
-                                      @RequestParam("deleteRowItem") Integer row,
-                                      Model model){
+                                    @RequestParam("deleteRowItem") Integer row,
+                                    Model model){
         final Integer rowId = Integer.valueOf(row);
 
         penawaranOlahan.getListItemPenawaranOlahan().remove(rowId.intValue());
@@ -263,7 +292,7 @@ public class PenawaranHasilOlahanController {
 
     @PostMapping(value="/update", params = {"addRowItem"})
     private String addRowUpdateForm(@ModelAttribute PenawaranOlahanModel penawaranOlahan,
-                                       Model model){
+                                    Model model){
 
         //create list item with item quantity > 0
         List<WarehouseModel> listItemEx = warehouseService.getListItem();
@@ -286,8 +315,8 @@ public class PenawaranHasilOlahanController {
 
     @PostMapping(value = "/update", params = {"deleteRowItem"})
     private String deleteRowUpdateForm(@ModelAttribute PenawaranOlahanModel penawaranOlahan,
-                                          @RequestParam("deleteRowItem") Integer row,
-                                          Model model){
+                                       @RequestParam("deleteRowItem") Integer row,
+                                       Model model){
         final Integer rowId = Integer.valueOf(row);
 
         penawaranOlahan.getListItemPenawaranOlahan().remove(rowId.intValue());
@@ -359,7 +388,7 @@ public class PenawaranHasilOlahanController {
             }
             penawaranOlahanEx.setStatus(5);
         }
-        penawaranOlahanService.updateStatus(penawaranOlahanEx);
+        penawaranOlahanService.updateStatusOrFoto(penawaranOlahanEx);
 
         redirectAttrs.addFlashAttribute("success",
                 String.format("Status penawaran hasil olahan sampah dengan id %s berhasil diperbarui",
@@ -400,7 +429,7 @@ public class PenawaranHasilOlahanController {
         penawaranOlahan.setTransaksiOlahan(transaksi);
 
         if(isUpdate){
-            penawaranOlahanService.updateStatus(penawaranOlahan);
+            penawaranOlahanService.updateStatusOrFoto(penawaranOlahan);
         } else {
             penawaranOlahanService.add(penawaranOlahan, null);
         }
@@ -418,7 +447,7 @@ public class PenawaranHasilOlahanController {
         }
 
         if(isUpdate){
-            penawaranOlahanService.updateStatus(penawaranOlahan);
+            penawaranOlahanService.updateStatusOrFoto(penawaranOlahan);
         } else {
             penawaranOlahanService.add(penawaranOlahan, null);
         }
@@ -516,8 +545,7 @@ public class PenawaranHasilOlahanController {
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 
         //save file bukti
-        String uploadDir = "./src/main/resources/static/images/" +
-                penawaranOlahan.getIdPenawaranOlahan() + "-" + fileName;
+        String uploadDir = "./src/main/resources/static/images/" + penawaranOlahan.getIdPenawaranOlahan();
         FileUploadUtil.saveFile(uploadDir, fileName, file);
 
         return fileName;
@@ -529,8 +557,7 @@ public class PenawaranHasilOlahanController {
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 
         //save file bukti
-        String uploadDir = "./src/main/resources/static/images/" +
-                transaksi.getIdTransaksi() + "-" + fileName;
+        String uploadDir = "./src/main/resources/static/images/" + transaksi.getIdTransaksi();
         FileUploadUtil.saveFile(uploadDir, fileName, file);
 
         return fileName;

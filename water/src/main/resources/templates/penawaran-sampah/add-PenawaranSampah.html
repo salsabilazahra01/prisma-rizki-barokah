@@ -14,7 +14,7 @@
                 <a type="button" class="btn-small btn-outline-raisin-black h6 me-4"
                    th:href="@{/penawaran/sampah/viewall}">
                     <i class="bi-chevron-left"></i>
-                    Back
+                    Kembali
                 </a>
             </p>
         </div>
@@ -25,7 +25,7 @@
         </div>
 
         <!-- form -->
-        <form th:action="@{/penawaran/sampah/add}" th:object="${penawaranSampah}" method="POST">
+        <form th:action="@{/penawaran/sampah/add}" th:object="${penawaranSampah}" method="POST" enctype="multipart/form-data">
             <div sec:authorize="hasAuthority('PARTNER')" >
                 <input type="hidden" th:field="*{partner}"/>
             </div>
@@ -100,7 +100,15 @@
                                             Masukkan nomor rekening
                                         </div>
                                     </div>
-
+                                    <div class="form-group">
+                                        <label class="h5 text-raisin-black">Foto buku rekening atau e-rekening
+                                            <span class="text-danger"> *</span></label>
+                                        <input required class="form-control" type="file" name="file" accept="image/png, image/jpeg">
+                                        <small>Foto harus berisi nama pemilik dan nomor rekening</small>
+                                        <div class="invalid-feedback">
+                                            Masukkan foto buku rekening atau e-rekening
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
@@ -177,7 +185,7 @@
                                 <!-- Button trigger modal -->
                                 <a type="button" class="mx-2 btn-small btn-primary-green" data-bs-toggle="modal"
                                    data-bs-target="#save">
-                                    Submit
+                                    Simpan
                                 </a>
 
                                 <!-- Modal -->
@@ -196,7 +204,7 @@
                                             </div>
                                             <div class="modal-footer justify-content-center">
                                                 <button type="button" class="btn-small btn-outline-raisin-black"
-                                                        data-bs-dismiss="modal">Cancel
+                                                        data-bs-dismiss="modal">Batal
                                                 </button>
                                                 <button type="submit" name="save" id="submitbutton"
                                                         class="btn-small btn-primary-green">Ya, simpan

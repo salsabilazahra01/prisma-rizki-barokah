@@ -13,6 +13,7 @@ import propensi.project.water.repository.PenawaranSampah.PenawaranSampahDb;
 import propensi.project.water.repository.TransaksiDb.ProsesPenawaranSampahDb;
 
 import javax.transaction.Transactional;
+import java.io.File;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -30,8 +31,8 @@ public class PenjualanSampahServiceImpl implements PenjualanSampahService {
     private ProsesPenawaranSampahDb prosesPenawaranSampahDb;
 
     @Override
-    public void addPenawaranSampah(PenawaranSampahModel penawaranSampah) {
-        penawaranSampahDb.save(penawaranSampah);
+    public PenawaranSampahModel addPenawaranSampah(PenawaranSampahModel penawaranSampah) {
+        return penawaranSampahDb.save(penawaranSampah);
     }
 
     @Override
@@ -97,7 +98,7 @@ public class PenjualanSampahServiceImpl implements PenjualanSampahService {
     }
 
     @Override
-    public void updatePenawaranSampah(PenawaranSampahModel penawaranSampah) {
+    public PenawaranSampahModel updatePenawaranSampah(PenawaranSampahModel penawaranSampah) {
         PenawaranSampahModel penawaranSampahLama = findByIdPenawaranSampah(penawaranSampah.getIdPenawaranSampah());
         penawaranSampahLama.setNamaPic(penawaranSampah.getNamaPic());
         penawaranSampahLama.setKontakPic(penawaranSampah.getKontakPic());
@@ -109,7 +110,9 @@ public class PenjualanSampahServiceImpl implements PenjualanSampahService {
         penawaranSampahLama.getListItemPenawaranSampah().clear();
         penawaranSampahLama.getListItemPenawaranSampah().addAll(penawaranSampah.getListItemPenawaranSampah());
         penawaranSampahLama.setTransaksiSampah(penawaranSampah.getTransaksiSampah());
+        penawaranSampahLama.setFotoRekening(penawaranSampah.getFotoRekening());
         penawaranSampahDb.save(penawaranSampahLama);
+        return penawaranSampahLama;
     }
 
     @Override
@@ -161,6 +164,17 @@ public class PenjualanSampahServiceImpl implements PenjualanSampahService {
         return prosesPenawaranSampahDb.findProsesPenawaranSampahModelByPenawaranSampah(penawaranSampah).orElse(null);
     }
 
-
+    @Override
+    public void deleteFolder(File folder) {
+        if (folder.isDirectory()) {
+            File[] files = folder.listFiles();
+            if (files != null) {
+                for (File file : files) {
+                    deleteFolder(file);
+                }
+            }
+        }
+        folder.delete();
+    }
 
 }

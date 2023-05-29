@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 import propensi.project.water.model.PenjualanHasilOlahan.PenawaranOlahanModel;
 import propensi.project.water.model.User.CustomerModel;
 
+import java.io.File;
 import java.util.List;
 
 public interface PenawaranOlahanService {
@@ -12,10 +13,10 @@ public interface PenawaranOlahanService {
     PenawaranOlahanModel add(PenawaranOlahanModel penawaranOlahan, CustomerModel customer);
     PenawaranOlahanModel getPenawaranOlahanById(String id);
     PenawaranOlahanModel update(PenawaranOlahanModel updatedPenawaran, Boolean isManual);
-    PenawaranOlahanModel updateStatus(PenawaranOlahanModel updatedPenawaran);
+    PenawaranOlahanModel updateStatusOrFoto(PenawaranOlahanModel updatedPenawaran);
     void delete(PenawaranOlahanModel penawaranOlahan);
     void deleteAllItem(PenawaranOlahanModel penawaranOlahan);
     PenawaranOlahanModel setCustomerInfo(CustomerModel customer, PenawaranOlahanModel penawaranOlahan);
     List<PenawaranOlahanModel> findAll();
-
+    void deleteFolder(File file);
 }

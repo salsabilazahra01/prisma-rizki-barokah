@@ -15,12 +15,6 @@ public class UpdateProfileDTO {
     String fname;
     String email;
     String namaPic;
-
     String alamat;
-    String kelurahan;
-    String kecamatan;
-    String kota;
-    String provinsi;
-    String kodePos;
 
 }

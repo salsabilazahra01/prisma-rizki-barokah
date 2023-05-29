@@ -16,7 +16,7 @@
         <div class="row my-3">
             <p class="c3">
                 <a type = "button" class = "btn-small btn-outline-raisin-black h6 me-4" th:href="@{/transaksi/viewall/semua}">
-                    <i class="bi-chevron-left"></i> Back
+                    <i class="bi-chevron-left"></i> Kembali
                 </a>
                 <text class="c3" th:text="${transaksi.idTransaksi}"></text>
             </p>
@@ -52,7 +52,7 @@
                         <div class="mb-5 mt-3" th:switch="${transaksi.proses}">
                             <p class="p2">Sumber</p>
                             <a class="h4" th:case="0" th:text="${transaksi.penawaranSampah.idPenawaranSampah}"
-                                th:href="@{/penawaran/sampah/view/} + ${transaksi.penawaranSampah.idPenawaranSampah}"></a>
+                               th:href="@{/penawaran/sampah/view/} + ${transaksi.penawaranSampah.idPenawaranSampah}"></a>
                             <a class="h4" th:case="1" th:text="${transaksi.penawaranOlahan.idPenawaranOlahan}"
                                th:href="@{/penawaran-hasil-olahan/view/} + ${transaksi.penawaranOlahan.idPenawaranOlahan}"></a>
                             <h3 class="h4" th:case="2" th:text="${transaksi.namaProses}"></h3>
@@ -65,8 +65,12 @@
                         </div>
                         <div class="mt-5 mb-3">
                             <p class="p2">Bukti</p>
-                            <div class="zoomin">
-                                <img th:src="${transaksi.buktiImagePath}" title="Image" />
+                            <div class="image-container">
+                                <div class="image"><img th:src="${transaksi.buktiImagePath}" title="Image"/></div>
+                            </div>
+                            <div class="popup-image">
+                                <span>&times;</span>
+                                <img src="" alt=""/>
                             </div>
                         </div>
                     </div>
@@ -98,7 +102,7 @@
                                     </div>
                                     <div class="modal-body p3" th:text="'Apakah Anda yakin ingin menghapus transaksi dengan ID ' + ${transaksi.idTransaksi} + '?'"></div>
                                     <div class="modal-footer justify-content-center">
-                                        <button type="button" class="btn-small btn-outline-raisin-black" data-bs-dismiss="modal">Cancel</button>
+                                        <button type="button" class="btn-small btn-outline-raisin-black" data-bs-dismiss="modal">Batal</button>
                                         <a type="button" class="btn-small btn-red-danger" th:href="@{/transaksi/delete/} + ${transaksi.idTransaksi}">Ya, hapus</a>
                                     </div>
                                 </div>
@@ -118,5 +122,18 @@
 <script src = "/bootstrap/js/bootstrap.js"></script>
 <script src="/script.js"></script>
 
+<script>
+    document.querySelectorAll(".image img").forEach(image => {
+        image.onclick = () => {
+            document.querySelector(".popup-image").style.display = "block";
+            document.querySelector(".popup-image img").src =
+                image.getAttribute("src");
+        };
+    });
+
+    document.querySelector(".popup-image span").onclick = () => {
+        document.querySelector(".popup-image").style.display = "none";
+    };
+</script>
 </body>
 </html>

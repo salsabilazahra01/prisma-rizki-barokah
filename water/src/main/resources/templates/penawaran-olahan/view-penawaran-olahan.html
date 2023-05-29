@@ -18,7 +18,7 @@
         <div class="row my-1">
             <p class="c3">
                 <a type = "button" class = "btn-small btn-outline-raisin-black h6 me-4" th:href="@{/penawaran-hasil-olahan/viewall/-1}">
-                    <i class="bi-chevron-left"></i> Back
+                    <i class="bi-chevron-left"></i> Kembali
                 </a>
                 <text class="c3" th:text="${penawaranOlahan.idPenawaranOlahan}"></text>
             </p>
@@ -27,15 +27,15 @@
         <!-- title -->
         <div class="row mb-3">
             <p class="align-content-center">
-                <h2 sec:authorize="hasAuthority('CUSTOMER')" class="h2">Detail Pembelian Hasil Olahan
+            <h2 sec:authorize="hasAuthority('CUSTOMER')" class="h2">Detail Pembelian Hasil Olahan
                 <a th:if="${penawaranOlahan.status == 0}" type = "button" class = "btn-small-fit btn-primary-green h6 ms-2" th:href="@{/penawaran-hasil-olahan/update/} + ${penawaranOlahan.idPenawaranOlahan}">
                     <i class="bi-pencil-fill"></i> Edit
                 </a>
                 <a th:if="${penawaranOlahan.status == 0}" type = "button" class = "btn-small-fit btn-red-danger h6" data-bs-toggle="modal" data-bs-target="#deleteModal">
                     <i class="bi bi-x-circle-fill"></i> Batalkan
                 </a>
-                </h2>
-                <h2 sec:authorize="!hasAuthority('CUSTOMER')" class="h2">Detail Penjualan Hasil Olahan</h2>
+            </h2>
+            <h2 sec:authorize="!hasAuthority('CUSTOMER')" class="h2">Detail Penjualan Hasil Olahan</h2>
             </p>
         </div>
 
@@ -86,26 +86,44 @@
                         <div class="my-5" th:if="${penawaranOlahan.isPickedUp != NULL AND !penawaranOlahan.isPickedUp}">
                             <p class="p2">Bukti Pengiriman</p>
                             <p th:if="${penawaranOlahan.buktiKirim  == NULL}">-</p>
-                            <div class="zoomin" th:if="${penawaranOlahan.buktiKirim != NULL}">
-                                <img th:src="${penawaranOlahan.buktiKirimOlahanPath}"  title="Image" />
+                            <div th:if="${penawaranOlahan.buktiKirim != NULL}" class="image-container">
+                                <div class="image"><img th:src="${penawaranOlahan.buktiKirimOlahanPath}" title="Image"/></div>
+                            </div>
+                            <div class="popup-image">
+                                <span>&times;</span>
+                                <img src="" alt="" />
                             </div>
                         </div>
                         <div class="my-5">
                             <p class="p2">Rekening</p>
                             <h3 class="h4" th:text="${penawaranOlahan.bank} + ' ' + ${penawaranOlahan.noRekening} + ' a.n ' + ${penawaranOlahan.namaRekening}"></h3>
                         </div>
+                        <div class="my-5">
+                            <p class="p2">Foto Buku Rekening atau E-Rekening</p>
+                            <div class="image-container">
+                                <div class="image"><img th:src="${penawaranOlahan.fotoRekeningPath}" title="Image"/></div>
+                            </div>
+                            <div class="popup-image">
+                                <span>&times;</span>
+                                <img src="" alt="" />
+                            </div>
+                        </div>
                         <div sec:authorize="hasAuthority('CUSTOMER')"  class="my-5">
                             <p class="p2">Bukti Pembelian</p>
                             <p class="h4" th:if="${penawaranOlahan.transaksiOlahan == NULL }">-</p>
-                            <div class="zoomin" th:if="${penawaranOlahan.transaksiOlahan != NULL}">
-                                <img th:src="${penawaranOlahan.transaksiOlahan.getBuktiImagePath}"  title="Image" />
+                            <div th:if="${penawaranOlahan.transaksiOlahan != NULL}" class="image-container">
+                                <div class="image"><img th:src="${penawaranOlahan.transaksiOlahan.getBuktiImagePath}" title="Image"/></div>
+                            </div>
+                            <div class="popup-image">
+                                <span>&times;</span>
+                                <img src="" alt="" />
                             </div>
                         </div>
                         <div sec:authorize="!hasAuthority('CUSTOMER')"  class="my-5">
                             <p class="p2">Laporan Transaksi</p>
                             <p class="h4" th:if="${penawaranOlahan.transaksiOlahan == NULL }">-</p>
                             <a class="h4" th:if="${penawaranOlahan.transaksiOlahan != NULL }" th:text="${penawaranOlahan.transaksiOlahan.idTransaksi}"
-                                th:href="@{/transaksi/view/} + ${penawaranOlahan.transaksiOlahan.idTransaksi}"></a>
+                               th:href="@{/transaksi/view/} + ${penawaranOlahan.transaksiOlahan.idTransaksi}"></a>
                         </div>
                         <div class="mt-5 mb-3" th:switch="${penawaranOlahan.status}">
                             <p class="p2">Status</p>
@@ -209,7 +227,7 @@
             </div>
             <div class="modal-body p3" th:text="'Apakah Anda yakin ingin menghapus penawaran pembelian hasil olahan dengan ID ' + ${penawaranOlahan.idPenawaranOlahan} + '?'"></div>
             <div class="modal-footer justify-content-center">
-                <button type="button" class="btn-small btn-outline-raisin-black" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn-small btn-outline-raisin-black" data-bs-dismiss="modal">Batal</button>
                 <a type="button" class="btn-small btn-red-danger" th:href="@{/penawaran-hasil-olahan/delete/} + ${penawaranOlahan.idPenawaranOlahan}">Ya, hapus</a>
             </div>
         </div>
@@ -292,7 +310,7 @@
                     </div>
                 </div>
                 <div class="modal-footer justify-content-center">
-                    <button type="button" class="btn-small btn-outline-raisin-black" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn-small btn-outline-raisin-black" data-bs-dismiss="modal">Batal</button>
                     <button type="submit" class="btn-small btn-red-danger">Tolak</button>
                 </div>
             </div>
@@ -318,7 +336,7 @@
                     <div class="form-group">
                         <p class="h5 text-raisin-black">Bukti Transfer</p>
                         <label class="col-form-label p3 px-3">Anda hendak menyetujui harga. Sertakan bukti transfer
-                        pembelian sejumlah harga yang disetujui.</label>
+                            pembelian sejumlah harga yang disetujui.</label>
                         <input class="form-control p2" type="file" name="fileTransaksi" accept="image/png, image/jpeg">
                     </div>
                 </div>
@@ -466,6 +484,20 @@
 
 <script src = "/bootstrap/js/bootstrap.js"></script>
 <script src="/script.js"></script>
+
+<script>
+    document.querySelectorAll(".image img").forEach(image => {
+        image.onclick = () => {
+            document.querySelector(".popup-image").style.display = "block";
+            document.querySelector(".popup-image img").src =
+                image.getAttribute("src");
+        };
+    });
+
+    document.querySelector(".popup-image span").onclick = () => {
+        document.querySelector(".popup-image").style.display = "none";
+    };
+</script>
 
 </body>
 </html>

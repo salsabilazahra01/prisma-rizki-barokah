@@ -69,7 +69,7 @@ public class TransaksiModel implements Serializable{
     @Transient
     public String getBuktiImagePath() {
         if (bukti == null || idTransaksi == null) return null;
-        return "/images/" + idTransaksi + '-' + bukti + '/' + bukti;
+        return "/images/" + idTransaksi + '/' + bukti;
     }
 
     public String getJenisString(){

@@ -2,4 +2,4 @@
 
 spring:
   profiles:
-    default: prod
+    default: dev

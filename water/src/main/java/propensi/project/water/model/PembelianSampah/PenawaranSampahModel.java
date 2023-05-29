@@ -58,6 +58,10 @@ public class PenawaranSampahModel implements Serializable {
     private Integer noRekening;
 
     @NotNull
+    @Column(name = "foto_rekening", nullable = false)
+    private String fotoRekening;
+
+    @NotNull
     @Column(name = "alamat_pic", nullable = false)
     private String alamatPic;
 
@@ -85,7 +89,6 @@ public class PenawaranSampahModel implements Serializable {
     @Column(name = "harga", nullable = false)
     private Integer harga;
 
-
     // relasi dengan partner
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "username_partner", referencedColumnName = "username")
@@ -100,4 +103,10 @@ public class PenawaranSampahModel implements Serializable {
     // relasi dengan item penawaran sampah
     @OneToMany(mappedBy = "idPenawaranSampah", fetch = FetchType.LAZY,  cascade = CascadeType.ALL, orphanRemoval=true)
     private List<ItemPenawaranSampahModel> listItemPenawaranSampah;
+
+    @Transient
+    public String getFotoRekeningPath() {
+        if (fotoRekening == null || idPenawaranSampah == null) return null;
+        return "/images/" + idPenawaranSampah + '/' + fotoRekening;
+    }
 }

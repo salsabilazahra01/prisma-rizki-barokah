@@ -77,6 +77,10 @@ public class TukarPoinModel implements Serializable {
     @Column(name = "namaRekening", nullable = false)
     private String namaRekening;
 
+    @NotNull
+    @Column(name = "foto_rekening", nullable = false)
+    private String fotoRekening;
+
     @Column(name = "alamat_pic")
     private String alamatDonatur;
 
@@ -122,6 +126,12 @@ public class TukarPoinModel implements Serializable {
     @Transient
     public String getBuktiKirimPath() {
         if (buktiKirim == null || idTukarPoin == null) return null;
-        return "/images/" + idTukarPoin + '-' + buktiKirim + '/' + buktiKirim;
+        return "/images/" + idTukarPoin + '/' + buktiKirim;
+    }
+
+    @Transient
+    public String getFotoRekeningPath() {
+        if (fotoRekening == null || idTukarPoin == null) return null;
+        return "/images/" + idTukarPoin + '/' + fotoRekening;
     }
 }

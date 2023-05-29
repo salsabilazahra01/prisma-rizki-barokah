@@ -18,7 +18,7 @@
       <p class="c3">
         <a type="button" class="btn-small btn-outline-raisin-black h6 me-4" th:href="@{/manajemen-user/viewall}">
           <i class="bi-chevron-left"></i>
-          Back
+          Kembali
         </a>
         <text th:text="${user.username}" class="c3"></text>
       </p>
@@ -99,10 +99,10 @@
           <div th:if="${#strings.equals(user.role.toString(), 'MANAJER') or #strings.equals(user.role.toString(), 'SUPERVISOR') or #strings.equals(user.role.toString(), 'PEKERJA') or #strings.equals(user.role.toString(), 'TEKNISI')}">
           <div class="row flex-row-reverse text-end">
             <div class="col-4">
-              <a type="button" class="mx-2 btn-small btn-primary-green" th:href="@{/manajemen-user/update/} + ${user.username}">Update</a>
+              <a type="button" class="mx-2 btn-small btn-primary-green" th:href="@{/manajemen-user/update/} + ${user.username}">Edit</a>
 
               <button type="button" class="mx-2 btn-small btn-red-danger"  data-bs-toggle="modal" data-bs-target="#deleteKaryawan">
-                Delete
+                Hapus
               </button>
 
               <!-- Modal -->
@@ -115,7 +115,7 @@
                     </div>
                     <div class="modal-body p3" th:text="'Apakah Anda yakin ingin menghapus karyawan dengan username ' + ${user.username} + ' ?'"></div>
                     <div class="modal-footer justify-content-center">
-                      <button type="button" class="btn-small btn-outline-raisin-black" data-bs-dismiss="modal">Cancel</button>
+                      <button type="button" class="btn-small btn-outline-raisin-black" data-bs-dismiss="modal">Batal</button>
                       <a type="button" class="btn-small btn-red-danger" th:href="@{/manajemen-user/delete/} + ${user.username}">Ya, hapus</a>
                     </div>
                   </div>

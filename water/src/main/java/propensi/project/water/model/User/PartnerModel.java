@@ -33,9 +33,4 @@ public class PartnerModel extends UserModel {
     @OneToMany(mappedBy = "partner", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<PenawaranSampahModel> listPenawaranSampah;
 
-    private String kelurahan;
-    private String kecamatan;
-    private String kota;
-    private String provinsi;
-    private String kodePos;
 }

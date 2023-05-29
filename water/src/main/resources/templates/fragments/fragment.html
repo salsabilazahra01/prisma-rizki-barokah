@@ -26,13 +26,13 @@
 
             <!-- internal & eksternal -->
             <li>
-                <a th:class="${#strings.equals(activeLink, 'Home')}  ? 'nav-link nav-underline active' : 'nav-link'" th:href="@{/}">Home<span class="sr-only">(current)</span></a>
+                <a th:class="${#strings.equals(activeLink, 'Home')}  ? 'nav-link nav-underline active' : 'nav-link'" th:href="@{/}">Beranda<span class="sr-only">(current)</span></a>
             </li>
             <li sec:authorize="!hasAuthority('PEKERJA') || !hasAuthority('TEKNISI')">
                 <a th:class="${#strings.equals(activeLink, 'Artikel')}  ? 'nav-link nav-underline active' : 'nav-link'" th:href="@{/artikel/viewall}">Artikel<span class="sr-only">(current)</span></a>
             </li>
             <li sec:authorize="!hasAuthority('PEKERJA') || !hasAuthority('TEKNISI')">
-                <a th:class="${#strings.equals(activeLink, 'About Us')}  ? 'nav-link nav-underline active' : 'nav-link'" th:href="@{/about-us/view}">About Us<span class="sr-only">(current)</span></a>
+                <a th:class="${#strings.equals(activeLink, 'About Us')}  ? 'nav-link nav-underline active' : 'nav-link'" th:href="@{/about-us/view}">Tentang Kami<span class="sr-only">(current)</span></a>
             </li>
 
             <!-- internal -->

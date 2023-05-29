@@ -9,7 +9,7 @@
 
 <div class="container">
     <div class="col-12 mt-5">
-        <h1 class="text-center text-head-profile">My Profile</h1>
+        <h1 class="text-center text-head-profile">Profil Saya</h1>
     </div>
 
     <div class="card m-5 py-5 px-5 rounded-25">
@@ -20,37 +20,37 @@
                     <img class="col-12 rounded" th:src="${'/images/profile/' + result + '.jpg'}" alt="PROFILE"/>
                 </div>
                 <div class="col-12 mt-2 d-flex flex-column justify-content-center align-items-center gap-2">
-                    <h3 class="fs-4 text-center" th:text="${auth.nama}"></h3>
+                    <p2 class="p2 text-center" th:text="${auth.nama}"></p2>
                     <span class="text-black-50 fs-6 text-center" th:text="${'@' + auth.username}"></span>
                     <div th:if="${point != null}"
                          class="col-12 p-0 d-flex gap-2 justify-content-center align-items-center">
                         <img src="/images/p-icon.png" alt="P_IMAGE" style="width: 22px; height: 22px;"/>
-                        <span class=text-label-profile th:text="${point}"></span>
+                        <p2 class="p2" th:text="${poin}"></p2>
                     </div>
-                    <a class="btn button-save-profile rounded-25 py-1 px-2 d-flex justify-content-center align-items-center"
-                       th:href="@{/user/profile/edit}">Update Profile</a>
-                    <a class="btn button-save-profile bg-danger rounded-25 py-1 px-2 d-flex justify-content-center align-items-center"
+                    <a class="btn-small btn-primary-green"
+                       th:href="@{/user/profile/edit}">Edit Profil</a>
+                    <a class="btn-small btn-red-danger"
                        th:href="@{/logout}">Logout</a>
                 </div>
             </div>
             <div class="col-md-9 col-12 col-sm-7 px-5 py-3">
                 <div class="col-12">
-                    <span class="text-label-profile">Nama</span>
-                    <h4 class="text-info-profile" th:text="${auth.nama}"></h4>
+                    <p2 class="p2">Nama</p2>
+                    <h4 class="h4" th:text="${auth.nama}"></h4>
                 </div>
                 <div class="col-12 mt-3">
-                    <span class=text-label-profile>Username</span>
-                    <h4 class=text-info-profile th:text="${'@' + auth.username}"></h4>
+                    <p2 class="p2">Username</p2>
+                    <h4 class=h4 th:text="${'@' + auth.username}"></h4>
                 </div>
                 <div class="col-12 mt-3">
-                    <span class=text-label-profile>Email</span>
-                    <h4 class=text-info-profile th:text="${auth.email == null} ? '-' : ${auth.email}"></h4>
+                    <p2 class=p2>Email</p2>
+                    <h4 class=h4 th:text="${auth.email == null} ? '-' : ${auth.email}"></h4>
                 </div>
 
                 <div th:if="${added}" class="col-12 mt-3">
-                    <span class=text-label-profile>Alamat</span>
-                    <h4 class=text-info-profile>
-                        <span th:text="${added.alamat}"/>,<span th:text="${added.kelurahan}"/>,<span th:text="${added.kecamatan}"/>,<span th:text="${added.kota}"/>, <span th:text="${added.provinsi}"/>,<span th:text="${added.kodePos}"/>
+                    <p2 class="p2">Alamat</p2>
+                    <h4 class=h4>
+                        <span th:text="${added.alamat}"/>
                     </h4>
                 </div>
 
