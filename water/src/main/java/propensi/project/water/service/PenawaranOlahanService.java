@@ -13,7 +13,7 @@ public interface PenawaranOlahanService {
     PenawaranOlahanModel add(PenawaranOlahanModel penawaranOlahan, CustomerModel customer);
     PenawaranOlahanModel getPenawaranOlahanById(String id);
     PenawaranOlahanModel update(PenawaranOlahanModel updatedPenawaran, Boolean isManual);
-    PenawaranOlahanModel updateStatusOrFoto(PenawaranOlahanModel updatedPenawaran);
+    PenawaranOlahanModel updateStatus(PenawaranOlahanModel updatedPenawaran);
     void delete(PenawaranOlahanModel penawaranOlahan);
     void deleteAllItem(PenawaranOlahanModel penawaranOlahan);
     PenawaranOlahanModel setCustomerInfo(CustomerModel customer, PenawaranOlahanModel penawaranOlahan);

@@ -153,7 +153,6 @@
       const jumlahForm = document.getElementById('jumlah');
 
       if (jenisSpan === 'Uang') {
-        jumlahForm.value = 0
 
         // Hide
         namaFormItem.hidden = satuanFormItem.hidden = true;
@@ -167,8 +166,6 @@
 
       }
       else {
-        jumlahForm.value = 0;
-        hargaForm.value = 0;
 
         // Remove hidden class from satuanFormItem
         namaFormItem.hidden = satuanFormItem.hidden = false;

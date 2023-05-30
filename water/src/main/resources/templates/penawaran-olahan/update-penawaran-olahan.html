@@ -22,7 +22,7 @@
         <div class="row my-1">
             <p class="c3">
                 <a type = "button" class = "btn-small btn-outline-raisin-black h6 me-4" th:href="@{/penawaran-hasil-olahan/view/} + ${penawaranOlahan.idPenawaranOlahan}">
-                    <i class="bi-chevron-left"></i> Kembali
+                    <i class="bi-chevron-left"></i> Back
                 </a>
                 <text class="c3" th:text="${penawaranOlahan.idPenawaranOlahan}"></text>
             </p>
@@ -136,12 +136,16 @@
                             </div>
                             <div class="my-4">
                                 <p class="h5 text-raisin-black">Foto buku rekening atau e-rekening<span class="text-danger"> *</span></p>
-                                <input type="hidden" th:field="*{fotoRekening}">
-                                <input class="form-control p2" type="file" name="file" accept="image/png, image/jpeg">
+                                <input class="form-control p2" type="file" name="file" accept="image/png, image/jpeg" id="upload_file" onchange="getImagePreview(event)">
                                 <small>Foto harus berisi nama pemilik dan nomor rekening</small>
-                                <div class="zoomin pt-2">
-                                    <figcaption>Foto saat ini</figcaption>
-                                    <img th:src="${penawaranOlahan.fotoRekeningPath}" title="Image"/>
+                                <div class="image-container">
+                                    <div class="image">
+                                        <img class="mt-3 mb-3" id="preview" th:src="${penawaranOlahan.fotoRekeningPath}">
+                                    </div>
+                                    <div class="popup-image">
+                                        <span>&times;</span>
+                                        <img src="" alt="" />
+                                    </div>
                                 </div>
                             </div>
 
@@ -162,7 +166,7 @@
                                     <td>
                                         <select th:id="'select'+${iterationStatus.count}" name="item"
                                                 th:field="*{listItemPenawaranOlahan[__${iterationStatus.index}__].idItem}"
-                                                class="form-control form-select" onchange=quantityCheck(this)>
+                                                class="form-control form-select">
                                             <option value="" selected>Pilih jenis</option>
                                             <div th:each="item, iterationStatus2 : ${listItemEx}">
                                                 <option th:attr="data-kuantitas=${item.kuantitasOlahan}" th:id="'item'+${item.idItem}"
@@ -205,7 +209,7 @@
 
                             <!-- Button trigger modal -->
                             <a type="button" class="mx-2 btn-small btn-primary-green" data-bs-toggle="modal" data-bs-target="#savechanges">
-                                Simpan
+                                Submit
                             </a>
 
                             <!-- Modal -->
@@ -220,7 +224,7 @@
                                             Apakah Anda yakin ingin membuat penawaran pembelian hasil olahan?
                                         </div>
                                         <div class="modal-footer justify-content-center">
-                                            <button type="button" class="btn-small btn-outline-raisin-black" data-bs-dismiss="modal">Batal</button>
+                                            <button type="button" class="btn-small btn-outline-raisin-black" data-bs-dismiss="modal">Cancel</button>
                                             <button type="submit" id="submitbutton" name="save" onclick="this.form.submitted='save';" class="btn-small btn-primary-green">Ya, buat</button>
                                         </div>
                                     </div>
@@ -272,13 +276,26 @@
 </script>
 
 <script>
-    function quantityCheck(id) {
-        var idSelect = id.id
-        var idItem = idSelect.slice(6, idSelect.length);
-        var kuantitasOption = document.getElementById("item"+id.value).getAttribute('data-kuantitas');
+   document.querySelectorAll(".image img").forEach(image => {
+    image.onclick = () => {
+      document.querySelector(".popup-image").style.display = "block";
+      document.querySelector(".popup-image img").src =
+        image.getAttribute("src");
+    };
+  });
 
-        document.getElementById("kuantitas"+idItem).max = kuantitasOption
-    }
+  document.querySelector(".popup-image span").onclick = () => {
+    document.querySelector(".popup-image").style.display = "none";
+  };
+</script>
+
+<script type="text/javascript">
+     function getImagePreview(event)
+      {
+        var image=URL.createObjectURL(event.target.files[0]);
+        var imagediv= document.getElementById('preview');
+        imagediv.src=image;
+      }
 </script>
 
 </body>

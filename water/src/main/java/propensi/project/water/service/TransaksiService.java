@@ -7,6 +7,7 @@ import propensi.project.water.model.PoinReward.TukarPoinModel;
 import propensi.project.water.model.Transaksi.*;
 
 import java.io.File;
+import java.sql.Blob;
 import java.util.List;
 import java.util.Map;
 
@@ -14,8 +15,8 @@ public interface TransaksiService {
 
     // add
     ProsesLainModel addTransaksiManual(ProsesLainModel transaksiManual);
-    ProsesPenawaranOlahanModel addTransaksiOlahan(PenawaranOlahanModel penawaranOlahan, String bukti, Boolean isManual);
-    ProsesTukarPoinModel addTransaksiTukarPoin(String file, TukarPoinModel tukarPoin, Integer totalHarga);
+    ProsesPenawaranOlahanModel addTransaksiOlahan(PenawaranOlahanModel penawaranOlahan, Blob bukti, Boolean isManual);
+    ProsesTukarPoinModel addTransaksiTukarPoin(Blob file, TukarPoinModel tukarPoin, Integer totalHarga);
 
     //get
     List<TransaksiModel> retrieveListAllTransaksi();

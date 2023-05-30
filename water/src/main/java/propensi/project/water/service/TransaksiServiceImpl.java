@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.Blob;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -46,7 +47,7 @@ public class TransaksiServiceImpl implements TransaksiService {
     }
 
     @Override
-    public ProsesPenawaranOlahanModel addTransaksiOlahan(PenawaranOlahanModel penawaranOlahan, String bukti, Boolean isManual){
+    public ProsesPenawaranOlahanModel addTransaksiOlahan(PenawaranOlahanModel penawaranOlahan, Blob bukti, Boolean isManual){
         ProsesPenawaranOlahanModel transaksi = new ProsesPenawaranOlahanModel();
         transaksi.setJenisTransaksi(Boolean.FALSE);
         transaksi.setProses(1);
@@ -64,7 +65,7 @@ public class TransaksiServiceImpl implements TransaksiService {
     }
 
     @Override
-    public ProsesTukarPoinModel addTransaksiTukarPoin(String file, TukarPoinModel tukarPoin, Integer totalHarga){
+    public ProsesTukarPoinModel addTransaksiTukarPoin(Blob file, TukarPoinModel tukarPoin, Integer totalHarga){
         ProsesTukarPoinModel transaksi = new ProsesTukarPoinModel();
         transaksi.setJenisTransaksi(Boolean.TRUE);
         transaksi.setProses(3);
@@ -92,8 +93,8 @@ public class TransaksiServiceImpl implements TransaksiService {
 
     @Override
     public Page<TransaksiModel> retrievePageIdContaining(String keyword,
-                                                                 Pageable paging,
-                                                                 Boolean jenis){
+                                                         Pageable paging,
+                                                         Boolean jenis){
         if (jenis == null){
             return transaksiDb.findByIdTransaksiContainingIgnoreCaseOrderByTanggalDibuat(keyword,paging);
         }
@@ -156,7 +157,9 @@ public class TransaksiServiceImpl implements TransaksiService {
     public TransaksiModel updateTransaksiSampahOlahan(TransaksiModel updatedTransaksi){
         TransaksiModel transaksi = retrieveTransaksiById(updatedTransaksi.getIdTransaksi());
         transaksi.setKeterangan(updatedTransaksi.getKeterangan());
-        transaksi.setBukti(updatedTransaksi.getBukti());
+        if(updatedTransaksi.getBukti() != null){
+            transaksi.setBukti(updatedTransaksi.getBukti());
+        }
         return transaksiDb.save(transaksi);
     }
 
@@ -169,7 +172,9 @@ public class TransaksiServiceImpl implements TransaksiService {
         transaksi.setJenisTransaksi(updatedTransaksi.getJenisTransaksi());
         transaksi.setTanggalTransaksi(updatedTransaksi.getTanggalTransaksi());
         transaksi.setKeterangan(updatedTransaksi.getKeterangan());
-        transaksi.setBukti(updatedTransaksi.getBukti());
+        if(updatedTransaksi.getBukti() != null){
+            transaksi.setBukti(updatedTransaksi.getBukti());
+        }
         return transaksiDb.save(transaksi);
     }
     @Override

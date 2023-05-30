@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import lombok.AllArgsConstructor;
 import propensi.project.water.model.PenjualanHasilOlahan.PenawaranOlahanModel;
+import propensi.project.water.model.PoinReward.RewardTukarPoinDoneModel;
 import propensi.project.water.model.PoinReward.RewardTukarPoinModel;
 import propensi.project.water.model.PoinReward.TukarPoinModel;
 import propensi.project.water.model.User.DonaturModel;
@@ -116,5 +117,6 @@ public class TukarPoinServiceImpl implements TukarPoinService {
     public TukarPoinModel update(TukarPoinModel updatedTukarPoin) {
         return tukarPoinDb.save(updatedTukarPoin);
     }
+
 
 }

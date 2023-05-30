@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import propensi.project.water.model.PenjualanHasilOlahan.PenawaranOlahanModel;
+import propensi.project.water.model.PoinReward.RewardTukarPoinDoneModel;
 import propensi.project.water.model.PoinReward.RewardTukarPoinModel;
 import propensi.project.water.model.PoinReward.TukarPoinModel;
 import propensi.project.water.model.User.DonaturModel;
@@ -20,4 +21,5 @@ public interface TukarPoinService {
     List<RewardTukarPoinModel> getListRewardById(String idTukarPoin);
     void delete(TukarPoinModel updatedTukarPoin);
     TukarPoinModel update(TukarPoinModel tukarPoinEx);
+
 }

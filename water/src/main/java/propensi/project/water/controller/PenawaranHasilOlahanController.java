@@ -24,6 +24,8 @@ import propensi.project.water.service.*;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
+import java.sql.Blob;
+import java.sql.SQLException;
 import java.util.*;
 
 @Slf4j
@@ -124,7 +126,7 @@ public class PenawaranHasilOlahanController {
                                             RedirectAttributes redirectAttrs,
                                             HttpServletRequest request,
                                             @RequestParam(name="fileTransaksi", required = false) MultipartFile fileTransaksi,
-                                            @RequestParam(name="file", required = false) MultipartFile fileRekening) throws IOException {
+                                            @RequestParam(name="file", required = false) MultipartFile fileRekening) throws IOException, SQLException {
 
         List<ItemPenawaranOlahanModel> listItem = penawaranOlahan.getListItemPenawaranOlahan();
 
@@ -154,15 +156,8 @@ public class PenawaranHasilOlahanController {
             return "redirect:/penawaran-hasil-olahan/add";
         }
 
-
-        //file foto rekening
-        String fileName = StringUtils.cleanPath(fileRekening.getOriginalFilename());
-        penawaranOlahan.setFotoRekening(fileName);
+        penawaranOlahan.setFotoRekening(FileUploadUtil.encodePicture(fileRekening));
         PenawaranOlahanModel savedPenawaranOlahan = penawaranOlahanService.add(penawaranOlahan, customer);
-
-        //save file bukti
-        String uploadDir = "./src/main/resources/static/images/" + savedPenawaranOlahan.getIdPenawaranOlahan();
-        FileUploadUtil.saveFile(uploadDir, fileName, fileRekening);
 
         //integrate if manual
         if(customer == null){
@@ -194,7 +189,7 @@ public class PenawaranHasilOlahanController {
     private String updatePenawaranOlahanSubmit(@ModelAttribute PenawaranOlahanModel penawaranOlahan,
                                                @RequestParam(name="file", required = false) MultipartFile fileRekening,
                                                Model model,
-                                               RedirectAttributes redirectAttrs) throws IOException {
+                                               RedirectAttributes redirectAttrs) throws SQLException {
 
         List<ItemPenawaranOlahanModel> listItem = penawaranOlahan.getListItemPenawaranOlahan();
 
@@ -225,24 +220,13 @@ public class PenawaranHasilOlahanController {
         PenawaranOlahanModel penawaranOlahanEx = penawaranOlahanService.getPenawaranOlahanById(penawaranOlahan.getIdPenawaranOlahan());
         penawaranOlahanEx.getListItemPenawaranOlahan().removeAll(penawaranOlahanEx.getListItemPenawaranOlahan());
         penawaranOlahanService.deleteAllItem(penawaranOlahanEx);
-        penawaranOlahanService.update(penawaranOlahan, false);
 
-        //get foto rekening lama
-        String idPenawaranOlahan = penawaranOlahan.getIdPenawaranOlahan();
-        String fotoRekeningLama = penawaranOlahanService.getPenawaranOlahanById(idPenawaranOlahan).getFotoRekening();
-
-        if(fileRekening == null){
-            penawaranOlahan.setFotoRekening(fotoRekeningLama);
-            penawaranOlahanService.updateStatusOrFoto(penawaranOlahan);
-        }else{
-            String fileName =  StringUtils.cleanPath(fileRekening.getOriginalFilename());
-            penawaranOlahan.setFotoRekening(fileName);
-            PenawaranOlahanModel updatedPenawaranOlahan = penawaranOlahanService.updateStatusOrFoto(penawaranOlahan);
-
-            String uploadDir = "./src/main/resources/static/images/" + updatedPenawaranOlahan.getIdPenawaranOlahan();
-            FileUploadUtil.deleteFolder(new File(uploadDir));
-            FileUploadUtil.saveFile(uploadDir, fileName, fileRekening);
+        if(!fileRekening.isEmpty()){
+            penawaranOlahan.setFotoRekening(FileUploadUtil.encodePicture(fileRekening));
+        } else {
+            penawaranOlahan.setFotoRekening(penawaranOlahanEx.getFotoRekening());
         }
+        penawaranOlahanService.update(penawaranOlahan, false);
 
         redirectAttrs.addFlashAttribute("success",
                 String.format("id %s berhasil diperbaharui", penawaranOlahan.getIdPenawaranOlahan()));
@@ -347,7 +331,7 @@ public class PenawaranHasilOlahanController {
                                                RedirectAttributes redirectAttrs,
                                                Model model,
                                                @RequestParam(name="filePengiriman", required = false) MultipartFile filePengiriman,
-                                               @RequestParam(name="fileTransaksi", required = false) MultipartFile fileTransaksi) throws IOException {
+                                               @RequestParam(name="fileTransaksi", required = false) MultipartFile fileTransaksi) throws IOException, SQLException {
 
 
         PenawaranOlahanModel penawaranOlahanEx = penawaranOlahanService.getPenawaranOlahanById(penawaranOlahan.getIdPenawaranOlahan());
@@ -371,9 +355,8 @@ public class PenawaranHasilOlahanController {
                 integrateTransaksi(fileTransaksi, penawaranOlahanEx, true);
             }
             else if(status == 2){
-                if(filePengiriman != null){
-                    String fileName = setBuktiKirim(filePengiriman, penawaranOlahanEx);
-                    penawaranOlahanEx.setBuktiKirim(fileName);
+                if(!filePengiriman.isEmpty()){
+                    penawaranOlahanEx.setBuktiKirim(FileUploadUtil.encodePicture(filePengiriman));
                 }
             }
             else if(status == 3){
@@ -388,7 +371,7 @@ public class PenawaranHasilOlahanController {
             }
             penawaranOlahanEx.setStatus(5);
         }
-        penawaranOlahanService.updateStatusOrFoto(penawaranOlahanEx);
+        penawaranOlahanService.updateStatus(penawaranOlahanEx);
 
         redirectAttrs.addFlashAttribute("success",
                 String.format("Status penawaran hasil olahan sampah dengan id %s berhasil diperbarui",
@@ -408,7 +391,7 @@ public class PenawaranHasilOlahanController {
     }
 
     private void integrateTransaksi(MultipartFile fileTransfer, PenawaranOlahanModel penawaranOlahan, Boolean isUpdate)
-            throws IOException {
+            throws IOException, SQLException {
 
         List<ItemPenawaranOlahanModel> listItem = penawaranOlahan.getListItemPenawaranOlahan();
 
@@ -420,16 +403,11 @@ public class PenawaranHasilOlahanController {
         penawaranOlahan.setHarga(totalHarga);
 
         //update transaksi
-        String fileName = StringUtils.cleanPath(fileTransfer.getOriginalFilename());
-        ProsesPenawaranOlahanModel transaksi = transaksiService.addTransaksiOlahan(penawaranOlahan, fileName, true);
-
-        //set bukti file
-        setBuktiTransaksi(fileTransfer, transaksi);
+        ProsesPenawaranOlahanModel transaksi = transaksiService.addTransaksiOlahan(penawaranOlahan, FileUploadUtil.encodePicture(fileTransfer), true);
 
         penawaranOlahan.setTransaksiOlahan(transaksi);
-
         if(isUpdate){
-            penawaranOlahanService.updateStatusOrFoto(penawaranOlahan);
+            penawaranOlahanService.updateStatus(penawaranOlahan);
         } else {
             penawaranOlahanService.add(penawaranOlahan, null);
         }
@@ -447,7 +425,7 @@ public class PenawaranHasilOlahanController {
         }
 
         if(isUpdate){
-            penawaranOlahanService.updateStatusOrFoto(penawaranOlahan);
+            penawaranOlahanService.updateStatus(penawaranOlahan);
         } else {
             penawaranOlahanService.add(penawaranOlahan, null);
         }
@@ -537,30 +515,6 @@ public class PenawaranHasilOlahanController {
         }
 
         return orderedQty;
-    }
-
-    private String setBuktiKirim(MultipartFile file, PenawaranOlahanModel penawaranOlahan) throws IOException {
-
-        //file bukti
-        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-
-        //save file bukti
-        String uploadDir = "./src/main/resources/static/images/" + penawaranOlahan.getIdPenawaranOlahan();
-        FileUploadUtil.saveFile(uploadDir, fileName, file);
-
-        return fileName;
-    }
-
-    private String setBuktiTransaksi(MultipartFile file, ProsesPenawaranOlahanModel transaksi) throws IOException {
-
-        //file bukti
-        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-
-        //save file bukti
-        String uploadDir = "./src/main/resources/static/images/" + transaksi.getIdTransaksi();
-        FileUploadUtil.saveFile(uploadDir, fileName, file);
-
-        return fileName;
     }
 
 }

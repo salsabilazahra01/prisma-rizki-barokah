@@ -207,7 +207,7 @@
     </section>
     </div>
 
-    <section id = "sec-artikel" class = "py-5">
+    <section id = "sec-artikel" class = "py-5" th:if="${listArtikel.size!=0}">
         <div class = "container my-2">
             <div class = "row">
                 <div class = "col text-start">
@@ -220,12 +220,12 @@
                 </div>
             </div>
 
-            <div class = "row gx-md-5" th:if="${listArtikel.size!=0}">
+            <div class = "row gx-md-5">
 
 
                 <div class = "col-md-4 my-3 d-flex align-items-stretch" th:each="artikel, iterationStatus : ${listArtikel}">
                     <div class = "card rounded-25 text-center">
-                        <img class = "card-img-top rounded-top-25" th:src="'/images/'+${artikel.idArtikel}+'/'+${artikel.imageTitle}"
+                        <img class = "card-img-top rounded-top-25" th:src="${artikel.imageArtikelPath}"
                              alt="Artikel Image">
                         <div class = "card-body py-5">
                             <div class="card-title h3" th:text="${artikel.title}"></div>
@@ -235,9 +235,6 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <div th:unless="*{listArtikel.size()!=0}">
-                <h4 class="h4 p-2 text-center">Artikel Tidak Tersedia</h4>
             </div>
 
 
@@ -304,7 +301,7 @@
                         <div class = "card-body d-flex flex-column py-5 text-raisin-black">
                             <h4 class = "card-title h4">Penukaran Poin</h4>
                             <br>
-                            <a type="button" class="mt-auto mx-2 btn btn-primary-green" th:href="@{/donasi/penukaran-poin}">
+                            <a type="button" class="mt-auto mx-2 btn btn-primary-green" th:href="@{/penukaran-poin/viewall/-1}">
                                 Pilih
                             </a>
                         </div>

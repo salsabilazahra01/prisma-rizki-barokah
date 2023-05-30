@@ -8,6 +8,7 @@ import propensi.project.water.model.User.PartnerModel;
 import propensi.project.water.model.User.UserModel;
 
 import java.io.File;
+import java.sql.Blob;
 import java.util.List;
 public interface PenjualanSampahService {
     public PenawaranSampahModel addPenawaranSampah(PenawaranSampahModel penawaranSampah);
@@ -30,7 +31,7 @@ public interface PenjualanSampahService {
     public void saveStatus(PenawaranSampahModel penawaranSampah);
     public void saveStatusDiTolak(PenawaranSampahModel penawaranSampah);
     public void simpanInspeksiPenawaranSampah(PenawaranSampahModel penawaranSampah);
-    public void addTransaksiSampah(PenawaranSampahModel penawaranSampah, Boolean isManual, String bukti);
+    public void addTransaksiSampah(PenawaranSampahModel penawaranSampah, Boolean isManual, Blob bukti);
     public ProsesPenawaranSampahModel getTransaksiByPenawaranSampah(PenawaranSampahModel penawaranSampah);
     void deleteFolder(File file);
 }

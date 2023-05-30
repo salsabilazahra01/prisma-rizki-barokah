@@ -9,6 +9,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.format.annotation.DateTimeFormat;
+import propensi.project.water.controller.FileUploadUtil;
 import propensi.project.water.model.StringPrefixedSequenceIdGenerator;
 import propensi.project.water.model.Transaksi.ProsesPenawaranSampahModel;
 import propensi.project.water.model.User.PartnerModel;
@@ -17,6 +18,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.sql.Blob;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -57,9 +59,10 @@ public class PenawaranSampahModel implements Serializable {
     @Column(name = "noRekening", nullable = false)
     private Integer noRekening;
 
+    @Lob
     @NotNull
     @Column(name = "foto_rekening", nullable = false)
-    private String fotoRekening;
+    private Blob fotoRekening;
 
     @NotNull
     @Column(name = "alamat_pic", nullable = false)
@@ -107,6 +110,7 @@ public class PenawaranSampahModel implements Serializable {
     @Transient
     public String getFotoRekeningPath() {
         if (fotoRekening == null || idPenawaranSampah == null) return null;
-        return "/images/" + idPenawaranSampah + '/' + fotoRekening;
+        return "data:image/jpeg;base64," + FileUploadUtil.decodePicture(fotoRekening);
+
     }
 }

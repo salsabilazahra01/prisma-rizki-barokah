@@ -16,9 +16,6 @@
             <a button type="button" class="btn-small btn-outline-primary-green h6" th:href="@{/reward/add}">
               <span class="bi-plus"></span> Tambah Jenis Reward
             </a>
-<!--            <button type="button" class="btn-small btn-outline-secondary h6">-->
-<!--              <span class="bi-plus"></span> Filter-->
-<!--            </button>-->
           </div>
         </header>
         <main class="section" id="listOfUsers">
@@ -33,26 +30,28 @@
               </tr>
             </thead>
             <tbody>
-              <!-- For each thymeleaf rewards -->
-              <tr th:each="reward : ${rewards}">
-                <td>[[${reward.idReward}]]</td>
-                <td>[[${reward.jenisReward()}]]</td>
-                <td>[[${reward.poin}]]</td>
-                <td>[[${reward.harga}]]</td>
-                <td>
-                  <a th:href="@{/reward/{id}/edit(id=${reward.idReward})}"
-                    class="btn-small btn-primary-green h6">
-                    <span></span> Edit
-                  </a>
-                </td>
-                <td>
-                  <div th:replace="fragments/fragment-reward :: modalDelete(${reward.idReward}, ${reward.jenisReward()})"></div>
-                </td>
-
-              </tr>
-              <tr th:unless="${rewards.size}">
-                <th colspan="6" class="h4 p-4 text-center">Belum terdapat reward</th>
-              </tr>
+            <!-- For each thymeleaf rewards -->
+            <tr th:each="reward, itrStat : ${rewards}">
+              <td>[[${reward.idReward}]]</td>
+              <td>[[${reward.jenisReward()}]]</td>
+              <td>[[${reward.poin}]]</td>
+              <td>[[${reward.harga}]]</td>
+              <td>
+                <a th:href="@{/reward/{id}/edit(id=${reward.idReward})}" class="mx-2 btn-small btn-primary-green"
+                   th:if="${!listBoolean[itrStat.index]}">
+                  Perbarui
+                </a>
+                <button disabled class="mx-2 btn-small btn-disabled" th:if="${listBoolean[itrStat.index]}">
+                  Perbarui
+                </button>
+              </td>
+              <td>
+                <div th:replace="fragments/fragment-reward :: modalDelete(${reward.idReward}, ${reward.jenisReward()}, ${!listBoolean[itrStat.index]})"></div>
+              </td>
+            </tr>
+            <tr th:unless="${rewards.size}">
+              <th colspan="6" class="h4 p-4 text-center">This list is empty</th>
+            </tr>
             </tbody>
           </table>
           

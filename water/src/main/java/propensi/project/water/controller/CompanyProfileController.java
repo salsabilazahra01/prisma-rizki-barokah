@@ -135,7 +135,7 @@ public class CompanyProfileController {
         CompanyProfileModel saveCompanyProfile = companyProfileService.setListTestimoni(testimoniService.findAll());
 
         redirectAttrs.addFlashAttribute("success",
-                String.format("Company profile berhasil di-update"));
+                String.format("Company profile berhasil diperbarui"));
 
         model.addAttribute("companyProfile", saveCompanyProfile);
         return "redirect:/about-us/view";
