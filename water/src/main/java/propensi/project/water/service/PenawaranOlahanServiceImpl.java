@@ -84,6 +84,7 @@ public class PenawaranOlahanServiceImpl implements PenawaranOlahanService {
         penawaranOlahan.setAlamatPic(updatedPenawaran.getAlamatPic());
 
         penawaranOlahan.setTanggalDibuat(updatedPenawaran.getTanggalDibuat());
+        penawaranOlahan.setFotoRekening(updatedPenawaran.getFotoRekening());
 
         //update list
         for(ItemPenawaranOlahanModel item : updatedPenawaran.getListItemPenawaranOlahan()){
@@ -95,7 +96,7 @@ public class PenawaranOlahanServiceImpl implements PenawaranOlahanService {
     }
 
     @Override
-    public PenawaranOlahanModel updateStatusOrFoto(PenawaranOlahanModel updatedPenawaran) {
+    public PenawaranOlahanModel updateStatus(PenawaranOlahanModel updatedPenawaran) {
         return penawaranOlahanDb.save(updatedPenawaran);
     }
 

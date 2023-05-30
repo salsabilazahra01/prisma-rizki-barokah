@@ -742,37 +742,34 @@ footer {
 
 /* img pop up */
 
-.container {
+  .container {
     position: relative;
-}
+  }
 
-.container .image-container {
+  .container .image-container {
     display: flex;
     flex-wrap: wrap;
     gap: 15px;
     justify-content: center;
     padding: 10px;
-}
+  }
 
-.container .image-container .image {
-    height: 250px;
+  .container .image-container .image {
     width: 350px;
     overflow: hidden;
     cursor: pointer;
-}
+  }
 
-.container .image-container .image img {
-    height: 100%;
-    width: 100%;
-    object-fit: cover;
+  .container .image-container .image img {
+    width: 300px;
     transition: 0.2s linear;
-}
+  }
 
-.container .image-container .image:hover img {
+  .container .image-container .image:hover img {
     transform: scale(1.1);
-}
+  }
 
-.container .popup-image {
+  .container .popup-image {
     position: fixed;
     top: 0;
     left: 0;
@@ -781,8 +778,8 @@ footer {
     width: 100%;
     z-index: 1000;
     display: none;
-}
-.container .popup-image span {
+  }
+  .container .popup-image span {
     position: absolute;
     top: 0;
     right: 10px;
@@ -791,9 +788,9 @@ footer {
     color: white;
     cursor: pointer;
     z-index: 100;
-}
+  }
 
-.container .popup-image img {
+  .container .popup-image img {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -802,10 +799,15 @@ footer {
     border-radius: 5px;
     width: 750px;
     object-fit: cover;
-}
+  }
 
-@media (max-width: 768px) {
+  @media (max-width: 768px) {
     .container .popup-image img {
-        width: 95%;
+      width: 95%;
     }
+  }
+
+.scroll-wr{
+    max-height: 320px;
+    overflow: auto;
 }

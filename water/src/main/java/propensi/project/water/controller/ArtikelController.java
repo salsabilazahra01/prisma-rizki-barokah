@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.security.Principal;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -60,18 +61,16 @@ public class ArtikelController {
     public String addArtikelSubmit(Model model, @ModelAttribute ArtikelModel artikel,
                                    @RequestParam("image") MultipartFile file,
                                    RedirectAttributes redirectAttrs
-    ) throws IOException {
+    ) throws SQLException {
+
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-        if (fileName == "" || artikel.getContent().equals("")) {
+        if (file.isEmpty() || artikel.getContent().equals("")) {
             redirectAttrs.addFlashAttribute("failed", "Lengkapi seluruh field");
             model.addAttribute("artikel", artikel);
             return "redirect:/artikel/add";
         } else {
-            artikel.setImageTitle(fileName);
+            artikel.setImageTitle(FileUploadUtil.encodePicture(file));
             artikel.setCreatedAt(LocalDateTime.now());
-            ArtikelModel savedArtikel = artikelService.addArtikel(artikel);
-            String uploadDir = "./src/main/resources/static/images/" + savedArtikel.getIdArtikel();
-            FileUploadUtil.saveFile(uploadDir, fileName, file);
             artikelService.addArtikel(artikel);
 
             redirectAttrs.addFlashAttribute("success", "Artikel baru berhasil dibuat");
@@ -127,27 +126,22 @@ public class ArtikelController {
     @PostMapping(value = "/update", params = {"save"})
     private String updateArtikelSubmit(
             @ModelAttribute ArtikelModel artikel, @RequestParam("image") MultipartFile file,
-            RedirectAttributes redirectAttributes) throws IOException {
+            RedirectAttributes redirectAttributes) throws IOException, SQLException {
 
         String idArtikel = artikel.getIdArtikel();
         ArtikelModel artikelLama = artikelService.findByIdArtikel(idArtikel);
-        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-        String namaFileLama = artikelLama.getImageTitle();
-        artikel.setImageTitle(fileName);
 
-        if (fileName == "") {
+        if (file.isEmpty()) {
             artikel.setImageTitle(artikelLama.getImageTitle());
         } else {
-            ArtikelModel savedArtikel = artikelService.addArtikel(artikel);
-            String uploadDir = "./src/main/resources/static/images/" + savedArtikel.getIdArtikel();
-            artikelService.deleteFile(uploadDir, namaFileLama);
-            FileUploadUtil.saveFile(uploadDir, fileName, file);
+            artikel.setImageTitle(FileUploadUtil.encodePicture(file));
         }
         artikel.setLastEdited(LocalDateTime.now());
         artikel.setIsEdited(true);
         artikelService.updateArtikel(artikel);
-        redirectAttributes.addFlashAttribute("success", "Berhasil memperbarui penawaran sampah!");
+        redirectAttributes.addFlashAttribute("success", "Berhasil memperbarui artikel!");
         return "redirect:/artikel/viewall";
     }
+
 
 }

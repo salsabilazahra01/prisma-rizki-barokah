@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -22,12 +23,11 @@ import propensi.project.water.service.TransaksiService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.awt.*;
-import java.io.File;
 import java.io.IOException;
+import java.sql.Blob;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
@@ -55,20 +55,9 @@ public class TransaksiController {
     public String addTransaksiProsesLainSubmit(@ModelAttribute ProsesLainModel transaksiManual,
                                                @RequestParam("file") MultipartFile file,
                                                RedirectAttributes redirectAttrs
-    ) throws IOException {
-
+    ) throws SQLException {
         transaksiManual.setTanggalDibuat(LocalDateTime.now());
-
-        //file bukti
-        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-        transaksiManual.setBukti(fileName);
-
-        ProsesLainModel savedTransaksi = transaksiService.addTransaksiManual(transaksiManual);
-
-        //save file bukti
-        String uploadDir = "./src/main/resources/static/images/" + savedTransaksi.getIdTransaksi();
-        FileUploadUtil.saveFile(uploadDir, fileName, file);
-
+        transaksiManual.setBukti(FileUploadUtil.encodePicture(file));
         transaksiService.addTransaksiManual(transaksiManual);
 
         redirectAttrs.addFlashAttribute("success","Transaksi baru berhasil ditambahkan");
@@ -154,7 +143,6 @@ public class TransaksiController {
         model.addAttribute("transaksi", transaksi);
 
         return "laporan-transaksi/view-transaksi";
-//        return "foto";
     }
 
     @GetMapping(value = "/delete/{idTransaksi}")
@@ -163,9 +151,6 @@ public class TransaksiController {
 
         TransaksiModel transaksi = transaksiService.retrieveTransaksiById(idTransaksi);
         transaksiService.delete(transaksi);
-
-        String uploadDir = "./src/main/resources/static/images/"+ transaksi.getIdTransaksi();
-        FileUploadUtil.deleteFolder(new File(uploadDir));
 
         redirectAttrs.addFlashAttribute("success",
                 String.format("Transaksi dengan ID %s berhasil dihapus", idTransaksi));
@@ -178,7 +163,6 @@ public class TransaksiController {
             @PathVariable String idTransaksi,
             Model model
     ) {
-
         var transaksi = transaksiService.retrieveTransaksiById(idTransaksi);
         model.addAttribute("transaksi", transaksi);
 
@@ -190,26 +174,13 @@ public class TransaksiController {
                                                         RedirectAttributes redirectAttributes,
                                                         Model model,
                                                         @RequestParam(value = "file", required = false) MultipartFile file
-    ) throws IOException {
-
-        //get transaksi lama
-        String idTransaksi = transaksi.getIdTransaksi();
-        String buktiTransaksiLama = transaksiService.retrieveTransaksiById(idTransaksi).getBukti();
+    ) throws SQLException {
 
         TransaksiModel updatedTransaksi;
-        if(file == null){
-            transaksi.setBukti(buktiTransaksiLama);
-            updatedTransaksi = transaksiService.updateTransaksiSampahOlahan(transaksi);
-        }else{
-            String fileName =  StringUtils.cleanPath(file.getOriginalFilename());
-            transaksi.setBukti(fileName);
-            updatedTransaksi = transaksiService.updateTransaksiSampahOlahan(transaksi);
-
-            String uploadDir = "./src/main/resources/static/images/"+ updatedTransaksi.getIdTransaksi();
-            FileUploadUtil.deleteFolder(new File(uploadDir));
-
-            FileUploadUtil.saveFile(uploadDir, fileName, file);
+        if(!file.isEmpty()){
+            transaksi.setBukti(FileUploadUtil.encodePicture(file));
         }
+        updatedTransaksi = transaksiService.updateTransaksiSampahOlahan(transaksi);
 
         model.addAttribute("transaksi", updatedTransaksi);
         redirectAttributes.addFlashAttribute("success","Transaksi berhasil diubah");
@@ -222,26 +193,13 @@ public class TransaksiController {
                                                    RedirectAttributes redirectAttributes,
                                                    Model model,
                                                    @RequestParam(value = "file", required = false) MultipartFile file
-    ) throws IOException {
-
-        //get transaksi lama
-        String idTransaksi = transaksi.getIdTransaksi();
-        String buktiTransaksiLama = transaksiService.retrieveTransaksiById(idTransaksi).getBukti();
+    ) throws SQLException {
 
         TransaksiModel updatedTransaksi;
-        if(file == null){
-            transaksi.setBukti(buktiTransaksiLama);
-            updatedTransaksi = transaksiService.updateTransaksiProsesLain(transaksi);
-        }else{
-            String fileName =  StringUtils.cleanPath(file.getOriginalFilename());
-            transaksi.setBukti(fileName);
-            updatedTransaksi = transaksiService.updateTransaksiProsesLain(transaksi);
-
-            String uploadDir = "./src/main/resources/static/images/"+ updatedTransaksi.getIdTransaksi();
-            FileUploadUtil.deleteFolder(new File(uploadDir));
-
-            FileUploadUtil.saveFile(uploadDir, fileName, file);
+        if(!file.isEmpty()){
+            transaksi.setBukti(FileUploadUtil.encodePicture(file));
         }
+        updatedTransaksi = transaksiService.updateTransaksiProsesLain(transaksi);
 
         model.addAttribute("transaksi", updatedTransaksi);
         redirectAttributes.addFlashAttribute("success",
@@ -274,14 +232,6 @@ public class TransaksiController {
         ICsvListWriter csvWriter = new CsvListWriter(response.getWriter(), CsvPreference.STANDARD_PREFERENCE);
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-
-//        System.out.println(date);
-//        LocalDateTime periodeAwal = LocalDate.parse(generateResult.get("periodeAwal"), DateTimeFormatter.ISO_DATE);
-//        LocalDateTime periodeAkhir = LocalDate.parse(generateResult.get("periodeAkhir"), DateTimeFormatter.ISO_DATE);
-//        System.out.println(simpleDateFormat.format(periodeAwal));
-//        String periodeAwal = simpleDateFormat.format(request.getParameter("periodeawal"));
-//        String periodeAkhir = simpleDateFormat.format(request.getParameter("periodeakhir"));
-//        csvWriter.write("Periode: " + periodeAwal + " sampai " + periodeAkhir);
 
         String[] csvHeader = {"ID Transaksi", "Jenis Transaksi", "Nominal", "Tanggal Transaksi", "Keterangan", "Sumber"};
         csvWriter.writeHeader(csvHeader);

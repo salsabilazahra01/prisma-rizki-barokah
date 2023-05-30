@@ -87,14 +87,14 @@
                                         <br>
                                         <div class="container w-50">
                                             <div class="col-md-4 px-0 w-100">
-                                                <img th:src="'/images/'+${artikel.idArtikel}+'/'+${artikel.imageTitle}"
-                                                     class="w-100">
+                                                <img th:src="${artikel.imageArtikelPath}"
+                                                     class="w-100" id="preview">
                                             </div>
-                                            <p>Foto artikel yang tersimpan</p>
+                                            <p class="text-center mt-2">Preview foto artikel</p>
                                         </div>
                                         <br>
-                                        <input type="file" name="image" accept="image/png, image/jpeg"
-                                               th:value="${artikel.imageTitle}"/>
+                                        <input class="form-control" type="file" name="image" accept="image/png, image/jpeg"
+                                               th:value="${artikel.imageTitle}" id="upload_file" onchange="getImagePreview(event)"/>
                                         <div id="titleimage" class="form-text">
                                             Masukan Foto Dengan Format png atau jpeg. Max= 1000Kb
                                         </div>
@@ -218,6 +218,25 @@
             inputFile.value = null; // Clear the field.
         }
     }
+</script>
+<script>
+    function checkFileSize(inputFile) {
+        var max = 1 * 1024 * 1024; // 10MB
+
+        if (inputFile.files && inputFile.files[0].size > max) {
+            new bootstrap.Modal(document.querySelector("#errorModal")).show();
+            // alert("Ukuran file terlalu besar"); // Do your thing to handle the error.
+            inputFile.value = null; // Clear the field.
+        }
+    }
+</script>
+<script type="text/javascript">
+     function getImagePreview(event)
+      {
+        var image=URL.createObjectURL(event.target.files[0]);
+        var imagediv= document.getElementById('preview');
+        imagediv.src=image;
+      }
 </script>
 </body>
 </html>

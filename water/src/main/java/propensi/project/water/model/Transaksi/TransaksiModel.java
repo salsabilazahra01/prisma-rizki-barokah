@@ -9,11 +9,13 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.format.annotation.DateTimeFormat;
+import propensi.project.water.controller.FileUploadUtil;
 import propensi.project.water.model.StringPrefixedSequenceIdGenerator;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.sql.Blob;
 import java.time.LocalDateTime;
 
 @Entity
@@ -62,14 +64,14 @@ public class TransaksiModel implements Serializable{
     @CreationTimestamp
     private LocalDateTime tanggalDibuat;
 
+    @Lob
     @NotNull
     @Column(name = "bukti", nullable = false)
-    private String bukti;
+    private Blob bukti;
 
     @Transient
     public String getBuktiImagePath() {
-        if (bukti == null || idTransaksi == null) return null;
-        return "/images/" + idTransaksi + '/' + bukti;
+        return "data:image/jpeg;base64," + FileUploadUtil.decodePicture(bukti);
     }
 
     public String getJenisString(){

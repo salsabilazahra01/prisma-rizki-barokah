@@ -6,25 +6,22 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import propensi.project.water.model.PembelianSampah.PenawaranSampahModel;
 import propensi.project.water.model.PoinReward.RewardModel;
+import propensi.project.water.model.PoinReward.RewardTukarPoinDoneModel;
 import propensi.project.water.model.PoinReward.RewardTukarPoinModel;
 import propensi.project.water.model.PoinReward.TukarPoinModel;
-import propensi.project.water.model.Transaksi.ProsesLainModel;
 import propensi.project.water.model.Transaksi.ProsesTukarPoinModel;
 import propensi.project.water.model.User.DonaturModel;
-import propensi.project.water.model.User.UserModel;
 import propensi.project.water.service.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
+import java.sql.SQLException;
 import java.util.*;
 
 @Slf4j
@@ -34,8 +31,6 @@ import java.util.*;
 public class TukarPoinController {
 
     @Autowired
-    private final UserService userService;
-    @Autowired
     private final TukarPoinService tukarPoinService;
     @Autowired
     private final RewardService rewardService;
@@ -43,6 +38,8 @@ public class TukarPoinController {
     private final DonaturService donaturService;
     @Autowired
     private final TransaksiService transaksiService;
+    @Autowired
+    private final RewardTukarPoinDoneModelService rewardTukarPoinDoneModelService;
 
     @GetMapping(value="/viewall/{status}")
     private String viewAllTukarPoin(Model model,
@@ -119,7 +116,7 @@ public class TukarPoinController {
                                       RedirectAttributes redirectAttrs,
                                       HttpServletRequest request,
                                       @RequestParam(name="file", required = false) MultipartFile fileRekening)
-            throws IOException {
+            throws SQLException {
 
         List<RewardTukarPoinModel> listReward = tukarPoin.getListReward();
 
@@ -148,14 +145,8 @@ public class TukarPoinController {
         }
 
         //file foto rekening
-        String fileName = StringUtils.cleanPath(fileRekening.getOriginalFilename());
-        tukarPoin.setFotoRekening(fileName);
-
-        TukarPoinModel savedTukarPoin = tukarPoinService.add(tukarPoin);
-
-        //save file bukti
-        String uploadDir = "./src/main/resources/static/images/" + savedTukarPoin.getIdTukarPoin();
-        FileUploadUtil.saveFile(uploadDir, fileName, fileRekening);
+        tukarPoin.setFotoRekening(FileUploadUtil.encodePicture(fileRekening));
+        tukarPoinService.add(tukarPoin);
 
         if(donatur != null){
             model.addAttribute("poin", donatur.getPoin());
@@ -219,16 +210,28 @@ public class TukarPoinController {
     private String viewTukarPoin(Model model, @PathVariable String idTukarPoin, HttpServletRequest request) {
 
         TukarPoinModel tukarPoin = tukarPoinService.findById(idTukarPoin);
-        List<RewardTukarPoinModel> listReward = tukarPoinService.getListRewardById(idTukarPoin);
 
         int totalPoin = 0;
-        for(int i = 0; i < listReward.size(); i++){
-            totalPoin += listReward.get(i).getIdReward().getPoin()*listReward.get(i).getKuantitas();
-        }
-
         int totalKuantitas = 0;
-        for(int i = 0; i < listReward.size(); i++){
-            totalKuantitas += listReward.get(i).getKuantitas();
+        List<RewardTukarPoinDoneModel> listRewardDone = new ArrayList<>();
+        List<RewardTukarPoinModel> listReward = new ArrayList<>();
+        if(tukarPoin.getStatus() < 3){
+            listReward = tukarPoinService.getListRewardById(idTukarPoin);
+            for(int i = 0; i < listReward.size(); i++){
+                totalPoin += listReward.get(i).getIdReward().getPoin()*listReward.get(i).getKuantitas();
+            }
+            for(int i = 0; i < listReward.size(); i++){
+                totalKuantitas += listReward.get(i).getKuantitas();
+            }
+        } else {
+            listRewardDone = rewardTukarPoinDoneModelService.findAllByIdTukarPoin(idTukarPoin);
+
+            for(int i = 0; i < listRewardDone.size(); i++){
+                totalPoin += listRewardDone.get(i).getPoinDitukar();
+            }
+            for(int i = 0; i < listRewardDone.size(); i++){
+                totalKuantitas += listRewardDone.get(i).getJumlah();
+            }
         }
 
         DonaturModel donatur = getDonatur(request);
@@ -239,7 +242,7 @@ public class TukarPoinController {
         model.addAttribute("totalPoin", totalPoin);
         model.addAttribute("totalKuantitas", totalKuantitas);
         model.addAttribute("tukarPoin", tukarPoin);
-        model.addAttribute("listReward", listReward);
+        model.addAttribute("listReward", tukarPoin.getStatus() < 3 ? listReward : listRewardDone);
         return "/donasi/penukaran-poin/view-tukar-poin";
     }
 
@@ -269,7 +272,7 @@ public class TukarPoinController {
                                          Model model, HttpServletRequest request,
                                          @RequestParam(name="filePengiriman", required = false) MultipartFile filePengiriman,
                                          @RequestParam(name="fileTransaksi", required = false) MultipartFile fileTransaksi)
-            throws IOException {
+            throws SQLException {
 
         TukarPoinModel tukarPoinEx = tukarPoinService.findById(tukarPoin.getIdTukarPoin());
         List<RewardTukarPoinModel> listReward = tukarPoinService.getListRewardById(tukarPoin.getIdTukarPoin());
@@ -282,11 +285,12 @@ public class TukarPoinController {
             if(status == 1){
                 integrateTransaksi(tukarPoinEx, fileTransaksi);
                 if(filePengiriman != null){
-                    String fileName = setFileBuktiKirim(filePengiriman, tukarPoinEx);
-                    tukarPoinEx.setBuktiKirim(fileName);
+                    tukarPoinEx.setBuktiKirim(FileUploadUtil.encodePicture(filePengiriman));
                 }
             } else if(status==2) {
                 integratePoinDonatur(tukarPoinEx, request);
+                List<RewardTukarPoinDoneModel> listRewardNew = createRewardDoneModel(tukarPoinEx);
+                tukarPoinEx.setListRewardDone(listRewardNew);
             }
             tukarPoinEx.setStatus(tukarPoinEx.getStatus()+1);
         } else {
@@ -307,7 +311,21 @@ public class TukarPoinController {
         return "redirect:/penukaran-poin/view/" + tukarPoinEx.getIdTukarPoin();
     }
 
-    private void integrateTransaksi(TukarPoinModel tukarPoin, MultipartFile file) throws IOException {
+    private List<RewardTukarPoinDoneModel> createRewardDoneModel(TukarPoinModel tukarPoinEx) {
+        for(RewardTukarPoinModel reward : tukarPoinService.getListRewardById(tukarPoinEx.getIdTukarPoin())){
+            RewardTukarPoinDoneModel newReward = new RewardTukarPoinDoneModel();
+            newReward.setJenisReward(reward.getIdReward().getJenisReward());
+            newReward.setJumlah(reward.getKuantitas());
+            newReward.setPoin(reward.getIdReward().getPoin());
+            newReward.setPoinDitukar(reward.getKuantitas()*reward.getIdReward().getPoin());
+            newReward.setIdTukarPoin(tukarPoinEx);
+            rewardTukarPoinDoneModelService.save(newReward);
+        }
+        List<RewardTukarPoinDoneModel> listReward = rewardTukarPoinDoneModelService.findAllByIdTukarPoin(tukarPoinEx.getIdTukarPoin());
+        return listReward;
+    }
+
+    private void integrateTransaksi(TukarPoinModel tukarPoin, MultipartFile file) throws SQLException {
         List<RewardTukarPoinModel> listReward = tukarPoinService.getListRewardById(tukarPoin.getIdTukarPoin());
 
         //update warehouse
@@ -316,15 +334,8 @@ public class TukarPoinController {
             totalHarga += reward.getIdReward().getHarga() * reward.getKuantitas();
         }
 
-        //file bukti
-        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-
         //add new transaksi
-        ProsesTukarPoinModel transaksi = transaksiService.addTransaksiTukarPoin(fileName, tukarPoin, totalHarga);
-
-        //save file bukti
-        String uploadDir = "./src/main/resources/static/images/" + transaksi.getIdTransaksi();
-        FileUploadUtil.saveFile(uploadDir, fileName, file);
+        ProsesTukarPoinModel transaksi = transaksiService.addTransaksiTukarPoin(FileUploadUtil.encodePicture(file), tukarPoin, totalHarga);
 
         //update transaksi
         TukarPoinModel tukarPoinEx = tukarPoinService.findById(tukarPoin.getIdTukarPoin());
@@ -419,18 +430,6 @@ public class TukarPoinController {
             totalPoin += reward.getIdReward().getPoin() * reward.getKuantitas();
         }
         return totalPoin;
-    }
-
-    private String setFileBuktiKirim(MultipartFile filePengiriman, TukarPoinModel tukarPoinEx) throws IOException {
-
-        //file bukti
-        String fileName = StringUtils.cleanPath(filePengiriman.getOriginalFilename());
-
-        //save file bukti
-        String uploadDir = "./src/main/resources/static/images/" + tukarPoinEx.getIdTukarPoin();
-        FileUploadUtil.saveFile(uploadDir, fileName, filePengiriman);
-
-        return fileName;
     }
 
 }

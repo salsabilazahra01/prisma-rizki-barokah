@@ -27,10 +27,7 @@ import propensi.project.water.model.Warehouse.WarehouseModel;
 import propensi.project.water.service.RewardService;
 import propensi.project.water.service.TukarPoinService;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Slf4j
 @Controller
@@ -54,7 +51,26 @@ public class RewardController {
         int lastItem = firstItem + pageReward.getContent().size() - 1;
 
         List<RewardModel> usedRewards = getUsedRewards(pageReward);
+        Map<String, Boolean> checkReward = new HashMap<>();
+        for (RewardModel reward : rewardService.findAll()) {
+            checkReward.put(reward.getIdReward(), false);
+        }
 
+        List<TukarPoinModel> listTukarPoin = tukarPoinService.findAll();
+        for (TukarPoinModel tukarPoin : listTukarPoin) {
+            if (tukarPoin.getStatus() < 3) {
+                for (RewardTukarPoinModel rewardTukarPoin : tukarPoinService.getListRewardById(tukarPoin.getIdTukarPoin())) {
+                    checkReward.put(rewardTukarPoin.getIdReward().getIdReward(), true);
+                }
+            }
+        }
+
+        List<Boolean> listBoolean = new ArrayList<>();
+        for (RewardModel reward : rewardService.findAll()) {
+            listBoolean.add(checkReward.get(reward.getIdReward()));
+        }
+
+        model.addAttribute("listBoolean", listBoolean);
         model.addAttribute("usedRewards", usedRewards);
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("firstItem", firstItem);

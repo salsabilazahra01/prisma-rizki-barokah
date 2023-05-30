@@ -14,6 +14,7 @@ import propensi.project.water.repository.TransaksiDb.ProsesPenawaranSampahDb;
 
 import javax.transaction.Transactional;
 import java.io.File;
+import java.sql.Blob;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -143,7 +144,7 @@ public class PenjualanSampahServiceImpl implements PenjualanSampahService {
     }
 
     @Override
-    public void addTransaksiSampah(PenawaranSampahModel penawaranSampah, Boolean isManual, String bukti){
+    public void addTransaksiSampah(PenawaranSampahModel penawaranSampah, Boolean isManual, Blob bukti){
         ProsesPenawaranSampahModel transaksi = new ProsesPenawaranSampahModel();
         transaksi.setJenisTransaksi(Boolean.TRUE);
         transaksi.setProses(0);

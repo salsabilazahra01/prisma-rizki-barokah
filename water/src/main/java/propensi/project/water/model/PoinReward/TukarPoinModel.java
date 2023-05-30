@@ -11,6 +11,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.format.annotation.DateTimeFormat;
+import propensi.project.water.controller.FileUploadUtil;
 import propensi.project.water.model.PenjualanHasilOlahan.ItemPenawaranOlahanModel;
 import propensi.project.water.model.StringPrefixedSequenceIdGenerator;
 import propensi.project.water.model.Transaksi.ProsesPenawaranOlahanModel;
@@ -21,6 +22,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.sql.Blob;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -77,9 +79,10 @@ public class TukarPoinModel implements Serializable {
     @Column(name = "namaRekening", nullable = false)
     private String namaRekening;
 
+    @Lob
     @NotNull
     @Column(name = "foto_rekening", nullable = false)
-    private String fotoRekening;
+    private Blob fotoRekening;
 
     @Column(name = "alamat_pic")
     private String alamatDonatur;
@@ -91,8 +94,9 @@ public class TukarPoinModel implements Serializable {
     @Column(name = "keterangan_tolak")
     private String keteranganTolak;
 
+    @Lob
     @Column(name = "bukti_kirim")
-    private String buktiKirim;
+    private Blob buktiKirim;
 
     // relasi dengan donatur
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
@@ -103,6 +107,10 @@ public class TukarPoinModel implements Serializable {
     //relasi dengan item reward
     @OneToMany(mappedBy = "idReward", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<RewardTukarPoinModel> listReward;
+
+    //relasi dengan item reward when done
+    @OneToMany(mappedBy = "idRewardDone", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<RewardTukarPoinDoneModel> listRewardDone;
 
     // relasi dengan transaksi
     @OneToOne(cascade = CascadeType.ALL)
@@ -126,12 +134,12 @@ public class TukarPoinModel implements Serializable {
     @Transient
     public String getBuktiKirimPath() {
         if (buktiKirim == null || idTukarPoin == null) return null;
-        return "/images/" + idTukarPoin + '/' + buktiKirim;
+        return "data:image/jpeg;base64," + FileUploadUtil.decodePicture(buktiKirim);
     }
 
     @Transient
     public String getFotoRekeningPath() {
         if (fotoRekening == null || idTukarPoin == null) return null;
-        return "/images/" + idTukarPoin + '/' + fotoRekening;
+        return "data:image/jpeg;base64," + FileUploadUtil.decodePicture(fotoRekening);
     }
 }

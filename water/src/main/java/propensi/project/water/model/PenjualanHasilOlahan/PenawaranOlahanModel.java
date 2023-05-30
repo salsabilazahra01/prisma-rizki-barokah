@@ -9,6 +9,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.format.annotation.DateTimeFormat;
+import propensi.project.water.controller.FileUploadUtil;
 import propensi.project.water.model.StringPrefixedSequenceIdGenerator;
 import propensi.project.water.model.Transaksi.ProsesPenawaranOlahanModel;
 import propensi.project.water.model.User.CustomerModel;
@@ -20,6 +21,7 @@ import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.sql.Blob;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -69,9 +71,10 @@ public class PenawaranOlahanModel implements Serializable {
     @Column(name = "namaRekening", nullable = false)
     private String namaRekening;
 
+    @Lob
     @NotNull
     @Column(name = "foto_rekening", nullable = false)
-    private String fotoRekening;
+    private Blob fotoRekening;
 
     @Column(name = "alamat_pic")
     private String alamatPic;
@@ -97,8 +100,9 @@ public class PenawaranOlahanModel implements Serializable {
     @Column(name = "harga", columnDefinition = "int default 0")
     private Integer harga;
 
+    @Lob
     @Column(name = "bukti_kirim")
-    private String buktiKirim;
+    private Blob buktiKirim;
 
     // relasi dengan customer
     @ManyToOne(fetch = FetchType.EAGER)
@@ -118,18 +122,12 @@ public class PenawaranOlahanModel implements Serializable {
     @Transient
     public String getBuktiKirimOlahanPath() {
         if (buktiKirim == null || idPenawaranOlahan == null) return null;
-        return "/images/" + idPenawaranOlahan + '/' + buktiKirim;
+        return "data:image/jpeg;base64," + FileUploadUtil.decodePicture(buktiKirim);
     }
 
     @Transient
     public String getFotoRekeningPath() throws UnsupportedEncodingException {
         if (fotoRekening == null || idPenawaranOlahan == null) return null;
-        return "/images/" + idPenawaranOlahan + '/' + fotoRekening;
-
-//        String encodedPathFoto = fotoRekening.replace(" ", "%20");
-//        String folderName = "/images/" + idPenawaranOlahan + '/' + encodedPathFoto;
-//
-//        System.out.println("ini path " + folderName);
-//        return folderName;
+        return "data:image/jpeg;base64," + FileUploadUtil.decodePicture(fotoRekening);
     }
 }

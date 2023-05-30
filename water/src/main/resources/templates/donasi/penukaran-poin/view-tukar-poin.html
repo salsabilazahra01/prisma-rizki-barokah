@@ -18,7 +18,7 @@
         <div class="row my-1">
             <p class="c3">
                 <a type = "button" class = "btn-small btn-outline-raisin-black h6 me-4" th:href="@{/penukaran-poin/viewall/-1}">
-                    <i class="bi-chevron-left"></i> Kembali
+                    <i class="bi-chevron-left"></i> Back
                 </a>
                 <text class="c3" th:text="${tukarPoin.idTukarPoin}"></text>
             </p>
@@ -30,7 +30,7 @@
             <h2 class="h2">Detail Penukaran Poin
                 <a sec:authorize="hasAuthority('DONATUR')" th:if="${tukarPoin.status == 0}" type = "button"
                    class = "btn-small-fit btn-red-danger h6" data-bs-toggle="modal" data-bs-target="#deleteModal">
-                    <i class="bi bi-x-circle-fill"></i>Batalkan
+                    <i class="bi bi-x-circle-fill"></i> Batalkan
                 </a>
             </h2>
             </p>
@@ -68,8 +68,12 @@
                         <div class="my-5" th:if="${!tukarPoin.isDelivered}">
                             <p class="p2">Bukti Pengiriman</p>
                             <p class="h4" th:if="${tukarPoin.buktiKirim == null}">-</p>
-                            <div class="zoomin" th:if="${tukarPoin.buktiKirim != null}">
-                                <img th:src="${tukarPoin.buktiKirimPath}"  title="Image" />
+                            <div class="image-container" th:if="${tukarPoin.buktiKirim != null}">
+                                <div class="image"><img th:src="${tukarPoin.buktiKirimPath}" title="Image"/></div>
+                            </div>
+                            <div class="popup-image">
+                                <span>&times;</span>
+                                <img src="" alt="" />
                             </div>
                         </div>
                         <div class="my-5">
@@ -82,8 +86,12 @@
                         </div>
                         <div class="my-5">
                             <p class="p2">Foto Buku Rekening atau E-Rekening</p>
-                            <div class="zoomin">
-                                <img th:src="${tukarPoin.fotoRekeningPath}" title="Image" />
+                            <div class="image-container">
+                                <div class="image"><img th:src="${tukarPoin.fotoRekeningPath}" title="Image"/></div>
+                            </div>
+                            <div class="popup-image">
+                                <span>&times;</span>
+                                <img src="" alt="" />
                             </div>
                         </div>
                         <div sec:authorize="!hasAuthority('DONATUR')" class="my-5">
@@ -114,12 +122,19 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="reward, iterationStatus : ${listReward}">
+                    <tr th:if="${tukarPoin.status < 3}" th:each="reward, iterationStatus : ${listReward}">
                         <td th:text="${iterationStatus.count}"></td>
                         <td th:text="${reward.idReward.jenisReward()}"></td>
                         <td th:text="${#numbers.formatInteger(reward.idReward.poin, 0, 'POINT')}"></td>
                         <td th:text="${#numbers.formatInteger(reward.kuantitas, 0, 'POINT')}"></td>
                         <td th:text="${#numbers.formatInteger(reward.idReward.poin*reward.kuantitas, 0, 'POINT')}"></td>
+                    </tr>
+                    <tr th:if="${tukarPoin.status >= 3}" th:each="reward, iterationStatus : ${listReward}">
+                        <td th:text="${iterationStatus.count}"></td>
+                        <td th:text="${reward.jenisReward}"></td>
+                        <td th:text="${#numbers.formatInteger(reward.poin, 0, 'POINT')}"></td>
+                        <td th:text="${#numbers.formatInteger(reward.jumlah, 0, 'POINT')}"></td>
+                        <td th:text="${#numbers.formatInteger(reward.poinDitukar, 0, 'POINT')}"></td>
                     </tr>
                     <tr class="fw-bold">
                         <td colspan="3">Total</td>
@@ -368,6 +383,20 @@
 
 <script src = "/bootstrap/js/bootstrap.js"></script>
 <script src="/script.js"></script>
+
+<script>
+   document.querySelectorAll(".image img").forEach(image => {
+    image.onclick = () => {
+      document.querySelector(".popup-image").style.display = "block";
+      document.querySelector(".popup-image img").src =
+        image.getAttribute("src");
+    };
+  });
+
+  document.querySelector(".popup-image span").onclick = () => {
+    document.querySelector(".popup-image").style.display = "none";
+  };
+</script>
 
 </body>
 </html>

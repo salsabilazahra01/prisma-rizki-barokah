@@ -1,14 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
-<div th:fragment="modalDelete(id, jenisReward)">
-  <a type="button" class="mx-2 btn-small btn-red-danger" data-bs-toggle="modal" th:data-bs-target="'#delete' + ${id}">
-    Delete
-  </a>
+<div th:fragment="modalDelete(id, jenisReward, bool)">
+  <button type="button" th:disabled="${bool == false}"
+     th:class="${bool} ? 'mx-2 btn-small btn-red-danger' : 'mx-2 btn-small btn-disabled'" data-bs-toggle="modal" th:data-bs-target="'#delete' + ${id}">
+    Hapus
+  </button>
   <!-- Modal -->
   <div class="modal fade" th:id="'delete' + ${id}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered text-center justify-content-center">

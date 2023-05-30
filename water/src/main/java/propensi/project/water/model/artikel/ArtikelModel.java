@@ -9,11 +9,13 @@ import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.springframework.format.annotation.DateTimeFormat;
+import propensi.project.water.controller.FileUploadUtil;
 import propensi.project.water.model.StringPrefixedSequenceIdGenerator;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.sql.Blob;
 import java.time.LocalDateTime;
 
 @Entity
@@ -44,9 +46,10 @@ public class ArtikelModel implements Serializable {
     @Column(name = "subtitle", nullable = false)
     private String subtitle;
 
+    @Lob
     @NotNull
     @Column(name = "imageTitle", nullable = false)
-    private String imageTitle;
+    private Blob imageTitle;
 
     @NotNull
     @Column(name = "author", nullable = false)
@@ -67,5 +70,11 @@ public class ArtikelModel implements Serializable {
     @NotNull
     @Column(columnDefinition="LONGTEXT", name = "content", nullable = false)
     private String content;
+
+    @Transient
+    public String getImageArtikelPath() {
+        if (imageTitle == null) return null;
+        return "data:image/jpeg;base64," + FileUploadUtil.decodePicture(imageTitle);
+    }
 
 }
