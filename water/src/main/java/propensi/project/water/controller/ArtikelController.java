@@ -108,7 +108,7 @@ public class ArtikelController {
         artikelService.deleteFolder(folder);
         artikelService.deleteArtikel(artikel);
         redirectAttrs.addFlashAttribute("success",
-                String.format("Artikel  dengan ID %s berhasil dibatalkan", idArtikel));
+                String.format("Artikel dengan ID %s berhasil dihapus", idArtikel));
 
         return "redirect:/artikel/viewall";
     }

@@ -44,6 +44,7 @@
       <div class="card-body">
       <h3 class="h3 text-center my-3">Daftar Batch</h3>
         <div class="row" id="viewall-batch">
+          <div th:if="*{batches.size() != 0}">
           <table class="table table-striped text-center align-middle">
         <thead>
           <tr>
@@ -70,6 +71,10 @@
           </tr>
         </tbody>
       </table>
+          </div>
+          <div th:unless="*{batches.size() != 0}">
+            <div th:replace="fragments/fragment-empty-list :: empty-list()"></div>
+          </div>
         </div>
       </div>
     </div>

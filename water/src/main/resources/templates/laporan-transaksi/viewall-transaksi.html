@@ -53,6 +53,7 @@
                     <!--list transaksi-->
                     <div class="row" id="semuaTransaksi">
                         <br>
+                        <div th:if="*{listTransaksi.size()!=0}">
                         <table class="table table-striped text-center align-middle">
                             <thead>
                             <tr>
@@ -77,6 +78,10 @@
                             </tr>
                             </tbody>
                         </table>
+                        </div>
+                        <div th:unless="*{listTransaksi.size()!=0}">
+                            <div th:replace="fragments/fragment-empty-list :: empty-list()"></div>
+                        </div>
                     </div>
 
                     <!-- pagination & page size -->

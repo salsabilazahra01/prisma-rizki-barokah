@@ -26,7 +26,7 @@ public class RewardTukarPoinDoneModelServiceImpl implements RewardTukarPoinDoneM
         List<RewardTukarPoinDoneModel> listByIdTP = new ArrayList<>();
         List<RewardTukarPoinDoneModel> newList = rewardTukarPoinDoneDb.findAll();
         for (RewardTukarPoinDoneModel reward : newList){
-            if(reward.getIdTukarPoin().equals(idTukarPoin)){
+            if(reward.getIdTukarPoin().getIdTukarPoin().equals(idTukarPoin)){
                 listByIdTP.add(reward);
             }
         }

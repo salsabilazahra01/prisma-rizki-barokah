@@ -101,17 +101,17 @@
             <div class="dropdown" sec:authorize="isAuthenticated()" th:with="result=${#authentication.getPrincipal().getUsername().toLowerCase().charAt(0)}">
                 <button class="btn border-0 dropdown-toggle btn-sm d-flex gap-2 align-items-center justify-content-center" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                     <div class="rounded-circle overflow-hidden">
-                        <div th:with="role=${#authentication.getPrincipal().getAuthorities().toString()}">
-                            <div th:if="${role.contains('MANAJER') || role.contains('PEKERJA') || role.contains('SUPERVISOR') || role.contains('TEKNISI') || role.contains('ADMIN')}">
+                        <div>
+                            <div sec:authorize="hasAuthority('MANAJER') || hasAuthority('PEKERJA') || hasAuthority('SUPERVISOR') || hasAuthority('TEKNISI') || hasAuthority('ADMIN')">
                                 <img th:src="${'/images/profile/internal.jpg'}" alt="IMAGE" style="width: 30px; height: 30px;"/>
                             </div>
-                            <div th:if="${role.contains('DONATUR')}">
+                            <div sec:authorize="hasAuthority('DONATUR')">
                                 <img th:src="${'/images/profile/donatur.jpg'}" alt="IMAGE" style="width: 30px; height: 30px;"/>
                             </div>
-                            <div th:if="${role.contains('PARTNER')}">
+                            <div sec:authorize="hasAuthority('PARTNER')">
                                 <img th:src="${'/images/profile/partner.jpg'}" alt="IMAGE" style="width: 30px; height: 30px;"/>
                             </div>
-                            <div th:if="${role.contains('CUSTOMER')}">
+                            <div sec:authorize="hasAuthority('CUSTOMER')">
                                 <img th:src="${'/images/profile/customer.jpg'}" alt="IMAGE" style="width: 30px; height: 30px;"/>
                             </div>
                         </div>
@@ -123,17 +123,17 @@
                             <div class="col-12">
                                 <div class="d-flex gap-2">
                                     <div class="overflow-hidden rounded-circle">
-                                        <div th:with="role=${#authentication.getPrincipal().getAuthorities().toString()}">
-                                            <div th:if="${role.contains('MANAJER') || role.contains('PEKERJA') || role.contains('SUPERVISOR') || role.contains('TEKNISI') || role.contains('ADMIN')}">
+                                        <div>
+                                            <div sec:authorize="hasAuthority('MANAJER') || hasAuthority('PEKERJA') || hasAuthority('SUPERVISOR') || hasAuthority('TEKNISI') || hasAuthority('ADMIN')">
                                                 <img th:src="${'/images/profile/internal.jpg'}" alt="IMAGE" style="width: 30px; height: 30px;"/>
                                             </div>
-                                            <div th:if="${role.contains('DONATUR')}">
+                                            <div sec:authorize="hasAuthority('DONATUR')">
                                                 <img th:src="${'/images/profile/donatur.jpg'}" alt="IMAGE" style="width: 30px; height: 30px;"/>
                                             </div>
-                                            <div th:if="${role.contains('PARTNER')}">
+                                            <div sec:authorize="hasAuthority('PARTNER')">
                                                 <img th:src="${'/images/profile/partner.jpg'}" alt="IMAGE" style="width: 30px; height: 30px;"/>
                                             </div>
-                                            <div th:if="${role.contains('CUSTOMER')}">
+                                            <div sec:authorize="hasAuthority('CUSTOMER')">
                                                 <img th:src="${'/images/profile/customer.jpg'}" alt="IMAGE" style="width: 30px; height: 30px;"/>
                                             </div>
                                         </div>
@@ -198,7 +198,7 @@
         }
     </script>
 </div>
-    <script src = "/bootstrap/js/bootstrap.js"></script>
-    <script src="/script.js"></script>
+<script src = "/bootstrap/js/bootstrap.js"></script>
+<script src="/script.js"></script>
 </body>
 </html>

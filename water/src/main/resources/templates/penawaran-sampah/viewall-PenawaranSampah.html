@@ -92,7 +92,7 @@
               </table>
             </div>
             <div th:unless="*{listPenawaranSampah.size()!=0}">
-              <h4 class="h4 p-2 text-center">Belum terdapat penawaran sampah</h4>
+              <div th:replace="fragments/fragment-empty-list :: empty-list()"></div>
             </div>
           </div>
         </form>

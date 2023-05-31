@@ -41,17 +41,22 @@ public class MengelolaKaryawanServiceImpl implements MengelolaKaryawanService{
         Optional<UserModel> uniqueEmail = null;
         Optional<UserModel> uniqueHp = null;
 
-        if (!user.getEmail().equals(null)) {
+        if (user.getEmail()!=null) {
             uniqueEmail = userDb.findByEmail(user.getEmail());
         }
-        if (!user.getHp().equals(null)) {
+        if (user.getHp()!=null) {
             uniqueHp = userDb.findByHp(user.getHp());
         }
 
-        // if username/email/hp already in database
-        if (uniqueUsername.isPresent() || uniqueEmail.isPresent() || uniqueHp.isPresent()) {
-            return true;
+        // check if username, hp, and email is unique
+        if (uniqueUsername.isPresent()) return true;
+
+        if (uniqueEmail != null) {
+            if (uniqueEmail.isPresent()) return true;
         }
+
+        if (uniqueHp != null)
+            if (uniqueHp.isPresent()) return true;
 
         // else if username & email & hp is unique
         return false;

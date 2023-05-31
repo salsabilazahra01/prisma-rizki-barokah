@@ -208,7 +208,6 @@ public class TukarPoinController {
 
     @GetMapping(value="/view/{idTukarPoin}")
     private String viewTukarPoin(Model model, @PathVariable String idTukarPoin, HttpServletRequest request) {
-
         TukarPoinModel tukarPoin = tukarPoinService.findById(idTukarPoin);
 
         int totalPoin = 0;
@@ -219,17 +218,12 @@ public class TukarPoinController {
             listReward = tukarPoinService.getListRewardById(idTukarPoin);
             for(int i = 0; i < listReward.size(); i++){
                 totalPoin += listReward.get(i).getIdReward().getPoin()*listReward.get(i).getKuantitas();
-            }
-            for(int i = 0; i < listReward.size(); i++){
                 totalKuantitas += listReward.get(i).getKuantitas();
             }
         } else {
             listRewardDone = rewardTukarPoinDoneModelService.findAllByIdTukarPoin(idTukarPoin);
-
             for(int i = 0; i < listRewardDone.size(); i++){
                 totalPoin += listRewardDone.get(i).getPoinDitukar();
-            }
-            for(int i = 0; i < listRewardDone.size(); i++){
                 totalKuantitas += listRewardDone.get(i).getJumlah();
             }
         }
@@ -314,7 +308,7 @@ public class TukarPoinController {
     private List<RewardTukarPoinDoneModel> createRewardDoneModel(TukarPoinModel tukarPoinEx) {
         for(RewardTukarPoinModel reward : tukarPoinService.getListRewardById(tukarPoinEx.getIdTukarPoin())){
             RewardTukarPoinDoneModel newReward = new RewardTukarPoinDoneModel();
-            newReward.setJenisReward(reward.getIdReward().getJenisReward());
+            newReward.setJenisReward(reward.getIdReward().jenisReward());
             newReward.setJumlah(reward.getKuantitas());
             newReward.setPoin(reward.getIdReward().getPoin());
             newReward.setPoinDitukar(reward.getKuantitas()*reward.getIdReward().getPoin());
