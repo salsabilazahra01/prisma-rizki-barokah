@@ -100,6 +100,14 @@ public class MengelolaKaryawanController {
             @ModelAttribute UserModel user,
             RedirectAttributes redirectAttributes
     ){
+        if (user.getEmail().equals("")) {
+            user.setEmail(null);
+        }
+
+        if (user.getHp().equals("")) {
+            user.setHp(null);
+        }
+
         if (mengelolaKaryawanService.uniqueValueConstraint(user)) {
             redirectAttributes.addFlashAttribute("error", "Username dan email telah terdaftar");
             return "redirect:add";

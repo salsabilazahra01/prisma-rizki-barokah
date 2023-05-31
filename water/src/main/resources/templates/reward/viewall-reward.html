@@ -19,6 +19,7 @@
           </div>
         </header>
         <main class="section" id="listOfUsers">
+          <div th:if="*{rewards.size() != 0}">
           <table class="table table-striped table-hover text-center align-middle">
             <thead>
               <tr>
@@ -54,6 +55,11 @@
             </tr>
             </tbody>
           </table>
+          </div>
+          <div th:unless="*{rewards.size() != 0}">
+            <div th:replace="fragments/fragment-empty-list :: empty-list()"></div>
+          </div>
+
           
           <div class="row mt-4 p3">
             <page-size class="col text-start">

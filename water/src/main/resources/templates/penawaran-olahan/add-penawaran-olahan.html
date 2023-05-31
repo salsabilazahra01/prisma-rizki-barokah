@@ -106,7 +106,11 @@
 
                             <div sec:authorize="!hasAuthority('CUSTOMER')" class="mb-4 mt-3">
                                 <label class="h5">Bukti Transfer <span class="text-danger"> *</span></label>
-                                <input class="form-control p2" type="file" name="fileTransaksi" accept="image/png, image/jpeg">
+                                <input class="form-control" type="file" name="fileTransaksi"
+                                       accept="image/png, image/jpeg" onchange="checkFileSize(this)">
+                                <div id="buktitransferdesc" class="form-text">
+                                    Masukkan Foto Dengan Format png atau jpeg. Max= 1MB
+                                </div>
                                 <span class="validity"></span>
                                 <div class="invalid-feedback">
                                     Masukkan bukti transfer
@@ -134,7 +138,9 @@
                             </div>
                             <div class="my-4">
                                 <label class="h6" for="bank">No. rekening <span class="text-danger"> *</span></label>
-                                <input required class="form-control" type="number" name="noRek" id="noRek" th:field="*{noRekening}" placeholder="Misal: 0780888199">
+                                <input required class="form-control rekening" type="number" name="noRek"
+                                       id="noRek" th:field="*{noRekening}" max="2147483647"
+                                       onKeyPress="if(this.value.length==10) return false;">
                                 <div class="invalid-feedback">
                                     Masukkan nomor rekening
                                 </div>
@@ -148,7 +154,11 @@
                             </div>
                             <div class="my-4">
                                 <label class="h6">Foto buku rekening atau e-rekening<span class="text-danger"> *</span></label>
-                                <input required class="form-control" type="file" name="file" accept="image/png, image/jpeg">
+                                <input required class="form-control" type="file" name="file"
+                                       accept="image/png, image/jpeg" onchange="checkFileSize(this)">
+                                <div id="titleimage" class="form-text">
+                                    Masukkan Foto Dengan Format png atau jpeg. Max= 1MB
+                                </div>
                                 <small>Foto harus berisi nama pemilik dan nomor rekening</small>
                                 <div class="invalid-feedback">
                                     Masukkan foto buku rekening atau e-rekening
@@ -177,7 +187,7 @@
                                     <td>
                                         <select th:id="'select'+${iterationStatus.count}" name="item"
                                                 th:field="*{listItemPenawaranOlahan[__${iterationStatus.index}__].idItem}"
-                                                class="form-control form-select" onchange=quantityCheck(this)>
+                                                class="form-control form-select">
                                             <option value="" selected>Pilih jenis</option>
                                             <div th:each="item, iterationStatus2 : ${listItemEx}">
                                                 <option th:attr="data-kuantitas=${item.kuantitasOlahan}" th:id="'item'+${item.idItem}"
@@ -252,6 +262,25 @@
         </form>
     </div>
 </div>
+<div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header modal-alert-bg">
+                <h5 class="modal-title text-center" id="modalTitle"><STRONG>ALERT!</STRONG></h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Ukuran file terlalu besar. Tolong sesuaikan menjadi kurang dari 1Mb
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-red-danger" data-bs-dismiss="modal">Tutup</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script src = "/bootstrap/js/bootstrap.js"></script>
 <script src="/script.js"></script>
@@ -262,6 +291,17 @@
     document.getElementById('tanggalTransaksi').max = new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60000).toISOString().split("T")[0];
 </script>
 
+<script>
+    function checkFileSize(inputFile) {
+        var max = 1 * 1024 * 1024; // 10MB
+
+        if (inputFile.files && inputFile.files[0].size > max) {
+            new bootstrap.Modal(document.querySelector("#errorModal")).show();
+            // alert("Ukuran file terlalu besar"); // Do your thing to handle the error.
+            inputFile.value = null; // Clear the field.
+        }
+    }
+</script>
 <script>
 
     (function () {
@@ -299,16 +339,6 @@
     var formattedDateTime = `${year}-${month}-${day}T${hours}:${minutes}`;
 
     input.setAttribute('max', formattedDateTime);
-</script>
-
-<script>
-    function quantityCheck(id) {
-        var idSelect = id.id
-        var idItem = idSelect.slice(6, idSelect.length);
-        var kuantitasOption = document.getElementById("item"+id.value).getAttribute('data-kuantitas');
-
-        document.getElementById("kuantitas"+idItem).max = kuantitasOption
-    }
 </script>
 
 </body>

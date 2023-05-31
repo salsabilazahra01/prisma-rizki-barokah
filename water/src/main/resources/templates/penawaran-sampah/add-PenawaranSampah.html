@@ -94,7 +94,7 @@
                                         <label class="h5 text-raisin-black">Nomor Rekening<span
                                                 class="text-danger"> *</span></label>
                                         <input required type="number" class="form-control p2 rekening"
-                                               max="999999999"
+                                               max="2147483647"
                                                onKeyPress="if(this.value.length==10) return false;" th:field="*{noRekening}">
                                         <div class="invalid-feedback">
                                             Masukkan nomor rekening
@@ -103,7 +103,11 @@
                                     <div class="form-group">
                                         <label class="h5 text-raisin-black">Foto buku rekening atau e-rekening
                                             <span class="text-danger"> *</span></label>
-                                        <input required class="form-control" type="file" name="file" accept="image/png, image/jpeg">
+                                        <input required class="form-control" type="file" name="file"
+                                               accept="image/png, image/jpeg" onchange="checkFileSize(this)">
+                                        <div id="titleimage" class="form-text">
+                                            Masukkan Foto Dengan Format png atau jpeg. Max= 1MB
+                                        </div>
                                         <small>Foto harus berisi nama pemilik dan nomor rekening</small>
                                         <div class="invalid-feedback">
                                             Masukkan foto buku rekening atau e-rekening
@@ -224,6 +228,25 @@
         </form>
     </div>
 </div>
+<div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header modal-alert-bg">
+                <h5 class="modal-title text-center" id="modalTitle"><STRONG>ALERT!</STRONG></h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Ukuran file terlalu besar. Tolong sesuaikan menjadi kurang dari 1Mb
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-red-danger" data-bs-dismiss="modal">Tutup</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script src="/bootstrap/js/bootstrap.js"></script>
 <script src="/script.js"></script>
@@ -252,5 +275,16 @@
     })()
 </script>
 
+<script>
+    function checkFileSize(inputFile) {
+        var max = 1 * 1024 * 1024; // 10MB
+
+        if (inputFile.files && inputFile.files[0].size > max) {
+            new bootstrap.Modal(document.querySelector("#errorModal")).show();
+            // alert("Ukuran file terlalu besar"); // Do your thing to handle the error.
+            inputFile.value = null; // Clear the field.
+        }
+    }
+</script>
 </body>
 </html>

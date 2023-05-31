@@ -109,7 +109,6 @@ public class TukarPoinServiceImpl implements TukarPoinService {
                 listById.add(reward);
             }
         }
-
         return listById;
     }
 
