@@ -16,5 +16,6 @@ public class UpdateProfileDTO {
     String email;
     String namaPic;
     String alamat;
+    String hp;
 
 }

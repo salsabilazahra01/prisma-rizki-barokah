@@ -105,6 +105,7 @@ public class UserController {
 
         userModel.setEmail(updateProfileDTO.getEmail());
         userModel.setNama(updateProfileDTO.getFname());
+        userModel.setHp(updateProfileDTO.getHp());
 
         this.userService.saveUser(userModel);
 

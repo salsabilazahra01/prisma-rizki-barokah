@@ -15,9 +15,19 @@
     <div class="card m-5 py-5 px-5 rounded-25">
         <div class="d-flex flex-md-row flex-column gap-2">
             <div class="col-md-3 col-12 col-sm-5">
-                <div th:with="result=${#authentication.getPrincipal().getUsername().toLowerCase().charAt(0)}"
-                     class="col-12" style="max-height: 250px; overflow: hidden">
-                    <img class="col-12 rounded" th:src="${'/images/profile/' + result + '.jpg'}" alt="PROFILE"/>
+                <div th:with="role=${#authentication.getPrincipal().getAuthorities().toString()}">
+                    <div th:if="${role.contains('MANAJER') || role.contains('PEKERJA') || role.contains('SUPERVISOR') || role.contains('TEKNISI') || role.contains('ADMIN')}">
+                        <img class="col-12 rounded" th:src="${'/images/profile/internal.jpg'}" alt="PROFILE"/>
+                    </div>
+                    <div th:if="${role.contains('DONATUR')}">
+                        <img class="col-12 rounded" th:src="${'/images/profile/donatur.jpg'}" alt="PROFILE"/>
+                    </div>
+                    <div th:if="${role.contains('PARTNER')}">
+                        <img class="col-12 rounded" th:src="${'/images/profile/partner.jpg'}" alt="PROFILE"/>
+                    </div>
+                    <div th:if="${role.contains('CUSTOMER')}">
+                        <img class="col-12 rounded" th:src="${'/images/profile/customer.jpg'}" alt="PROFILE"/>
+                    </div>
                 </div>
                 <div class="col-12 mt-2 d-flex flex-column justify-content-center align-items-center gap-2">
                     <p2 class="p2 text-center" th:text="${auth.nama}"></p2>
@@ -45,6 +55,10 @@
                 <div class="col-12 mt-3">
                     <p2 class=p2>Email</p2>
                     <h4 class=h4 th:text="${auth.email == null} ? '-' : ${auth.email}"></h4>
+                </div>
+                <div class="col-12 mt-3">
+                    <p2 class=p2>Nomor Telepon</p2>
+                    <h4 class=h4 th:text="${auth.hp == null} ? '-' : ${auth.hp}"></h4>
                 </div>
 
                 <div th:if="${added}" class="col-12 mt-3">

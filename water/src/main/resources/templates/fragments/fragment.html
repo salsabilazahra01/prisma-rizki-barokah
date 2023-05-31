@@ -101,7 +101,20 @@
             <div class="dropdown" sec:authorize="isAuthenticated()" th:with="result=${#authentication.getPrincipal().getUsername().toLowerCase().charAt(0)}">
                 <button class="btn border-0 dropdown-toggle btn-sm d-flex gap-2 align-items-center justify-content-center" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                     <div class="rounded-circle overflow-hidden">
-                        <img th:src="${'/images/profile/' + result + '.jpg'}" alt="IMAGE" style="width: 30px; height: 30px;"/>
+                        <div th:with="role=${#authentication.getPrincipal().getAuthorities().toString()}">
+                            <div th:if="${role.contains('MANAJER') || role.contains('PEKERJA') || role.contains('SUPERVISOR') || role.contains('TEKNISI') || role.contains('ADMIN')}">
+                                <img th:src="${'/images/profile/internal.jpg'}" alt="IMAGE" style="width: 30px; height: 30px;"/>
+                            </div>
+                            <div th:if="${role.contains('DONATUR')}">
+                                <img th:src="${'/images/profile/donatur.jpg'}" alt="IMAGE" style="width: 30px; height: 30px;"/>
+                            </div>
+                            <div th:if="${role.contains('PARTNER')}">
+                                <img th:src="${'/images/profile/partner.jpg'}" alt="IMAGE" style="width: 30px; height: 30px;"/>
+                            </div>
+                            <div th:if="${role.contains('CUSTOMER')}">
+                                <img th:src="${'/images/profile/customer.jpg'}" alt="IMAGE" style="width: 30px; height: 30px;"/>
+                            </div>
+                        </div>
                     </div>
                 </button>
                 <ul class="dropdown-menu mt-3 rounded-25 shadow-sm dropdown-menu-end px-3 py-3" aria-labelledby="dropdownMenuButton1" style="width: 250px;">
@@ -110,7 +123,20 @@
                             <div class="col-12">
                                 <div class="d-flex gap-2">
                                     <div class="overflow-hidden rounded-circle">
-                                        <img th:src="${'/images/profile/' + result + '.jpg'}" alt="IMAGE" style="width: 30px; height: 30px;"/>
+                                        <div th:with="role=${#authentication.getPrincipal().getAuthorities().toString()}">
+                                            <div th:if="${role.contains('MANAJER') || role.contains('PEKERJA') || role.contains('SUPERVISOR') || role.contains('TEKNISI') || role.contains('ADMIN')}">
+                                                <img th:src="${'/images/profile/internal.jpg'}" alt="IMAGE" style="width: 30px; height: 30px;"/>
+                                            </div>
+                                            <div th:if="${role.contains('DONATUR')}">
+                                                <img th:src="${'/images/profile/donatur.jpg'}" alt="IMAGE" style="width: 30px; height: 30px;"/>
+                                            </div>
+                                            <div th:if="${role.contains('PARTNER')}">
+                                                <img th:src="${'/images/profile/partner.jpg'}" alt="IMAGE" style="width: 30px; height: 30px;"/>
+                                            </div>
+                                            <div th:if="${role.contains('CUSTOMER')}">
+                                                <img th:src="${'/images/profile/customer.jpg'}" alt="IMAGE" style="width: 30px; height: 30px;"/>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="">
                                         <span class="text-dark" th:text="${#authentication.getPrincipal().getUsername()}"></span>
