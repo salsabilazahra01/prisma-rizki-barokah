@@ -106,7 +106,7 @@
                                                 <input type="text" id="namaPembuatTestimoni" class="form-control form-control-lg" name="namaPembuatTestimoni" th:field="*{listTestimoni[__${iterationStatus.index}__].namaPembuatTestimoni}"/>
                                             </td>
                                             <td class="w-75">
-                                                <textarea type="text" id="isiTestimoni" class="form-control form-control-lg" name="review" th:field="*{listTestimoni[__${iterationStatus.index}__].review}"/>
+                                                <textarea type="text" id="isiTestimoni" class="form-control form-control-lg" name="review" th:field="*{listTestimoni[__${iterationStatus.index}__].review}" onKeyPress="if(this.value.length==255) return false;"/>
                                             </td>
                                             <td class="col-1">
                                                 <button th:if="${companyProfile.listTestimoni.size > 1}" th:value="${iterationStatus.index}" class="btn-delete btn-danger" type="submit" name="deleteRow">
@@ -152,7 +152,7 @@
                             <div class="col-sm-1 w-auto justify-content-end pl-0">
 
                                 <!-- Button trigger modal save changes -->
-                                <a type="button" class="mx-2 btn-small btn-primary-green" data-bs-toggle="modal" data-bs-target="#save">
+                                <a type="button" class="mx-2 me-5 my-3 btn-small btn-primary-green" data-bs-toggle="modal" data-bs-target="#save">
                                     Simpan Perubahan
                                 </a>
 

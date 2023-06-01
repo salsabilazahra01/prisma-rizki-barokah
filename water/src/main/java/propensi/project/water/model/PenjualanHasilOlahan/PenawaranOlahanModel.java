@@ -65,7 +65,7 @@ public class PenawaranOlahanModel implements Serializable {
 
     @NotNull
     @Column(name = "noRekening", nullable = false)
-    private Integer noRekening;
+    private String noRekening;
 
     @NotNull
     @Column(name = "namaRekening", nullable = false)

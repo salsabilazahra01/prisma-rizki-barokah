@@ -135,7 +135,6 @@ public class MengelolaKaryawanController {
             @ModelAttribute UserModel user,
             RedirectAttributes redirectAttributes
             ){
-
         // new kontak is not unique
         if (!mengelolaKaryawanService.uniqueValueConstraintUpdate(user)) {
             System.out.println("masuk di false controller");

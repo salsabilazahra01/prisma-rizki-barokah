@@ -63,15 +63,16 @@
             </div>
 
             <fieldset>
-              <legend>Fill at least one field to continue:</legend>
+              <legend class="mb-3">Isi minimal salah satu<span class="text-danger"> *</span></legend>
               <div class="form-outline mb-4">
                 <label class="form-label" for="form2Example2837">E-mail:</label>
                 <input type="email" id="form2Example2837" class="form-control form-control-lg" name="email" th:field="*{email}"/>
               </div>
               
               <div class="form-outline mb-4">
-                <label class="form-label" for="form2Example283">No. HP:</label>
-                <input type="number" id="form2Example283" class="form-control form-control-lg" name="hp" th:field="*{hp}"/>
+                <label class="form-label" for="form2Example283">Nomor Telepon:</label>
+                <input type="number" id="form2Example283" class="form-control form-control-lg" name="hp" th:field="*{hp}"
+                       onKeyPress="if(this.value.length==12) return false;"/>
               </div>
             </fieldset>
 
@@ -107,7 +108,6 @@
               </div>
             </div>
 
-            <!--            <p class="small mb-5 pb-lg-2"><a class="text-muted" href="#!">Forgot password?</a></p>-->
             <p>Sudah memiliki akun? <a class="link-primary" th:href="@{/login}">Login</a></p>
 
           </form>
@@ -119,44 +119,6 @@
   </div>
 </section>
 
-<!--<div class="container">-->
-<!--  <div class="card m-4 p-4">-->
-<!--    <div class="card-body">-->
-<!--      <div class="justify-content-center">-->
-<!--        <h2>Tambah Partner Baru</h2>-->
-<!--        <br>-->
-<!--        <form th:action="@{/partner/add}" th:object="${partner}" method="POST">-->
-
-<!--          <label>Username</label>-->
-<!--          <input type="text" class="form-control" name="username" th:field="*{username}" required="required"/>-->
-
-<!--          <label>Nama</label>-->
-<!--          <input type="text" class="form-control" name="nama" th:field="*{nama}" required="required"/>-->
-
-<!--          <label>Nama PIC</label>-->
-<!--          <input type="text" class="form-control" name="nama_pic" th:field="*{namaPic}" required="required"/>-->
-
-<!--          <label>E-mail atau No. HP</label>-->
-<!--          <input type="text" class="form-control" name="email_hp" th:field="*{emailHp}" required="required"/>-->
-
-<!--          <label>Alamat</label>-->
-<!--          <input type="text" class="form-control" name="alamat" th:field="*{alamat}" required="required"/>-->
-
-<!--          <label>Password</label>-->
-<!--          <input required type="password" name="password" class="form-control" pattern="^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$" title="Password harus mengandung minimal 8 karakter & angka, huruf besar, huruf kecil, dan simbol." th:field="*{password}"/>-->
-
-<!--          <label>Konfirmasi Password</label>-->
-<!--          <input type="password"  id="passwordConfirmer" name="passwordConfirmer" required="required" class="form-control"/>-->
-
-<!--          <br>-->
-<!--          <button type="submit" class="btn btn-primary">Submit</button>-->
-<!--          <a class="btn btn-link" href="/home">Home</a>-->
-<!--        </form>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--  </div>-->
-
-<!--<footer th:replace="fragments/fragment :: footer"></footer>-->
 </body>
 <script src = "/bootstrap/js/bootstrap.js"></script>
 <script src="/script.js"></script>

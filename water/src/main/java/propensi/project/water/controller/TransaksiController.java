@@ -24,16 +24,14 @@ import propensi.project.water.service.TransaksiService;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Slf4j
 @Controller
@@ -230,7 +228,6 @@ public class TransaksiController {
         List<TransaksiModel> listTransaksi = transaksiService.getListDownload(generateResult);
 
         ICsvListWriter csvWriter = new CsvListWriter(response.getWriter(), CsvPreference.STANDARD_PREFERENCE);
-
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
 
         String[] csvHeader = {"ID Transaksi", "Jenis Transaksi", "Nominal", "Tanggal Transaksi", "Keterangan", "Sumber"};

@@ -229,7 +229,7 @@ public class PenawaranHasilOlahanController {
         penawaranOlahanService.update(penawaranOlahan, false);
 
         redirectAttrs.addFlashAttribute("success",
-                String.format("id %s berhasil diperbaharui", penawaranOlahan.getIdPenawaranOlahan()));
+                String.format("Penawaran hasil olahan dengan id %s berhasil diperbaharui", penawaranOlahan.getIdPenawaranOlahan()));
 
         model.addAttribute("totalBerat", getTotalBerat(listItem));
         model.addAttribute("penawaranOlahan", penawaranOlahan);
@@ -355,7 +355,7 @@ public class PenawaranHasilOlahanController {
                 integrateTransaksi(fileTransaksi, penawaranOlahanEx, true);
             }
             else if(status == 2){
-                if(!filePengiriman.isEmpty()){
+                if(filePengiriman != null && !filePengiriman.isEmpty()){
                     penawaranOlahanEx.setBuktiKirim(FileUploadUtil.encodePicture(filePengiriman));
                 }
             }

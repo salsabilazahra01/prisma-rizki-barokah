@@ -69,7 +69,7 @@
                             <tr th:each="transaksi, iterationStatus : ${listTransaksi}">
                                 <td th:text="${firstItem} + ${iterationStatus.count} - 1"></td>
                                 <td class="text-center" th:text="${transaksi.idTransaksi}"></td>
-                                <td th:text="${#temporals.format(transaksi.tanggalTransaksi, 'dd-MM-yyyy HH:mm')}"></td>
+                                <td th:text="${#temporals.format(transaksi.tanggalTransaksi, 'dd MMMM yyyy, HH.mm', 'ID')}"></td>
                                 <td th:text="'Rp ' + ${#numbers.formatDecimal(transaksi.nominal, 0, 'POINT', 2, 'COMMA')}"></td>
                                 <td th:if="${#strings.equals(jenis, 'semua')}" th:text="${transaksi.jenisTransaksi} ? 'Pengeluaran':'Pendapatan'"></td>
                                 <td>
@@ -204,8 +204,8 @@
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn-small btn-outline-raisin-black" data-bs-dismiss="modal">Tutup</button>
-                                    <button type="submit" class="btn-small btn-primary-green">Simpan ke CSV</button>
+                                    <button type="button" class="btn-small btn-outline-raisin-black" data-bs-dismiss="modal">Batal</button>
+                                    <button type="submit" class="btn-small btn-primary-green">Unduh CSV</button>
                                 </div>
                             </div>
                         </div>
@@ -275,27 +275,42 @@
         var pendapatan = document.getElementById("pendapatan");
         var penjualanOlahan = document.getElementById("penjualanolahan");
         var sumberLainPendapatan = document.getElementById("sumberlainpendapatan");
+        var semua = document.getElementById("semua");
+        var pengeluaran = document.getElementById("pengeluaran");
 
         if(pendapatan.checked == false){
             penjualanOlahan.checked = false
             sumberLainPendapatan.checked = false
+            semua.checked = false
         } else {
             penjualanOlahan.checked = true
             sumberLainPendapatan.checked = true
         }
+
+        if(pendapatan.checked == true && pengeluaran.checked == true){
+            semua.checked = true
+        }
+
     }
 
     function actionPengeluaran() {
         var pengeluaran = document.getElementById("pengeluaran");
         var pembelianSampah = document.getElementById("pembeliansampah");
         var sumberLainPengeluaran = document.getElementById("sumberlainpengeluaran");
+        var semua = document.getElementById("semua");
+        var pengeluaran = document.getElementById("pengeluaran");
 
         if(pengeluaran.checked == false){
             sumberLainPengeluaran.checked = false
             pembelianSampah.checked = false
+            semua.checked = false
         } else {
             pembelianSampah.checked = true
             sumberLainPengeluaran.checked = true
+        }
+
+         if(pendapatan.checked == true && pengeluaran.checked == true){
+            semua.checked = true
         }
     }
 
@@ -303,11 +318,18 @@
         var pengeluaran = document.getElementById("pengeluaran");
         var pembelianSampah = document.getElementById("pembeliansampah");
         var sumberLainPengeluaran = document.getElementById("sumberlainpengeluaran");
+        var semua = document.getElementById("semua");
+        var pengeluaran = document.getElementById("pengeluaran");
 
         if(pembelianSampah.checked == true && sumberLainPengeluaran.checked == true){
             pengeluaran.checked = true
-        } else if (pembelianSampah.checked == false && sumberLainPengeluaran.checked == false){
+        } else if (pembelianSampah.checked == false){
             pengeluaran.checked = false
+            semua.checked = false
+        }
+
+        if(pendapatan.checked == true && pengeluaran.checked == true){
+            semua.checked = true
         }
     }
 
@@ -315,11 +337,17 @@
         var pendapatan = document.getElementById("pendapatan");
         var penjualanOlahan = document.getElementById("penjualanolahan");
         var sumberLainPendapatan = document.getElementById("sumberlainpendapatan");
+        var semua = document.getElementById("semua");
+        var pengeluaran = document.getElementById("pengeluaran");
 
         if(penjualanOlahan.checked == true && sumberLainPendapatan.checked == true){
             pendapatan.checked = true
-        } else if (penjualanOlahan.checked == false && sumberLainPendapatan.checked == false){
+        } else if (penjualanOlahan.checked == false){
             pendapatan.checked = false
+            semua.checked = false
+        }
+        if(pendapatan.checked == true && pengeluaran.checked == true){
+            semua.checked = true
         }
     }
 
@@ -327,11 +355,17 @@
         var pendapatan = document.getElementById("pendapatan");
         var penjualanOlahan = document.getElementById("penjualanolahan");
         var sumberLainPendapatan = document.getElementById("sumberlainpendapatan");
+        var semua = document.getElementById("semua");
+        var pengeluaran = document.getElementById("pengeluaran");
 
         if(penjualanOlahan.checked == true && sumberLainPendapatan.checked == true){
             pendapatan.checked = true
-        } else if(penjualanOlahan.checked == false && sumberLainPendapatan.checked == false){
+        } else if(sumberLainPendapatan.checked == false){
             pendapatan.checked = false
+            semua.checked = false
+        }
+        if(pendapatan.checked == true && pengeluaran.checked == true){
+            semua.checked = true
         }
     }
 
@@ -339,11 +373,17 @@
         var pengeluaran = document.getElementById("pengeluaran");
         var pembelianSampah = document.getElementById("pembeliansampah");
         var sumberLainPengeluaran = document.getElementById("sumberlainpengeluaran");
+        var semua = document.getElementById("semua");
+        var pengeluaran = document.getElementById("pengeluaran");
 
         if(pembelianSampah.checked == true && sumberLainPengeluaran.checked == true){
             pengeluaran.checked = true
-        } else if(pembelianSampah.checked == false && sumberLainPengeluaran.checked == false){
+        } else if(sumberLainPengeluaran.checked == false){
             pengeluaran.checked = false
+            semua.checked = false
+        }
+        if(pendapatan.checked == true && pengeluaran.checked == true){
+            semua.checked = true
         }
 
     }

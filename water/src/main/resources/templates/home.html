@@ -130,17 +130,22 @@
     </section>
 
     <div th:if="${listTestimoni.size()!=0}">
-        <section id = "sec-testimoni" class = "py-5 container-primary-green text-white">
-        <div class = "container my-5">
+        <section id = "sec-testimoni">
 
-            <div class = "row">
-                <div class = "col-12 text-center">
-                    <h3 class = "mb-5 h1">Testimoni</h3>
-                </div>
-            </div>
+<!--        <div class = "row">-->
+<!--            <div class = "col-12 text-center text-dark">-->
+<!--                <h3 class = "mb-2 h1">Testimoni</h3>-->
+<!--            </div>-->
+<!--        </div>-->
 
-            <div class = "row">
-                <div id = "carouselInd" class = "carousel slide" data-bs-ride = "carousel">
+        <div class = "row">
+            <div id = "carouselInd" class = "carousel slide" data-bs-ride = "carousel">
+
+                <div class = "container my-5 container-primary-green text-white container-testimoni">
+
+                    <div>
+                        <img src="images/testimoni/left-quote.png" class="text-start mb-4" style="width:100px">
+                    </div>
 
                     <div class = "carousel-indicators">
                         <button type = "button" data-bs-target = "#carouselInd" data-bs-slide-to = "0" class = "active bg-white" th:if="*{listTestimoni.size() >= 1}"></button>
@@ -150,57 +155,63 @@
                         <button type = "button" data-bs-target = "#carouselInd" data-bs-slide-to = "4" class = "bg-white" th:if="*{listTestimoni.size() >= 5}"></button>
                     </div>
 
-                    <div class = "carousel-inner">
+                    <div class = "carousel-inner px-5">
                         <div class = "carousel-item active" th:if="*{listTestimoni.size() >= 1}">
                             <div class = "col-12 row mx-auto ">
                                 <div class = "row text-center text-lg-start">
                                     <p class = "p2" th:text="*{listTestimoni[0].review}"></p>
-                                    <h5 class = "h5 text-lg-end" th:text="*{listTestimoni[0].namaPembuatTestimoni}"></h5>
-                                    <p class = "p2 text-lg-end" th:text="*{listTestimoni[0].role}"></p>
+                                    <h5 class = "h5 text-lg-end mt-2" th:text="'-' + *{listTestimoni[0].namaPembuatTestimoni}"></h5>
+                                    <p class = "p2 text-lg-end c3" th:text="*{listTestimoni[0].role}"></p>
                                 </div>
                             </div>
                         </div>
 
-                        <div class = "carousel-item" th:if="*{listTestimoni.size() >= 2}">
+
+                        <div class = "carousel-item px-5" th:if="*{listTestimoni.size() >= 2}">
                             <div class = "col-12 row mx-auto ">
                                 <div class = "row text-center text-lg-start">
                                     <p class = "p2" th:text="*{listTestimoni[1].review}"></p>
-                                    <h5 class = "h5 text-lg-end" th:text="*{listTestimoni[1].namaPembuatTestimoni}"></h5>
-                                    <p class = "p2 text-lg-end" th:text="*{listTestimoni[1].role}"></p>
+                                    <h5 class = "h5 text-lg-end mt-2" th:text="'-' + *{listTestimoni[1].namaPembuatTestimoni}"></h5>
+                                    <p class = "p2 text-lg-end c3" th:text="*{listTestimoni[1].role}"></p>
                                 </div>
                             </div>
                         </div>
 
-                        <div class = "carousel-item" th:if="*{listTestimoni.size() >= 3}">
+                        <div class = "carousel-item px-5" th:if="*{listTestimoni.size() >= 3}">
                             <div class = "col-12 row mx-auto ">
                                 <div class = "row text-center text-lg-start">
                                     <p class = "p2" th:text="*{listTestimoni[2].review}"></p>
-                                    <h5 class = "h5 text-lg-end" th:text="*{listTestimoni[2].namaPembuatTestimoni}"></h5>
-                                    <p class = "p2 text-lg-end" th:text="*{listTestimoni[2].role}"></p>
+                                    <h5 class = "h5 text-lg-end mt-2" th:text="'-' + *{listTestimoni[2].namaPembuatTestimoni}"></h5>
+                                    <p class = "p2 text-lg-end c3" th:text="*{listTestimoni[2].role}"></p>
                                 </div>
                             </div>
                         </div>
 
-                        <div class = "carousel-item" th:if="*{listTestimoni.size() >= 4}">
+                        <div class = "carousel-item px-5" th:if="*{listTestimoni.size() >= 4}">
                             <div class = "col-12 row mx-auto ">
                                 <div class = "row text-center text-lg-start">
                                     <p class = "p2" th:text="*{listTestimoni[3].review}"></p>
-                                    <h5 class = "h5 text-lg-end" th:text="*{listTestimoni[3].namaPembuatTestimoni}"></h5>
-                                    <p class = "p2 text-lg-end" th:text="*{listTestimoni[3].role}"></p>
+                                    <h5 class = "h5 text-lg-end mt-2" th:text="'-' + *{listTestimoni[3].namaPembuatTestimoni}"></h5>
+                                    <p class = "p2 text-lg-end c3" th:text="*{listTestimoni[3].role}"></p>
                                 </div>
                             </div>
                         </div>
 
-                        <div class = "carousel-item" th:if="*{listTestimoni.size() >= 5}">
+                        <div class = "carousel-item px-5" th:if="*{listTestimoni.size() >= 5}">
                             <div class = "col-12 row mx-auto ">
                                 <div class = "row text-center text-lg-start">
                                     <p class = "p2" th:text="*{listTestimoni[4].review}"></p>
-                                    <h5 class = "h5 text-lg-end" th:text="*{listTestimoni[4].namaPembuatTestimoni}"></h5>
-                                    <p class = "p2 text-lg-end" th:text="*{listTestimoni[4].role}"></p>
+                                    <h5 class = "h5 text-lg-end mt-2" th:text="'-' + *{listTestimoni[4].namaPembuatTestimoni}"></h5>
+                                    <p class = "p2 text-lg-end c3" th:text="*{listTestimoni[4].role}"></p>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                </div>
+
+                <div class="row flex-row-reverse text-end mt-3">
+                    <img src="images/testimoni/right-quote.png" style="width:120px">
+                </div>
+
                 </div>
             </div>
         </div>
@@ -214,7 +225,7 @@
                     <h1 class = "h1">Artikel</h1>
                 </div>
                 <div class = "col text-end">
-                    <a type="button" class="mt-auto mx-2 btn btn-primary-green" th:href="@{/artikel/viewall}">
+                    <a type="button" class="mt-auto mx-2 btn btn-outline-primary-green" th:href="@{/artikel/viewall}">
                         Lihat semua artikel
                     </a>
                 </div>
@@ -223,14 +234,14 @@
             <div class = "row gx-md-5">
 
 
-                <div class = "col-md-4 my-3 d-flex align-items-stretch" th:each="artikel, iterationStatus : ${listArtikel}">
+                <div class = "col-md-4 my-2 d-flex align-items-stretch" th:each="artikel, iterationStatus : ${listArtikel}">
                     <div class = "card rounded-25 text-center">
                         <img class = "card-img-top rounded-top-25" th:src="${artikel.imageArtikelPath}"
                              alt="Artikel Image">
                         <div class = "card-body py-5">
                             <div class="card-title h3" th:text="${artikel.title}"></div>
-                            <p class="card-text py-3 p3" th:utext="${artikel.subtitle}"></p>
-                            <a type="button" class="btn btn-primary-green h5 mt-4"
+                            <p class="card-text py-1 p3" th:utext="${artikel.subtitle}"></p>
+                            <a type="button" class="btn btn-small btn-primary-green h5"
                                th:href="@{/artikel/view/} + ${artikel.idArtikel}">Baca Artikel</a>
                         </div>
                     </div>

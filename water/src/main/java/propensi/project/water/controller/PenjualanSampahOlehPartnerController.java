@@ -348,6 +348,13 @@ public class PenjualanSampahOlehPartnerController {
             RedirectAttributes redirectAttributes,
             @RequestParam(name="fileTransaksi", required = false) MultipartFile fileTransaksi) throws IOException, SQLException {
 
+        if(penawaranSampah.getListItemPenawaranSampah() == null || penawaranSampah.getListItemPenawaranSampah().size() == 0){
+            redirectAttributes.addFlashAttribute("failed",
+                    "Penyelesaian penawaran sampah gagal dilakukan tidak terdapat item sampah yang diinput");
+            String sRedirect = "redirect:selesai/" + penawaranSampah.getIdPenawaranSampah();
+            return sRedirect ;
+        }
+
         Integer status = penawaranSampah.getStatus();
         Integer harga = 0;
         Integer berat = 0;
@@ -384,8 +391,7 @@ public class PenjualanSampahOlehPartnerController {
         }
         ProsesPenawaranSampahModel transaksi = penjualanSampahService.getTransaksiByPenawaranSampah(penawaranSampahAsli);
         penawaranSampahAsli.setTransaksiSampah(transaksi);
-        penjualanSampahService.updatePenawaranSampah(penawaranSampahAsli);
-
+        penjualanSampahService.saveTransaksi(penawaranSampahAsli);
 
         redirectAttributes.addFlashAttribute("success", "Berhasil menyelesaikan penawaran sampah!");
         return "redirect:/penawaran/sampah/viewall";

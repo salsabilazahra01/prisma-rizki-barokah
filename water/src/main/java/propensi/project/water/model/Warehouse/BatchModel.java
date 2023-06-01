@@ -59,4 +59,16 @@ public class BatchModel implements Serializable {
     @JoinColumn(name = "nama_item", referencedColumnName = "nama", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private WarehouseModel warehouse;
+
+    public String statusStr(Integer statusInt) {
+        if(statusInt == 1){
+            return "Pencacahan";
+        } else if(statusInt == 2){
+            return "Pengeringan";
+        } else if(statusInt == 3){
+            return "Packing";
+        } else {
+            return "Selesai";
+        }
+    }
 }

@@ -47,7 +47,7 @@
                                 <div class="my-5">
                                     <p2 class="p2">Tanggal, Waktu Penawaran Sampah</p2>
                                     <h4 class="h4"
-                                        th:text="${#temporals.format(penawaranSampah.tanggalDibuat, 'dd-MM-yyyy HH:mm')}"></h4>
+                                        th:text="${#temporals.format(penawaranSampah.tanggalDibuat, 'dd MMMM yyyy, HH.mm', 'ID')}"></h4>
                                 </div>
                             </div>
                         </div>
@@ -124,7 +124,7 @@
                                     </div>
 
                                     <!-- Button trigger modal -->
-                                    <button type="button" class="mt-5 col-12 btn btn-primary-green"
+                                    <button type="button" class="mt-5 col-12 btn btn-primary-green h6"
                                             data-bs-toggle="modal"
                                             data-bs-target="#save">
                                         Simpan

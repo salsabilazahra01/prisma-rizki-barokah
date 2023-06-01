@@ -94,8 +94,7 @@
                                         <label class="h5 text-raisin-black">Nomor Rekening<span
                                                 class="text-danger"> *</span></label>
                                         <input required type="number" class="form-control p2 rekening"
-                                               max="2147483647"
-                                               onKeyPress="if(this.value.length==10) return false;" th:field="*{noRekening}">
+                                               th:field="*{noRekening}">
                                         <div class="invalid-feedback">
                                             Masukkan nomor rekening
                                         </div>
@@ -106,9 +105,8 @@
                                         <input required class="form-control" type="file" name="file"
                                                accept="image/png, image/jpeg" onchange="checkFileSize(this)">
                                         <div id="titleimage" class="form-text">
-                                            Masukkan Foto Dengan Format png atau jpeg. Max= 1MB
+                                            Masukkan foto yang berisi nama pemilik dan nomor rekening dengan format png atau jpeg. Max= 1MB.
                                         </div>
-                                        <small>Foto harus berisi nama pemilik dan nomor rekening</small>
                                         <div class="invalid-feedback">
                                             Masukkan foto buku rekening atau e-rekening
                                         </div>

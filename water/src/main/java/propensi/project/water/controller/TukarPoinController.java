@@ -1,11 +1,13 @@
 package propensi.project.water.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.MultipartConfigFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.unit.DataSize;
 import org.springframework.web.bind.annotation.*;
 
 import lombok.AllArgsConstructor;
@@ -178,6 +180,11 @@ public class TukarPoinController {
 
         Integer poinAvailable = donatur.getPoin() - getTotalPoinInProcess(donatur.getListTukarPoin());
 
+        //input donatur info to tukar poin
+        if(donatur != null){
+            model.addAttribute("poin", donatur.getPoin());
+        }
+
         model.addAttribute("poinAvailable", poinAvailable);
         model.addAttribute("tukarPoin", tukarPoin);
         model.addAttribute("listRewardEx", listRewardEx);
@@ -198,6 +205,11 @@ public class TukarPoinController {
         tukarPoin.getListReward().remove(rowId.intValue());
         List<RewardModel> listRewardEx = getListRewardEx(donatur.getPoin());
         Integer poinAvailable = donatur.getPoin() - getTotalPoinInProcess(donatur.getListTukarPoin());
+
+        //input donatur info to tukar poin
+        if(donatur != null){
+            model.addAttribute("poin", donatur.getPoin());
+        }
 
         model.addAttribute("poinAvailable", poinAvailable);
         model.addAttribute("tukarPoin", tukarPoin);

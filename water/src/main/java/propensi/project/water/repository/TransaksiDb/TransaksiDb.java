@@ -21,7 +21,8 @@ public interface TransaksiDb extends JpaRepository<TransaksiModel, String> {
     @Query(value = "SELECT * , 0 AS clazz_ FROM transaksi " +
             "LEFT OUTER JOIN proses_lain\n" +
             "ON transaksi.id_transaksi = proses_lain.id_transaksi\n" +
-            "WHERE CAST(transaksi.tanggal_transaksi AS DATE) >= :startDate AND CAST(transaksi.tanggal_transaksi AS DATE) <= :endDate",
+            "WHERE CAST(transaksi.tanggal_transaksi AS DATE) >= :startDate AND CAST(transaksi.tanggal_transaksi AS DATE) <= :endDate\n" +
+            "ORDER BY transaksi.tanggal_dibuat",
             nativeQuery = true)
     List<TransaksiModel> findListByDateRange(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
 

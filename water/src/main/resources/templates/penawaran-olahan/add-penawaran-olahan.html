@@ -8,9 +8,8 @@
 <nav sec:authorize="!hasAuthority('CUSTOMER')" th:replace="fragments/fragment :: navbar('Pembelian dan Penjualan', '')"></nav>
 
 <div th:if="${listItemEx.size == 0}" class="d-flex text-center">
-    <div class="container my-5">
-        <h3>Tidak Dapat Membeli Hasil Olahan Sampah</h3>
-        <h6>Tidak terdapat hasil olahan yang dapat dibeli</h6>
+    <div class="container my-5 h-100">
+        <div th:replace="fragments/fragment-empty-list :: empty-list2('TIDAK TERDAPAT HASIL OLAHAN YANG DAPAT DIBELI')"></div>
     </div>
 </div>
 
@@ -41,7 +40,7 @@
                                 <label for="nama" class="h5 mb-2">Nama Customer <span class="text-danger"> *</span></label>
                                 <input required id="nama" type="text" name="nama" class="form-control text-dark" th:field="*{namaCustomer}"
                                        th:readonly="${#authorization.expression('hasAuthority(''CUSTOMER'')')}"/>
-                                <small>Nama perusahaan atau nama individu</small>
+                                <div class="form-text">Nama perusahaan atau nama individu</div>
                                 <p sec:authorize="!hasAuthority('CUSTOMER')" class="invalid-feedback">
                                     Masukkan nama customer
                                 </p>
@@ -49,7 +48,7 @@
                             <div class="my-4">
                                 <label for="namaPIC" class="h5 mb-2">Nama PIC <span class="text-danger"> *</span></label>
                                 <input required id="namaPIC" type="text" name="namaPIC" class="form-control text-dark" th:field="*{namaPic}"/>
-                                <small>Nama PIC perusahaan atau nama individu</small>
+                                <div class="form-text">Nama PIC perusahaan atau nama individu</div>
                                 <p class="invalid-feedback">
                                     Masukkan nama PIC
                                 </p>
@@ -59,14 +58,15 @@
                             <div class="my-4">
                                 <label for="email" class="h6 mb-2">E-mail</label>
                                 <input id="email" type="email" name="email" class="form-control text-dark" th:field="*{email}"/>
-                                <small>Misal: customer@e-mail.com</small>
+                                <div class="form-text">Misal: customer@e-mail.com</div>
                                 <div class="invalid-feedback">
                                     Masukkan e-mail yang valid
                                 </div>
                             </div>
                             <div class="my-4">
                                 <label for="hp" class="h6 mb-2">Nomor telepon</label>
-                                <input id="hp" type="number" name="hp" class="form-control text-dark" th:field="*{hp}"/>
+                                <input id="hp" type="number" name="hp" class="form-control text-dark" th:field="*{hp}"
+                                       onKeyPress="if(this.value.length==12) return false;"/>
                                 <div class="invalid-feedback">
                                     Masukkan nomor telepon
                                 </div>
@@ -131,7 +131,7 @@
                             <h5 class="h5">Rekening</h5>
                             <div class="my-4">
                                 <label class="h6" for="bank">Bank <span class="text-danger"> *</span></label>
-                                <input required class="form-control" type="text" name="bank" id="bank" th:field="*{bank}" placeholder="Misal: Bank BCA">
+                                <input required class="form-control" type="text" name="bank" id="bank" th:field="*{bank}">
                                 <div class="invalid-feedback">
                                     Masukkan nama bank
                                 </div>
@@ -139,15 +139,14 @@
                             <div class="my-4">
                                 <label class="h6" for="bank">No. rekening <span class="text-danger"> *</span></label>
                                 <input required class="form-control rekening" type="number" name="noRek"
-                                       id="noRek" th:field="*{noRekening}" max="2147483647"
-                                       onKeyPress="if(this.value.length==10) return false;">
+                                       id="noRek" th:field="*{noRekening}">
                                 <div class="invalid-feedback">
                                     Masukkan nomor rekening
                                 </div>
                             </div>
                             <div class="my-4">
                                 <label class="h6" for="bank">Nama rekening <span class="text-danger"> *</span></label>
-                                <input required class="form-control" type="text" name="namaRek" id="namaRek" th:field="*{namaRekening}" placeholder="Misal: Budi Santoso">
+                                <input required class="form-control" type="text" name="namaRek" id="namaRek" th:field="*{namaRekening}">
                                 <div class="invalid-feedback">
                                     Masukkan nama di rekening
                                 </div>
@@ -157,9 +156,8 @@
                                 <input required class="form-control" type="file" name="file"
                                        accept="image/png, image/jpeg" onchange="checkFileSize(this)">
                                 <div id="titleimage" class="form-text">
-                                    Masukkan Foto Dengan Format png atau jpeg. Max= 1MB
+                                    Masukkan foto yang berisi nama pemilik dan nomor rekening dengan format png atau jpeg. Max= 1MB.
                                 </div>
-                                <small>Foto harus berisi nama pemilik dan nomor rekening</small>
                                 <div class="invalid-feedback">
                                     Masukkan foto buku rekening atau e-rekening
                                 </div>
@@ -199,7 +197,7 @@
                                         <input required th:id="'kuantitas'+${iterationStatus.count}" type="number" name="kuantitas" class="form-control text-dark"
                                                th:field="*{listItemPenawaranOlahan[__${iterationStatus.index}__].kuantitas}" min="1"/>
                                         <div class="invalid-feedback">
-                                            Masukkan berat yang sesuai
+                                            Masukkan berat
                                         </div>
                                     </td>
                                     <td sec:authorize="!hasAuthority('CUSTOMER')">
@@ -214,7 +212,7 @@
                                 </tr>
                                 </tbody>
                             </table>
-                            <p class="p4">Berat minimal 0.1 kg dan maksimal sesuai dengan kuantitas yang tersedia</p>
+                            <p class="p4">Berat minimal 1 kg dan maksimal sesuai dengan kuantitas yang tersedia</p>
                             <div>
                                 <button class="btn-small btn-add-row w-100" type="submit" name="addRowItem"
                                         th:if="${penawaranOlahan.listItemPenawaranOlahan.size < listItemEx.size}">

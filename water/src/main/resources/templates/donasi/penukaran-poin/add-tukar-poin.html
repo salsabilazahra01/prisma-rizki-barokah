@@ -8,10 +8,9 @@
 <nav sec:authorize="hasAuthority('DONATUR')"  th:replace="fragments/fragment :: navbar('Penukaran Poin', ${poin})"></nav>
 
 <div th:if="${listRewardEx.size == 0} OR ${poinAvailable <= 0}" class="d-flex text-center">
-    <div class="container my-5">
-        <h3>Tidak Dapat Menukar Poin</h3>
-        <h6 th:if="${listRewardEx.size == 0}">Tidak terdapat reward yang dapat ditukar</h6>
-        <h6 th:if="${poinAvailable <= 0}" >Anda tidak memiliki cukup poin</h6>
+    <div class="container my-5 h-100">
+        <div th:if="${listRewardEx.size == 0}"
+             th:replace="fragments/fragment-empty-list :: empty-list2('Tidak terdapat reward yang dapat ditukar atau Anda tidak memiliki cukup poin')"></div>
     </div>
 </div>
 
@@ -41,16 +40,16 @@
                             <div class="mb-4 mt-3">
                                 <label for="nama" class="h5 mb-2">Nama Donatur <span class="text-danger"> *</span></label>
                                 <input required id="nama" type="text" name="nama" class="form-control text-dark" th:field="*{namaDonatur}"/>
-                                <p>
+                                <div class="form-text">
                                     Masukkan nama donatur
-                                </p>
+                                </div>
                             </div>
                             <h5 class="h5">Kontak<span class="text-danger"> *</span></h5>
                             <p class="p4">Isi minimal salah satu antara email atau nomor telepon</p>
                             <div class="my-4">
                                 <label for="email" class="h6 mb-2">E-mail</label>
                                 <input id="email" type="email" name="email" class="form-control text-dark" th:field="*{email}" placeholder="Masukkan e-mail"/>
-                                <p class="p4">Misal: customer@e-mail.com</p>
+                                <div class="form-text">Misal: customer@e-mail.com</div>
                                 <div class="invalid-feedback">
                                     Masukkan e-mail yang valid
                                 </div>
@@ -87,7 +86,7 @@
                             <div class="my-4">
                                 <label class="h5" for="alamat">Alamat <span class="text-danger"> *</span></label>
                                 <textarea required class="form-control" type="text" name="alamat" id="alamat" th:field="*{alamatDonatur}"></textarea>
-                                <p class="p4">Isi dengan nama jalan, RT, RW, nomor, kelurahan, kecamatan, kota, provinsi, dan kode pos</p>
+                                <div class="form-text">Isi dengan nama jalan, RT, RW, nomor, kelurahan, kecamatan, kota, provinsi, dan kode pos</div>
                                 <div class="invalid-feedback">
                                     Masukkan alamat
                                 </div>
@@ -97,21 +96,22 @@
                             <h5 class="h5">Rekening</h5>
                             <div class="my-4">
                                 <label class="h6" for="bank">Bank <span class="text-danger"> *</span></label>
-                                <input required class="form-control" type="text" name="bank" id="bank" th:field="*{bank}" placeholder="Misal: Bank BCA">
+                                <input required class="form-control" type="text" name="bank" id="bank" th:field="*{bank}">
                                 <div class="invalid-feedback">
                                     Masukkan nama bank
                                 </div>
                             </div>
                             <div class="my-4">
                                 <label class="h6" for="bank">No. rekening <span class="text-danger"> *</span></label>
-                                <input required class="form-control" type="number" name="noRek" id="noRek" th:field="*{noRekening}" placeholder="Misal: 0780888199">
+                                <input required class="form-control" type="number" name="noRek" id="noRek" th:field="*{noRekening}"
+                                        pattern="[0-9]*">
                                 <div class="invalid-feedback">
                                     Masukkan nomor rekening
                                 </div>
                             </div>
                             <div class="my-4">
                                 <label class="h6" for="bank">Nama rekening <span class="text-danger"> *</span></label>
-                                <input required class="form-control" type="text" name="namaRek" id="namaRek" th:field="*{namaRekening}" placeholder="Misal: Budi Santoso">
+                                <input required class="form-control" type="text" name="namaRek" id="namaRek" th:field="*{namaRekening}">
                                 <div class="invalid-feedback">
                                     Masukkan nama di rekening
                                 </div>
@@ -120,10 +120,9 @@
                                 <label class="h6">Foto buku rekening atau e-rekening<span class="text-danger"> *</span></label>
                                 <input required class="form-control" type="file" name="file"
                                        accept="image/png, image/jpeg" onchange="checkFileSize(this)">
-                                <div id="titleimage" class="form-text">
-                                    Masukkan Foto Dengan Format png atau jpeg. Max= 1MB
+                                <div class="form-text">
+                                    Masukkan foto yang berisi nama pemilik dan nomor rekening dengan format png atau jpeg. Max= 1MB.
                                 </div>
-                                <small>Foto harus berisi nama pemilik dan nomor rekening</small>
                                 <div class="invalid-feedback">
                                     Masukkan foto buku rekening atau e-rekening
                                 </div>

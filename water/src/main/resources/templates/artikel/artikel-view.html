@@ -26,18 +26,18 @@
                 </a>
             </p>
             <div class="col-6 float-right ui-corner-right text-right">
+                <button sec:authorize="hasAuthority('SUPERVISOR') || hasAuthority('MANAJER') || hasAuthority('ADMIN')"
+                        type="button" class="btn-small  btn-outline-red-danger float-right" data-bs-toggle="modal"
+                        data-bs-target="#deleteArtikel">
+                    <i class="bi bi-trash"></i>
+                    Hapus Artikel
+                </button>
                 <a sec:authorize="hasAuthority('SUPERVISOR') || hasAuthority('MANAJER') || hasAuthority('ADMIN')"
                    type="button" class="btn-small btn-primary-green float-right"
                    th:href="@{/artikel/update/} + ${artikel.idArtikel}">
                     <i class="bi bi-pencil-fill"></i>
                     Edit Artikel
                 </a>
-                <button sec:authorize="hasAuthority('SUPERVISOR') || hasAuthority('MANAJER') || hasAuthority('ADMIN')"
-                        type="button" class="btn-small  btn-red-danger float-right" data-bs-toggle="modal"
-                        data-bs-target="#deleteArtikel">
-                    <i class="bi bi-trash"></i>
-                    Hapus Artikel
-                </button>
             </div>
 
             <!-- modal -->

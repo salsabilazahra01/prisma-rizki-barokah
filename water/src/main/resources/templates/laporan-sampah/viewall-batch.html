@@ -17,7 +17,7 @@
           <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
           <div class="form-group w-full mr-2">
             <label for="warehouse-select" class="h6">Jenis Sampah<span class="text-danger">*</span></label>
-            <select class="form-control p3" id="warehouse-select" name="warehouseId" required>
+            <select style="width:200px" class="form-control form-select p3" id="warehouse-select" name="warehouseId" required>
               <option value="">Pilih jenis sampah</option>
               <div>
                 <option th:each="warehouse : ${warehouses}"

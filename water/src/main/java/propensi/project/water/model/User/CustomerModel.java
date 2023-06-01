@@ -32,7 +32,7 @@ public class CustomerModel extends UserModel {
     private String bank;
 
     @Column(name = "noRekening")
-    private Integer noRekening;
+    private String noRekening;
 
     @Column(name = "namaRekening")
     private String namaRekening;

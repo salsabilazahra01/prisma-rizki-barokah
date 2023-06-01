@@ -34,4 +34,5 @@ public interface PenjualanSampahService {
     public void addTransaksiSampah(PenawaranSampahModel penawaranSampah, Boolean isManual, Blob bukti);
     public ProsesPenawaranSampahModel getTransaksiByPenawaranSampah(PenawaranSampahModel penawaranSampah);
     void deleteFolder(File file);
+    void saveTransaksi(PenawaranSampahModel penawaranSampahAsli);
 }

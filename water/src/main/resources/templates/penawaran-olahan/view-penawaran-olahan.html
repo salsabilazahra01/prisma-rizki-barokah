@@ -73,7 +73,7 @@
                         <div class="my-5">
                             <p sec:authorize="hasAuthority('CUSTOMER')" class="p2">Tanggal, waktu pembelian</p>
                             <p sec:authorize="!hasAuthority('CUSTOMER')" class="p2">Tanggal, waktu penjualan</p>
-                            <h3 class="h4" th:text="${#temporals.format(penawaranOlahan.tanggalDibuat, 'dd-MM-yyyy HH:mm')}"></h3>
+                            <h3 class="h4" th:text="${#temporals.format(penawaranOlahan.tanggalDibuat, 'dd MMMM yyyy, HH.mm', 'ID')}"></h3>
                         </div>
                         <div class="my-5">
                             <p class="p2">Pilihan pengiriman</p>
@@ -337,7 +337,8 @@
                         <p class="h5 text-raisin-black">Bukti Transfer</p>
                         <label class="col-form-label p3 px-3">Anda hendak menyetujui harga. Sertakan bukti transfer
                             pembelian sejumlah harga yang disetujui.</label>
-                        <input class="form-control p2" type="file" name="fileTransaksi" accept="image/png, image/jpeg">
+                        <input class="form-control p2" type="file" name="fileTransaksi" accept="image/png, image/jpeg"
+                               onchange="checkFileSize(this)">
                     </div>
                 </div>
                 <div class="modal-footer justify-content-center">
@@ -395,7 +396,8 @@
                         <p class="h5 text-raisin-black">Bukti Pengiriman</p>
                         <label class="col-form-label p3 px-3">Apabila hasil olahan sampah dikirim menggunakan jasa pengiriman,
                             masukkan bukti pengiriman. Bukti akan dikirim ke customer.</label>
-                        <input class="form-control p2" type="file" name="filePengiriman" accept="image/png, image/jpeg">
+                        <input class="form-control p2" type="file" name="filePengiriman" accept="image/png, image/jpeg"
+                               onchange="checkTwoFileSize(this)">
                     </div>
                 </div>
                 <div class="modal-footer justify-content-center">
@@ -482,6 +484,46 @@
 </form>
 <!--end modal sudah diterima-->
 
+<div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header modal-alert-bg">
+                <h5 class="modal-title text-center" id="modalTitle"><STRONG>ALERT!</STRONG></h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Ukuran file terlalu besar. Tolong sesuaikan menjadi kurang dari 1Mb
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-red-danger" data-bs-dismiss="modal">Tutup</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="errorModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header modal-alert-bg">
+                <h5 class="modal-title text-center" id="modalTitle2"><STRONG>ALERT!</STRONG></h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Ukuran file terlalu besar. Tolong sesuaikan menjadi kurang dari 500Kb
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-red-danger" data-bs-dismiss="modal">Tutup</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script src = "/bootstrap/js/bootstrap.js"></script>
 <script src="/script.js"></script>
 
@@ -498,6 +540,27 @@
         document.querySelector(".popup-image").style.display = "none";
     };
 </script>
+<script>
+    function checkFileSize(inputFile) {
+        var max = 1 * 1024 * 1024; // 10MB
 
+        if (inputFile.files && inputFile.files[0].size > max) {
+            new bootstrap.Modal(document.querySelector("#errorModal")).show();
+            // alert("Ukuran file terlalu besar"); // Do your thing to handle the error.
+            inputFile.value = null; // Clear the field.
+        }
+    }
+</script>
+<script>
+    function checkTwoFileSize(inputFile) {
+        var max = 1 * 512 * 512; // 10MB
+
+        if (inputFile.files && inputFile.files[0].size > max) {
+            new bootstrap.Modal(document.querySelector("#errorModal2")).show();
+            // alert("Ukuran file terlalu besar"); // Do your thing to handle the error.
+            inputFile.value = null; // Clear the field.
+        }
+    }
+</script>
 </body>
 </html>

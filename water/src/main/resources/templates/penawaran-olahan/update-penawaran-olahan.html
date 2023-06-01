@@ -53,12 +53,12 @@
                                 <input required id="nama" type="text" name="nama" class="form-control text-dark" th:field="*{namaCustomer}"
                                        placeholder="Masukkan nama Customer"
                                        th:readonly="${#authorization.expression('hasAuthority(''CUSTOMER'')')}"/>
-                                <p class="p4">Nama perusahaan atau nama individu</p>
+                                <div class="form-text">Nama perusahaan atau nama individu</div>
                             </div>
                             <div class="my-4">
                                 <label for="namaPIC" class="h5 mb-2">Nama PIC <span class="text-danger"> *</span></label>
                                 <input required id="namaPIC" type="text" name="namaPIC" class="form-control text-dark" th:field="*{namaPic}" placeholder="Masukkan nama PIC"/>
-                                <p class="p4">Nama PIC perusahaan atau nama individu</p>
+                                <div class="form-text">Nama PIC perusahaan atau nama individu</div>
                                 <p class="invalid-feedback">
                                     Masukkan nama PIC
                                 </p>
@@ -68,14 +68,15 @@
                             <div class="my-4">
                                 <label for="email" class="h6 mb-2">E-mail</label>
                                 <input id="email" type="email" name="email" class="form-control text-dark" th:field="*{email}" placeholder="Masukkan e-mail"/>
-                                <p class="p4">Misal: customer@e-mail.com</p>
+                                <div class="form-text">Misal: customer@e-mail.com</div>
                                 <div class="invalid-feedback">
                                     Masukkan e-mail yang valid
                                 </div>
                             </div>
                             <div class="my-4">
                                 <label for="hp" class="h6 mb-2">Nomor telepon</label>
-                                <input id="hp" type="number" name="hp" class="form-control text-dark" th:field="*{hp}" placeholder="Masukkan nomor telepon"/>
+                                <input id="hp" type="number" name="hp" class="form-control text-dark" th:field="*{hp}" placeholder="Masukkan nomor telepon"
+                                       onKeyPress="if(this.value.length==12) return false;"/>
                                 <div class="invalid-feedback">
                                     Masukkan nomor telepon
                                 </div>
@@ -105,7 +106,7 @@
                             <div sec:authorize="hasAuthority('CUSTOMER')" class="my-4">
                                 <label class="h5" for="alamat">Alamat <span class="text-danger"> *</span></label>
                                 <textarea required class="form-control" type="text" name="alamat" id="alamat" th:field="*{alamatPic}" placeholder="Masukkan alamat pic atau perusahaan"></textarea>
-                                <p class="p4">Isi dengan nama jalan, RT, RW, nomor, kelurahan, kecamatan, kota, provinsi, dan kode pos</p>
+                                <div class="form-text">Isi dengan nama jalan, RT, RW, nomor, kelurahan, kecamatan, kota, provinsi, dan kode pos</div>
                                 <div class="invalid-feedback">
                                     Masukkan alamat
                                 </div>
@@ -115,21 +116,21 @@
                             <h5 class="h5">Rekening</h5>
                             <div class="my-4">
                                 <label class="h6" for="bank">Bank <span class="text-danger"> *</span></label>
-                                <input required class="form-control" type="text" name="bank" id="bank" th:field="*{bank}" placeholder="Misal: Bank BCA">
+                                <input required class="form-control" type="text" name="bank" id="bank" th:field="*{bank}">
                                 <div class="invalid-feedback">
                                     Masukkan nama bank
                                 </div>
                             </div>
                             <div class="my-4">
                                 <label class="h6" for="bank">No. rekening <span class="text-danger"> *</span></label>
-                                <input required class="form-control" type="number" name="noRek" id="noRek" th:field="*{noRekening}" placeholder="Misal: 0780888199">
+                                <input required class="form-control" type="number" name="noRek" id="noRek" th:field="*{noRekening}">
                                 <div class="invalid-feedback">
                                     Masukkan nomor rekening
                                 </div>
                             </div>
                             <div class="my-4">
                                 <label class="h6" for="bank">Nama rekening <span class="text-danger"> *</span></label>
-                                <input required class="form-control" type="text" name="namaRek" id="namaRek" th:field="*{namaRekening}" placeholder="Misal: Budi Santoso">
+                                <input required class="form-control" type="text" name="namaRek" id="namaRek" th:field="*{namaRekening}">
                                 <div class="invalid-feedback">
                                     Masukkan nama di rekening
                                 </div>
@@ -139,9 +140,8 @@
                                 <input class="form-control p2" type="file" name="file" accept="image/png, image/jpeg" id="upload_file"
                                        onchange="checkFileSize(this)">
                                 <div id="titleimage" class="form-text">
-                                    Masukkan Foto Dengan Format png atau jpeg. Max= 1MB
+                                    Masukkan foto yang berisi nama pemilik dan nomor rekening dengan format png atau jpeg. Max= 1MB.
                                 </div>
-                                <small>Foto harus berisi nama pemilik dan nomor rekening</small>
                                 <div class="image-container">
                                     <div class="image">
                                         <img class="mt-3 mb-3" id="preview" th:src="${penawaranOlahan.fotoRekeningPath}">

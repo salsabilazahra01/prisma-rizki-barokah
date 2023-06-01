@@ -51,13 +51,13 @@
           <div class="modal-dialog modal-dialog-centered text-center justify-content-center">
             <div class="modal-content">
               <div class="modal-header text-center">
-                <h6 class="modal-title h6">Batalkan</h6>
+                <h6 class="modal-title h6">Batalkan Donasi</h6>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
-              <div class="modal-body p3" th:text="'Apakah Anda yakin ingin menghapus donasi dengan ID ' + ${donasi.idDonasi} + ' ?'"></div>
+              <div class="modal-body p3" th:text="'Apakah Anda yakin ingin membatalkan donasi dengan ID ' + ${donasi.idDonasi} + ' ?'"></div>
               <div class="modal-footer justify-content-center">
                 <button type="button" class="btn-small btn-outline-raisin-black" data-bs-dismiss="modal">Batal</button>
-                <a type="button" class="btn-small btn-red-danger" th:href="@{/donasi/delete/} + ${donasi.idDonasi}">Ya, hapus</a>
+                <a type="button" class="btn-small btn-red-danger" th:href="@{/donasi/delete/} + ${donasi.idDonasi}">Ya, batalkan donasi</a>
               </div>
             </div>
           </div>
@@ -95,7 +95,7 @@
                 </div>
                 <div class="my-5">
                   <p2 class="p2">Tanggal, Waktu Donasi</p2>
-                  <h4 class="h4" th:text="${#temporals.format(donasi.tanggalDibuat, 'dd-MM-yyyy HH:mm')}"></h4>
+                  <h4 class="h4" th:text="${#temporals.format(donasi.tanggalDibuat, 'dd MMMM yyyy, HH.mm', 'ID')}"></h4>
                 </div>
                 <div class="my-5">
                   <p2 class="p2">Pilihan Pengiriman</p2>

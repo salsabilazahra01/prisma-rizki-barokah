@@ -74,7 +74,7 @@ public class TukarPoinModel implements Serializable {
     private String bank;
 
     @Column(name = "noRekening", nullable = false)
-    private Integer noRekening;
+    private String noRekening;
 
     @Column(name = "namaRekening", nullable = false)
     private String namaRekening;

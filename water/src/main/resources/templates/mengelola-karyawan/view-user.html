@@ -68,11 +68,11 @@
             </div>
             <div class="my-5">
               <p2 class="p2">Email</p2>
-              <h4 class="h4" th:text="${user.email != null} ? ${user.email} : '-'"></h4>
+              <h4 class="h4" th:text="*{user.email != NULL} ? ${user.email} : '-'"></h4>
             </div>
             <div class="my-5">
               <p2 class="p2">Nomor Telepon</p2>
-              <h4 class="h4" th:text="${user.hp != null} ? ${user.hp} : '-'"></h4>
+              <h4 class="h4" th:text="*{user.hp != NULL} ? ${user.hp} : '-'"></h4>
             </div>
             <div th:if="${#strings.equals(user.role.toString(), 'PARTNER')}" >
               <div class="my-5">

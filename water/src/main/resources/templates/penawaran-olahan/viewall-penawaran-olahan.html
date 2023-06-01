@@ -71,7 +71,7 @@
                             <tr th:each="penawaranOlahan, iterationStatus : ${listPenawaranOlahan}">
                                 <td th:text="${firstItem} + ${iterationStatus.count} - 1"></td>
                                 <td class="text-center" th:text="${penawaranOlahan.idPenawaranOlahan}"></td>
-                                <td th:text="${#temporals.format(penawaranOlahan.tanggalDibuat, 'dd-MM-yyyy HH:mm')}"></td>
+                                <td th:text="${#temporals.format(penawaranOlahan.tanggalDibuat, 'dd MMMM yyyy, HH.mm', 'ID')}"></td>
                                 <td th:text="${penawaranOlahan.harga != null} ? 'Rp ' + ${#numbers.formatDecimal(penawaranOlahan.harga, 0, 'POINT', 2, 'COMMA')} : '-'"></td>
                                 <td th:if="${status == -1}">
                                     <div th:if="${penawaranOlahan.status == 0}"><span class="bi bi-hourglass-split"></span> Konfirmasi Perusahaan</div>

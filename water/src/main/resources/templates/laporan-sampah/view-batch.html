@@ -66,25 +66,47 @@
             </div>
             <div class="row flex-row-reverse text-end">
 
-                <!-- Regular button -->
-                <form style="display: inline-block" th:if="${batch.status<3}" id="updateBatchForm" method="POST" th:action="@{/pengolahan-sampah/{batchModel}(batchModel=${batch.idBatch})}">
-                    <input type="hidden" name="_method" value="PUT" />
-                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-                    <button th:attr="data-status=${batch.status}"
-                            type="button"
-                            class="mx-2 btn-small btn-primary-green h6"
-                            th:onclick="confirmUpdate(this.dataset.status)"
-                    >Perbarui Status Batch</button>
+                <!-- Button to trigger modal update status-->
+                <form style="display: inline-block">
+                    <button type="button" class="mx-2 btn-small btn-primary-green h6" th:if="${batch.status < 3}"
+                            data-bs-toggle="modal" data-bs-target="#updateStatus"> Perbarui Status Batch
+                    </button>
                 </form>
 
-                <!-- Button to trigger modal -->
+                <!-- modal update status -->
+                <form th:object="${penawaranOlahan}" method="POST"
+                      th:action="@{/pengolahan-sampah/{batchModel}(batchModel=${batch.idBatch})}">
+
+                    <input type="hidden" name="_method" value="PUT" />
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
+                    <div class="modal fade" id="updateStatus" tabindex="-1" aria-labelledby="updateStatusLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered text-center justify-content-center">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h6 class="modal-title h6" id="tolakHargaModalLabel">Perbarui Status Batch</h6>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body p3" th:text="'Anda hendak mengganti status batch pengolahan dari ' + ${batch.statusStr(batch.status)} + ' menjadi ' +  ${batch.statusStr(batch.status+1)} + '. Apakah Anda ingin melanjutkan?'"></div>
+                                <div class="modal-footer justify-content-center">
+                                    <button type="button" class="btn-small btn-outline-raisin-black" data-bs-dismiss="modal">Cancel</button>
+                                    <button type="submit" class="btn-small btn-primary-green">Ya, perbarui</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+                <!--end modal update status-->
+
+                <!-- Button to trigger modal selesai-->
                 <form style="display: inline-block">
                     <button type="button" class="mx-2 btn-small btn-primary-green h6" th:if="${batch.status ==3}"
                        data-bs-toggle="modal" data-bs-target="#savechanges"> Perbarui Status Batch
                     </button>
                 </form>
 
-                <!--MODALLLL-->
+                <!--modal selesai-->
                 <div class="modal fade" id="savechanges" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered text-center justify-content-center">
                         <div class="modal-content">
@@ -135,22 +157,6 @@
 
 </div>
 </div>
-
-<script>
-function confirmUpdate(current) {
-    const batches = [
-        'pencacahan',
-        'pengeringan',
-        'packing',
-        'selesai'
-    ];
-
-    if (window.confirm(`Anda hendak mengganti status batch pengolahan dari ${batches[current-1]} menjadi ${batches[current]}. Apakah Anda ingin melanjutkan?`)) {
-      document.getElementById("updateBatchForm").submit();
-    }
-  }
-
-</script>
 
 <th:block th:include="fragments/scripts :: scripts"></th:block>
 

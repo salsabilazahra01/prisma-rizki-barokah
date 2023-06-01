@@ -99,7 +99,7 @@
             <a th:href="@{/}" class="btn btn-yellow-sun text-dark mx-2" sec:authorize="hasAuthority('DONATUR')" th:text="${poin} + ' Points'"><span class="px-2"></span></a>
             <a th:href="@{/login}" class="btn btn-primary-green mx-2" sec:authorize="isAnonymous()">Login</a>
             <div class="dropdown" sec:authorize="isAuthenticated()" th:with="result=${#authentication.getPrincipal().getUsername().toLowerCase().charAt(0)}">
-                <button class="btn border-0 dropdown-toggle btn-sm d-flex gap-2 align-items-center justify-content-center" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                <button class="btn dropdown-toggle d-flex gap-2 align-items-center justify-content-center btn-profile-picture" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                     <div class="rounded-circle overflow-hidden">
                         <div>
                             <div sec:authorize="hasAuthority('MANAJER') || hasAuthority('PEKERJA') || hasAuthority('SUPERVISOR') || hasAuthority('TEKNISI') || hasAuthority('ADMIN')">

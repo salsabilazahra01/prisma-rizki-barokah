@@ -57,7 +57,7 @@ public class PenawaranSampahModel implements Serializable {
 
     @NotNull
     @Column(name = "noRekening", nullable = false)
-    private Integer noRekening;
+    private String noRekening;
 
     @Lob
     @NotNull

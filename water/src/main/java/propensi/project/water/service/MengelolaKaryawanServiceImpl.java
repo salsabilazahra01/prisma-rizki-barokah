@@ -123,8 +123,16 @@ public class MengelolaKaryawanServiceImpl implements MengelolaKaryawanService{
         UserModel userLama = userDb.findByUsername(user.getUsername()).orElse(null);
         userLama.setNama(user.getNama());
         userLama.setRole(user.getRole());
-        userLama.setEmail(user.getEmail());
-        userLama.setHp(user.getHp());
+        if (user.getEmail().equals("")) {
+            userLama.setEmail(null);
+        } else {
+            userLama.setEmail(user.getEmail());
+        }
+        if (user.getHp().equals("")) {
+            userLama.setHp(null);
+        } else {
+            userLama.setHp(user.getHp());
+        }
         userDb.save(userLama);
     }
 
@@ -133,17 +141,18 @@ public class MengelolaKaryawanServiceImpl implements MengelolaKaryawanService{
         UserModel karyawanLama = retrieveUserDetail(user.getUsername());
 
         String emailKaryawanLama = karyawanLama.getEmail();
-        String emailKaryawanUpdated = user.getEmail();
+        String emailKaryawanUpdated = user.getEmail().equals("") ? null : user.getEmail();
         UserModel cariKaryawanEmail = userDb.findByEmail(user.getEmail()).orElse(null);
 
         String hpKaryawanLama = karyawanLama.getHp();
-        String hpKaryawanUpdated = user.getHp();
+        String hpKaryawanUpdated = user.getHp().equals("") ? null : user.getHp();
         UserModel cariKaryawanHp = userDb.findByHp(user.getHp()).orElse(null);
 
         boolean emailHpUnique = true;
-
+        // case email changed to empty string
+        if(emailKaryawanUpdated == null || emailKaryawanLama == null){}
         // case email unchanged
-        if(emailKaryawanLama.equals(emailKaryawanUpdated)) {}
+        else if(emailKaryawanLama.equals(emailKaryawanUpdated)) {}
         // case email changed
         else {
             // case new email is unique
@@ -156,8 +165,10 @@ public class MengelolaKaryawanServiceImpl implements MengelolaKaryawanService{
 
         if (!emailHpUnique) return emailHpUnique;
 
+        // case hp changed to empty string
+        if(hpKaryawanUpdated == null || hpKaryawanLama == null){}
         // case hp unchanged
-        if(hpKaryawanLama.equals(hpKaryawanUpdated)){}
+        else if(hpKaryawanLama.equals(hpKaryawanUpdated)) {}
         // case hp changed
         else {
             // case new hp is unique
@@ -174,6 +185,8 @@ public class MengelolaKaryawanServiceImpl implements MengelolaKaryawanService{
         }
 
         return emailHpUnique;
+
+
     }
 
     @Override

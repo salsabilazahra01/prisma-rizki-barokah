@@ -178,4 +178,11 @@ public class PenjualanSampahServiceImpl implements PenjualanSampahService {
         folder.delete();
     }
 
+    @Override
+    public void saveTransaksi(PenawaranSampahModel penawaranSampah){
+        PenawaranSampahModel penawaranSampahLama = findByIdPenawaranSampah(penawaranSampah.getIdPenawaranSampah());
+        penawaranSampahLama.setTransaksiSampah(penawaranSampah.getTransaksiSampah());
+        penawaranSampahDb.save(penawaranSampahLama);
+    }
+
 }

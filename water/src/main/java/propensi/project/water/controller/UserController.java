@@ -5,8 +5,10 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 import propensi.project.water.dto.UpdateProfileDTO;
+import propensi.project.water.model.PenjualanHasilOlahan.PenawaranOlahanModel;
 import propensi.project.water.model.User.*;
 import propensi.project.water.service.CustomerService;
 import propensi.project.water.service.DonaturService;
@@ -98,14 +100,27 @@ public class UserController {
     @PostMapping("/profile/edit")
     public String editProfile(Principal principal,
                               @ModelAttribute UpdateProfileDTO updateProfileDTO,
-                              HttpServletRequest request,
+                              RedirectAttributes redirectAttrs,
                               Model model) {
 
         UserModel userModel = userService.getUserByUsername(principal.getName());
 
-        userModel.setEmail(updateProfileDTO.getEmail());
+        if(kontakEmpty(updateProfileDTO)){
+            redirectAttrs.addFlashAttribute("failed","Email atau nomor telepon harus diisi");
+            return "redirect:/user/profile/edit";
+        }
+
+        if(!updateProfileDTO.getHp().isEmpty()){
+            userModel.setHp(updateProfileDTO.getHp());
+        } else {
+            userModel.setHp(null);
+        }
+        if(!updateProfileDTO.getEmail().isEmpty()){
+            userModel.setEmail(updateProfileDTO.getEmail());
+        } else {
+            userModel.setEmail(null);
+        }
         userModel.setNama(updateProfileDTO.getFname());
-        userModel.setHp(updateProfileDTO.getHp());
 
         this.userService.saveUser(userModel);
 
@@ -132,6 +147,10 @@ public class UserController {
             }
         }
         return "redirect:/user/profile";
+    }
+
+    private boolean kontakEmpty(UpdateProfileDTO updateProfileDTO) {
+        return updateProfileDTO.getEmail().isEmpty() && updateProfileDTO.getHp().isEmpty();
     }
 
 }

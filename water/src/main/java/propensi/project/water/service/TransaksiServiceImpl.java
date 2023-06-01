@@ -227,7 +227,7 @@ public class TransaksiServiceImpl implements TransaksiService {
         } else if(pembelianSampah){
             allTransaksi.removeIf(transaksi -> (transaksi.getProses() != 0));
         } else if(sumberLainPendapatan){
-            allTransaksi.removeIf(transaksi -> (transaksi.getProses() >= 2 || transaksi.getJenisTransaksi()));
+            allTransaksi.removeIf(transaksi -> (transaksi.getProses() != 2 || transaksi.getJenisTransaksi()));
         } else if(sumberLainPengeluaran){
             allTransaksi.removeIf(transaksi -> (transaksi.getProses() < 2 || !transaksi.getJenisTransaksi()));
         }

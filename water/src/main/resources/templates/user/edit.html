@@ -8,6 +8,9 @@
 <nav sec:authorize="!hasAuthority('DONATUR') || !isAuthenticated()" th:replace="fragments/fragment :: navbar('', '')"></nav>
 
 <div class="container">
+
+    <div class="alert alert-danger mt-5" role="alert" th:text="${failed}" th:if="${failed}"></div>
+
     <div class="col-12 mt-5">
         <h1 class="text-center text-head-profile">Edit Profil</h1>
     </div>
@@ -22,21 +25,9 @@
                     </div>
 
                     <div class="form-group mt-3">
-                        <label for="fname" class="h5">Nama <span class="text-danger">*</span><span class="text-danger">*</span></label>
+                        <label for="fname" class="h5">Nama <span class="text-danger">*</span></label>
                         <input name="fname" th:value="${auth.nama}" id="fname" class="form-control p2" required />
                         <small id="fnamehelp" class="form-text text-muted">Isi dengan nama perusahaan atau dengan nama individu</small>
-                    </div>
-
-                    <div class="form-group  mt-3">
-                        <label for="email" class="h5">Email <span class="text-danger">*</span></label>
-                        <input name="email" th:value="${auth.email}" id="email" type="email" class="form-control p2" required />
-                        <small id="emailhelp" class="form-text text-muted">Isi dengan email perusahaan atau dengan email individu</small>
-                    </div>
-
-                    <div class="form-group  mt-3">
-                        <label for="hp" class="h5">Nomor Telepon <span class="text-danger">*</span></label>
-                        <input name="hp" th:value="${auth.hp}" id="hp" type="number" class="form-control p2" required />
-                        <small id="hphelp" class="form-text text-muted">Isi dengan nomor telepon yang dapat dihubungi</small>
                     </div>
 
                     <div th:if="${pic}" class="form-group  mt-3">
@@ -48,7 +39,21 @@
                 </div>
 
                 <div class="col-12 col-md-5">
-                    <div th:if="${added}" class="form-group">
+
+                    <div class="form-group ">
+                        <label for="email" class="h5">Email <span class="text-danger">*</span></label>
+                        <input name="email" th:value="${auth.email}" id="email" type="email" class="form-control p2" />
+                        <small id="emailhelp" class="form-text text-muted">Isi dengan email perusahaan atau dengan email individu</small>
+                    </div>
+
+                    <div class="form-group  mt-3">
+                        <label for="hp" class="h5">Nomor Telepon <span class="text-danger">*</span></label>
+                        <input name="hp" th:value="${auth.hp}" id="hp" type="number" class="form-control p2"
+                               onKeyPress="if(this.value.length==12) return false;"/>
+                        <small id="hphelp" class="form-text text-muted">Isi dengan nomor telepon yang dapat dihubungi</small>
+                    </div>
+
+                    <div th:if="${added}" class="form-group mt-3">
                         <label for="alamat" class="h5">Alamat <span class="text-danger">*</span></label>
                         <textarea type="text" name="alamat"
                                   th:value="${added.alamat}"
@@ -64,7 +69,7 @@
             <div class="row d-flex justify-content-end text-end">
                 <div class="col-sm-1 w-auto justify-content-end px-0">
                     <!-- Button trigger modal save change -->
-                    <a type="button" class="mx-2 btn-small btn-outline-red-danger" data-bs-toggle="modal" data-bs-target="#cancel">
+                    <a type="button" class="mx-2 btn-small btn-outline-red-danger mt-5" data-bs-toggle="modal" data-bs-target="#cancel">
                         Batal
                     </a>
 
@@ -92,8 +97,8 @@
                 <div class="col-sm-1 w-auto justify-content-end pl-0">
 
                     <!-- Button trigger modal save changes -->
-                    <a type="button" class="mx-2 btn-small btn-primary-green" data-bs-toggle="modal" data-bs-target="#save">
-                        Save Changes
+                    <a type="button" class="mx-2 btn-small btn-primary-green mt-5" data-bs-toggle="modal" data-bs-target="#save">
+                        Simpan Perubahan
                     </a>
 
                     <!-- Modal save changes-->
@@ -118,34 +123,6 @@
 
                 </div>
             </div>
-<!--            <div class="col-12 mt-2 d-flex justify-content-center">-->
-
-<!--                &lt;!&ndash; Button trigger modal &ndash;&gt;-->
-<!--                <button type="button" class="btn btn-outline-raisin-black" data-bs-toggle="modal" data-bs-target="#exampleModal">-->
-<!--                    Cancel-->
-<!--                </button>-->
-
-<!--                &lt;!&ndash; Modal &ndash;&gt;-->
-<!--                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">-->
-<!--                    <div class="modal-dialog">-->
-<!--                        <div class="modal-content">-->
-<!--                            <div class="modal-header">-->
-<!--                                <h5 class="modal-title" id="exampleModalLabel">Konfirmasi Cancel</h5>-->
-<!--                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
-<!--                            </div>-->
-<!--                            <div class="modal-body">-->
-<!--                                Apakah anda yakin ingin membuang perubahan ?-->
-<!--                            </div>-->
-<!--                            <div class="modal-footer">-->
-<!--                                <button type="button" class="btn btn-outline-raisin-black" data-bs-dismiss="modal">Tidak</button>-->
-<!--                                <a class="btn btn-primary-green text-white" th:href="@{/user/profile}">Ya</a>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-
-<!--                <button type="submit" class="btn btn-primary-green px-3 py-2">Save Changes</button>-->
-<!--            </div>-->
         </form>
     </div>
 </div>

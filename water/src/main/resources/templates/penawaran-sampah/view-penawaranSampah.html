@@ -103,7 +103,7 @@
                                 <div class="my-5">
                                     <p2 class="p2">Tanggal, Waktu Penawaran Sampah</p2>
                                     <h4 class="h4"
-                                        th:text="${#temporals.format(penawaranSampah.tanggalDibuat, 'dd-MM-yyyy HH:mm')}"></h4>
+                                        th:text="${#temporals.format(penawaranSampah.tanggalDibuat, 'dd MMMM yyyy, HH.mm', 'ID')}"></h4>
                                 </div>
                                 <div class="my-5">
                                     <p2 class="p2">Pilihan Pengiriman</p2>
@@ -179,7 +179,7 @@
                                 </div>
                                 <div class="my-5">
                                     <p2 class="p2">Harga</p2>
-                                    <h4 class="h4" th:text="${penawaranSampah.harga}"></h4>
+                                    <h4 class="h4" th:text="${penawaranSampah.harga == 0} ? '-' : 'Rp ' + ${#numbers.formatDecimal(penawaranSampah.harga, 0, 'POINT', 2, 'COMMA')}"></h4>
                                 </div>
                                 <div class="my-5" th:if="*{penawaranSampah.status == -1}">
                                     <p2 class="p2">Keterangan</p2>
@@ -191,7 +191,7 @@
                 </div>
             </div>
 
-            <div class="col-7">
+            <div class="ms-5 col-6">
                 <div class="card rounded-25 m-2 ">
                     <div class="card-body p-0">
                         <div class="row mx-0">
@@ -225,7 +225,8 @@
 
                             <div th:unless="*{penawaranSampah.status == 4}">
                                 <div class="col-12 mt-2 p-0">
-                                    <table class="table table-striped mx-0 text-center">
+                                    <table th:if="${penawaranSampah.listItemPenawaranSampah.size >0}"
+                                           class="table table-striped mx-0 text-center">
                                         <tbody>
                                         <tr th:each="itemPenawaranSampah, iterationStatus : ${listItemPenawaranSampah}">
                                             <td th:text="${itemPenawaranSampah.idItem.jenisItem.namaJenis}"></td>
@@ -233,6 +234,9 @@
                                         </tr>
                                         </tbody>
                                     </table>
+                                    <h3 class="text-center h3" th:if="${penawaranSampah.listItemPenawaranSampah.size == 0}">
+                                        -
+                                    </h3>
                                 </div>
                             </div>
 
@@ -257,7 +261,7 @@
                 <!-- button selesai inspeksi -->
                 <div th:if="*{penawaranSampah.status == 3}">
                     <a sec:authorize="hasAuthority('SUPERVISOR') || hasAuthority('MANAJER') || hasAuthority('ADMIN')"
-                       class="mt-5 col-12 btn btn-primary-green"
+                       class="mt-5 col-12 btn btn-primary-green h6"
                        th:href="@{/penawaran/sampah/selesai/} + ${penawaranSampah.idPenawaranSampah}">
                         Selesai
                     </a>
@@ -265,7 +269,7 @@
                 <!-- button menerima sampah // dalam proses inspeksi -->
                 <div th:if="*{penawaranSampah.status == 2}">
                     <button sec:authorize="hasAuthority('SUPERVISOR') || hasAuthority('MANAJER') || hasAuthority('ADMIN')"
-                            class="mt-5 col-12 btn btn-primary-green" data-bs-toggle="modal"
+                            class="mt-5 col-12 btn btn-primary-green h6" data-bs-toggle="modal"
                             data-bs-target="#Diterima">
                         Sampah Sudah Sampai di Warehouse
                     </button>
@@ -274,13 +278,13 @@
                 <!-- button kirim penawaran -->
                 <div th:if="*{penawaranSampah.status == 1 AND penawaranSampah.isPickedUp==true }">
                     <button sec:authorize="hasAuthority('SUPERVISOR') || hasAuthority('MANAJER') || hasAuthority('ADMIN')"
-                            class="mt-5 col-12 btn btn-primary-green" data-bs-toggle="modal"
+                            class="mt-5 col-12 btn btn-primary-green h6" data-bs-toggle="modal"
                             data-bs-target="#KirimPenawaran">
                         Sampah Sudah Dikirimkan
                     </button>
                 </div>
                 <div th:if="*{penawaranSampah.status == 1 AND penawaranSampah.isPickedUp==false}">
-                    <button sec:authorize="hasAuthority('PARTNER')" class="mt-5 col-12 btn btn-primary-green"
+                    <button sec:authorize="hasAuthority('PARTNER')" class="mt-5 col-12 btn btn-primary-green h6"
                             data-bs-toggle="modal"
                             data-bs-target="#KirimPenawaran">
                         Sampah Sudah Dikirimkan
@@ -290,7 +294,7 @@
                 <!-- button setujui penawaran -->
                 <div th:if="*{penawaranSampah.status == 0}">
                     <button sec:authorize="hasAuthority('SUPERVISOR') || hasAuthority('MANAJER') || hasAuthority('ADMIN')"
-                            class="mt-5 col-12 btn btn-primary-green" data-bs-toggle="modal"
+                            class="mt-5 mb-2 col-12 btn btn-primary-green h6" data-bs-toggle="modal"
                             data-bs-target="#SetujuiPenawaran">
                         Setujui Penawaran Sampah
                     </button>
@@ -299,7 +303,7 @@
                 <!-- button tolak penawaran -->
                 <div th:if="*{penawaranSampah.status == 0}">
                     <button sec:authorize="hasAuthority('SUPERVISOR') || hasAuthority('MANAJER') || hasAuthority('ADMIN')"
-                            class="col-12 btn btn-red-danger" data-bs-toggle="modal"
+                            class="col-12 btn btn-red-danger h6" data-bs-toggle="modal"
                             data-bs-target="#TolakPenawaran">
                         Tolak Penawaran Sampah
                     </button>

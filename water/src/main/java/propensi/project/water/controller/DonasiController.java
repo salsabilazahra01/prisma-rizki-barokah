@@ -15,6 +15,7 @@ import propensi.project.water.model.User.DonaturModel;
 import propensi.project.water.model.User.UserModel;
 import propensi.project.water.model.Warehouse.WarehouseModel;
 import propensi.project.water.service.DonasiService;
+import propensi.project.water.service.DonaturService;
 import propensi.project.water.service.UserService;
 import propensi.project.water.service.WarehouseService;
 
@@ -47,6 +48,9 @@ public class DonasiController {
     @Qualifier("warehouseServiceImpl")
     @Autowired
     private WarehouseService warehouseService;
+
+    @Autowired
+    private DonaturService donaturService;
 
     @GetMapping("/add")
     private String addDonasiForm(
@@ -102,7 +106,8 @@ public class DonasiController {
     @PostMapping(value="/add", params={"addRow"})
     private String addRowListItemDonasi(
             @ModelAttribute DonasiModel donasi,
-            Model model) {
+            Model model,
+            HttpServletRequest request) {
         if (donasi.getListItemDonasi()==null || donasi.getListItemDonasi().size()==0) {
             donasi.setListItemDonasi(new ArrayList<>());
         } else{
@@ -114,6 +119,12 @@ public class DonasiController {
         donasi.getListItemDonasi().add(new ItemDonasiModel());
         List<WarehouseModel> listItemWarehouse = warehouseService.getListItemWarehouse();
 
+        //input donatur info to tukar poin
+        DonaturModel donatur =  getDonatur(request);
+        if(donatur != null){
+            model.addAttribute("poin", donatur.getPoin());
+        }
+
         model.addAttribute("donasi", donasi);
         model.addAttribute("listItemWarehouse", listItemWarehouse);
 
@@ -124,11 +135,18 @@ public class DonasiController {
     private String deleteRowListItemDonasi(
             @ModelAttribute DonasiModel donasi,
             @RequestParam("deleteRow") Integer row,
-            Model model) {
+            Model model,
+            HttpServletRequest request) {
         final Integer rowId = Integer.valueOf(row);
         donasi.getListItemDonasi().remove(rowId.intValue());
 
         List<WarehouseModel> listItemWarehouse = warehouseService.getListItemWarehouse();
+
+        //input donatur info to tukar poin
+        DonaturModel donatur =  getDonatur(request);
+        if(donatur != null){
+            model.addAttribute("poin", donatur.getPoin());
+        }
 
         model.addAttribute("donasi",donasi);
         model.addAttribute("listItemWarehouse", listItemWarehouse);
@@ -278,7 +296,8 @@ public class DonasiController {
     @PostMapping(value="/update", params={"addRow"})
     private String addRowListItemDonasiUpdate(
             @ModelAttribute DonasiModel donasi,
-            Model model) {
+            Model model,
+            HttpServletRequest request) {
         if (donasi.getListItemDonasi()==null || donasi.getListItemDonasi().size()==0) {
             donasi.setListItemDonasi(new ArrayList<>());
         } else{
@@ -290,6 +309,12 @@ public class DonasiController {
         donasi.getListItemDonasi().add(new ItemDonasiModel());
         List<WarehouseModel> listItemWarehouse = warehouseService.getListItemWarehouse();
 
+        //input donatur info to tukar poin
+        DonaturModel donatur =  getDonatur(request);
+        if(donatur != null){
+            model.addAttribute("poin", donatur.getPoin());
+        }
+
         model.addAttribute("donasi", donasi);
         model.addAttribute("listItemWarehouse", listItemWarehouse);
 
@@ -300,11 +325,18 @@ public class DonasiController {
     private String deleteRowListItemDonasiUpdate(
             @ModelAttribute DonasiModel donasi,
             @RequestParam("deleteRow") Integer row,
-            Model model) {
+            Model model,
+            HttpServletRequest request) {
         final Integer rowId = Integer.valueOf(row);
         donasi.getListItemDonasi().remove(rowId.intValue());
 
         List<WarehouseModel> listItemWarehouse = warehouseService.getListItemWarehouse();
+
+        //input donatur info to tukar poin
+        DonaturModel donatur =  getDonatur(request);
+        if(donatur != null){
+            model.addAttribute("poin", donatur.getPoin());
+        }
 
         model.addAttribute("donasi",donasi);
         model.addAttribute("listItemWarehouse", listItemWarehouse);
@@ -426,7 +458,8 @@ public class DonasiController {
     @PostMapping(value="/update-status/inspeksi", params={"addRow"})
     private String addRowListItemDonasiInspeksi(
             @ModelAttribute DonasiModel donasi,
-            Model model) {
+            Model model,
+            HttpServletRequest request) {
         if (donasi.getListItemDonasi()==null || donasi.getListItemDonasi().size()==0) {
             donasi.setListItemDonasi(new ArrayList<>());
         }
@@ -443,6 +476,12 @@ public class DonasiController {
 
         List<WarehouseModel> listItemWarehouse = warehouseService.getListItemWarehouse();
 
+        //input donatur info to tukar poin
+        DonaturModel donatur =  getDonatur(request);
+        if(donatur != null){
+            model.addAttribute("poin", donatur.getPoin());
+        }
+
         model.addAttribute("donasi", donasi);
         model.addAttribute("listItemWarehouse", listItemWarehouse);
 
@@ -453,11 +492,18 @@ public class DonasiController {
     private String deleteRowListItemDonasiInspeksi(
             @ModelAttribute DonasiModel donasi,
             @RequestParam("deleteRow") Integer row,
-            Model model) {
+            Model model,
+            HttpServletRequest request) {
         final Integer rowId = Integer.valueOf(row);
         donasi.getListItemDonasi().remove(rowId.intValue());
 
         List<WarehouseModel> listItemWarehouse = warehouseService.getListItemWarehouse();
+
+        //input donatur info to tukar poin
+        DonaturModel donatur =  getDonatur(request);
+        if(donatur != null){
+            model.addAttribute("poin", donatur.getPoin());
+        }
 
         model.addAttribute("donasi",donasi);
         model.addAttribute("listItemWarehouse", listItemWarehouse);
@@ -476,5 +522,10 @@ public class DonasiController {
             }
         }
         return false;
+    }
+
+    private DonaturModel getDonatur(HttpServletRequest request) {
+        return donaturService.getDonaturByUsername(request.getRemoteUser()) == null ?
+                null : donaturService.getDonaturByUsername(request.getRemoteUser());
     }
 }

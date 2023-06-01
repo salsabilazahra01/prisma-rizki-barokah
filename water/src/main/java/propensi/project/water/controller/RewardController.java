@@ -115,11 +115,11 @@ public class RewardController {
         try {
             rewardService.add(reward);
         } catch (Exception e) {
-            log.error("Error while creating reward", e);
             model.addAttribute("reward", reward);
             model.addAttribute("title", "Buat Jenis Reward");
             redirectAttrs.addFlashAttribute("failed", "Penambahan reward gagal karena terdapat reward dengan jenis yang sama");
-            return "/reward/form";
+            return "redirect:/reward/add";
+
         }
         redirectAttrs.addFlashAttribute("success","Reward baru berhasil ditambahkan");
         return "redirect:/reward/viewall";

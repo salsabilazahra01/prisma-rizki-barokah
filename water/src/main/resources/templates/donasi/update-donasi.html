@@ -53,8 +53,9 @@
                   </div>
 
                   <div class="form-group">
-                    <label class="h5 text-raisin-black">Nomor Telepon Donatur<span class="text-danger"> *</span></label>
-                    <input required type="number" autocomplete="off" class="form-control p2" th:field="*{kontakPic}">
+                    <label class="h5 text-raisin-black">Nomor Telepon<span class="text-danger"> *</span></label>
+                    <input required type="number" autocomplete="off" class="form-control p2" th:field="*{kontakPic}"
+                           onKeyPress="if(this.value.length==12) return false;">
                     <div class="invalid-feedback">
                       Masukkan nomor telepon donatur yang dapat dihubungi
                     </div>

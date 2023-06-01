@@ -75,7 +75,7 @@
                 <tr th:each="penawaranSampah, iterationStatus : ${listPenawaranSampah}">
                   <td th:text="${firstItem} + ${iterationStatus.count} - 1"></td>
                   <td th:text="${penawaranSampah.idPenawaranSampah}"></td>
-                  <td th:text="${#temporals.format(penawaranSampah.tanggalDibuat, 'dd-MM-yyyy HH:mm')}"></td>
+                  <td th:text="${#temporals.format(penawaranSampah.tanggalDibuat, 'dd MMMM yyyy, HH.mm', 'ID')}"></td>
                   <td>
                     <div th:if="${penawaranSampah.status == -1}"><span class="bi bi-file-earmark-x"></span> <STRONG>Ditolak</STRONG></div>
                     <div th:if="${penawaranSampah.status == 0}"><span class="bi bi-hourglass-split"></span><STRONG> Menunggu Persetujuan</STRONG></div>

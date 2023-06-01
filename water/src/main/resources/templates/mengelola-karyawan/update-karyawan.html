@@ -52,9 +52,9 @@
 
                   <div class="form-group">
                     <label class="h5 text-raisin-black">Email</label>
-                    <input type="text" class="form-control p2 has-validation" th:field="*{email}">
+                    <input type="email" class="form-control p2 has-validation" th:field="*{email}">
                     <div class="invalid-feedback">
-                      Email harus diisi
+                      Masukkan e-mail yang valid. Misal: email@gmail.com
                     </div>
   <!--                  <div th:if="${email_constraint}" class="text-danger">-->
   <!--                    Email sudah didaftarkan-->
@@ -63,7 +63,8 @@
 
                   <div class="form-group">
                     <label class="h5 text-raisin-black">Nomor Telepon</label>
-                    <input type="number" class="form-control p2 has-validation" th:field="*{hp}">
+                    <input type="number" class="form-control p2 has-validation" th:field="*{hp}"
+                           onKeyPress="if(this.value.length==12) return false;">
                     <div class="invalid-feedback">
                       Nomor telepon harus diisi
                     </div>

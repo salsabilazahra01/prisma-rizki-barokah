@@ -77,7 +77,7 @@
                   th:style="${iterationStatus.even} ? 'font-weight:bold;'"  align="center">
                 <td th:text="${firstItem} + ${iterationStatus.count} - 1"></td>
                 <td th:text="${donasi.idDonasi}"></td>
-                <td th:text="${#temporals.format(donasi.tanggalDibuat, 'dd-MM-yyyy HH:mm')}"></td>
+                <td th:text="${#temporals.format(donasi.tanggalDibuat, 'dd MMMM yyyy, HH.mm', 'ID')}"></td>
                 <td>
                   <div th:if="${donasi.status == -1}"><span class="bi bi-file-earmark-x"></span> Donasi Batal</div>
                   <div th:if="${donasi.status == 0}"><span class="bi bi-hourglass-split"></span> Menunggu Persetujuan</div>
